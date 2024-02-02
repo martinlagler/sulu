@@ -1,10 +1,22 @@
 <?php
 
+/*
+ * This file is part of Sulu.
+ *
+ * (c) Sulu GmbH
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Sulu\Bundle\SecurityBundle\SingleSignOn;
 
 /**
  * @final
+ *
  * @internal
+ *
+ * @experimental
  */
 class SingleSignOnAdapterFactory
 {
@@ -40,7 +52,7 @@ class SingleSignOnAdapterFactory
      *
      * Inspired by https://github.com/schranz-search/schranz-search/blob/0.3.1/packages/seal/src/Adapter/AdapterFactory.php
      */
-    public function parseDsn(string $dsn): array
+    public function parseDsn(#[\SensitiveParameter] string $dsn): array
     {
         /** @var string|null $adapterName */
         $adapterName = \explode(':', $dsn, 2)[0];
@@ -126,7 +138,7 @@ class SingleSignOnAdapterFactory
         return $parsedDsn;
     }
 
-    public function createAdapter(string $dsn): SingleSignOnAdapterFactoryInterface
+    public function createAdapter(#[\SensitiveParameter] string $dsn): SingleSignOnAdapterFactoryInterface
     {
         $parsedDsn = $this->parseDsn($dsn);
 
