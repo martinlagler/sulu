@@ -28,9 +28,11 @@ class OpenIdSingleSignOnAdapterFactory implements SingleSignOnAdapterFactoryInte
 
     public function createAdapter(#[\SensitiveParameter] array $dsn): SingleSignOnAdapterInterface
     {
-        $protocol = $dsn['query']['no-tls'] ? 'http' : 'https';
+        $endpoint = (($dsn['query']['no-tls'] ?? false) ? 'http' : 'https') . '://' // http://
+            . $dsn['host']                                                          // example.org
+            . ($dsn['port'] ? ':' . $dsn['port'] : '')                              // :8081
+            . $dsn['path'];                                                         // /.well-known/openid-configuration
 
-        $endpoint = $protocol . '://' . $dsn['host'] . ':' . $dsn['port'] . $dsn['path'];
         $clientId = $dsn['user'] ?? '';
         $clientSecret = $dsn['pass'] ?? '';
 
