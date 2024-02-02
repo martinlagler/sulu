@@ -105,6 +105,11 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
                 AccessControlRepositoryInterface::class => 'sulu.repository.access_control',
             ]
         );
+
+        foreach ($config['single_sign_on']['providers'] as $domain => $provider) {
+            dump($provider);
+            exit;
+        }
     }
 
     /**
