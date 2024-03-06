@@ -106,9 +106,14 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
             ]
         );
 
-        foreach ($config['single_sign_on']['providers'] as $domain => $provider) {
-            dump($provider);
-            exit;
+        $container->setParameter('sulu_security.has_single_sign_on_providers', false);
+
+        if (array_key_exists('single_sign_on', $config)
+            && array_key_exists('providers', $config['single_sign_on'])) {
+            $container->setParameter(
+                'sulu_security.has_single_sign_on_providers',
+                \count($config['single_sign_on']['providers']) > 0
+            );
         }
     }
 

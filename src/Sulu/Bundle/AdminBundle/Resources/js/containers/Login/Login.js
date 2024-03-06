@@ -70,6 +70,10 @@ class Login extends React.Component<Props> {
 
     handleLoginFormSubmit = (data: LoginFormData) => {
         userStore.login(data).then(() => {
+            if (userStore.hasJsonLogin) {
+                return;
+            }
+
             if (userStore.twoFactorMethods && userStore.twoFactorMethods.length > 0) {
                 action(() => {
                     this.visibleForm = 'two-factor';
@@ -135,6 +139,8 @@ class Login extends React.Component<Props> {
                             <LoginForm
                                 error={userStore.loginError}
                                 loading={userStore.loading}
+                                hasSingleSignOn={userStore.hasSingleSignOn()}
+                                hasOnlyPassword={userStore.hasJsonLogin}
                                 onChangeForm={this.handleChangeToForgotPasswordForm}
                                 onSubmit={this.handleLoginFormSubmit}
                             />

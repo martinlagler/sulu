@@ -19,6 +19,7 @@ class UserStore {
     @observable loggedIn: boolean = false;
     @observable loading: boolean = false;
     @observable loginError: boolean = false;
+    @observable hasJsonLogin: boolean = false;
     @observable forgotPasswordSuccess: boolean = false;
     @observable twoFactorMethods: Array<string> = [];
     @observable twoFactorError: boolean = false;
@@ -30,6 +31,7 @@ class UserStore {
         this.user = undefined;
         this.contact = undefined;
         this.loginError = false;
+        this.hasJsonLogin = false;
         this.forgotPasswordSuccess = false;
         this.twoFactorMethods = [];
         this.twoFactorError = false;
@@ -49,6 +51,10 @@ class UserStore {
 
     @action setLoginError(loginError: boolean) {
         this.loginError = loginError;
+    }
+
+    @action setHasJsonLogin(hasJsonLogin: boolean) {
+        this.hasJsonLogin = hasJsonLogin;
     }
 
     @action setForgotPasswordSuccess(forgotPasswordSuccess: boolean) {
@@ -106,6 +112,19 @@ class UserStore {
     handleLogin = (data: Object) => {
         this.setTwoFactorMethods([]);
 
+        if (data.method === 'redirect' && data.url) {
+            window.location.href = data.url;
+
+            return
+        }
+
+        if (data.method === 'json_login') {
+            this.setHasJsonLogin(true);
+            this.setLoading(false);
+
+            return;
+        }
+
         if (data.completed === false) {
             this.setLoading(false);
 
@@ -130,6 +149,10 @@ class UserStore {
             this.clear();
         }
 
+        if (this.hasJsonLogin) {
+            this.clear();
+        }
+
         this.setLoading(true);
         return initializer.initialize(true).then(() => {
             this.setLoading(false);
@@ -145,6 +168,10 @@ class UserStore {
                 this.setLoading(false);
                 if (error.status !== 401) {
                     return Promise.reject(error);
+                }
+
+                if (this.hasJsonLogin)  {
+                    this.clear();
                 }
 
                 this.setLoginError(true);
@@ -233,6 +260,10 @@ class UserStore {
         }
 
         return new RegExp(pattern).test(password);
+    }
+
+    hasSingleSignOn() {
+        return Config.endpoints.single_sign_on;
     }
 }
 

@@ -14,6 +14,8 @@ import type {LoginFormData} from './types';
 type Props = {|
     error: boolean,
     loading: boolean,
+    hasSingleSignOn: boolean,
+    hasOnlyPassword: boolean,
     onChangeForm: () => void,
     onSubmit: (data: LoginFormData) => void,
 |};
@@ -23,6 +25,8 @@ class LoginForm extends React.Component<Props> {
     static defaultProps = {
         error: false,
         loading: false,
+        hasSingleSignOn: false,
+        hasOnlyPassword: false,
     };
 
     @observable inputRef: ?ElementRef<*>;
@@ -31,7 +35,7 @@ class LoginForm extends React.Component<Props> {
     @observable password: ?string;
 
     @computed get submitButtonDisabled(): boolean {
-        return !(this.user && this.password);
+        return !(this.user && this.password) && !((this.user || this.password) && this.props.hasSingleSignOn);
     }
 
     @action setInputRef = (ref: ?ElementRef<*>) => {
@@ -54,6 +58,22 @@ class LoginForm extends React.Component<Props> {
 
     @action handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (this.user && this.props.hasSingleSignOn) {
+            const {onSubmit} = this.props;
+
+            onSubmit({
+                username: this.user,
+                password: this.password,
+            });
+
+            if (this.user && this.password) {
+                this.user = undefined;
+                this.password = undefined;
+            }
+
+            return;
+        }
 
         if (!this.user || !this.password) {
             return;
@@ -84,32 +104,36 @@ class LoginForm extends React.Component<Props> {
                 </Header>
                 <form className={formStyles.form} onSubmit={this.handleSubmit}>
                     <fieldset>
-                        <label className={inputFieldClass}>
-                            <div className={formStyles.labelText}>
-                                {translate('sulu_admin.username_or_email')}
-                            </div>
-                            <Input
-                                autocomplete="username"
-                                icon="su-user"
-                                inputRef={this.setInputRef}
-                                onChange={this.handleUserChange}
-                                valid={!this.props.error}
-                                value={this.user}
-                            />
-                        </label>
-                        <label className={inputFieldClass}>
-                            <div className={formStyles.labelText}>
-                                {translate('sulu_admin.password')}
-                            </div>
-                            <Input
-                                autocomplete="current-password"
-                                icon="su-lock"
-                                onChange={this.handlePasswordChange}
-                                type="password"
-                                valid={!this.props.error}
-                                value={this.password}
-                            />
-                        </label>
+                        {(!this.props.hasOnlyPassword) && (
+                            <label className={inputFieldClass}>
+                                <div className={formStyles.labelText}>
+                                    {translate('sulu_admin.username_or_email')}
+                                </div>
+                                <Input
+                                    autocomplete="username"
+                                    icon="su-user"
+                                    inputRef={this.setInputRef}
+                                    onChange={this.handleUserChange}
+                                    valid={!this.props.error}
+                                    value={this.user}
+                                />
+                            </label>
+                        )}
+                        {!this.props.hasSingleSignOn || (this.props.hasSingleSignOn && this.props.hasOnlyPassword) && (
+                            <label className={inputFieldClass}>
+                                <div className={formStyles.labelText}>
+                                    {translate('sulu_admin.password')}
+                                </div>
+                                <Input
+                                    autocomplete="current-password"
+                                    icon="su-lock"
+                                    onChange={this.handlePasswordChange}
+                                    type="password"
+                                    valid={!this.props.error}
+                                    value={this.password}
+                                />
+                            </label>
+                        )}
                         <div className={formStyles.buttons}>
                             <Button onClick={this.props.onChangeForm} skin="link">
                                 {translate('sulu_admin.forgot_password')}

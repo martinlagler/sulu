@@ -385,5 +385,9 @@
 
             <tag name="sulu_admin.form_metadata_visitor" />
         </service>
+
+        <service id="sulu_security.open_id_login_subscriber" class="Sulu\Bundle\SecurityBundle\Security\OpenIdLoginSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>
