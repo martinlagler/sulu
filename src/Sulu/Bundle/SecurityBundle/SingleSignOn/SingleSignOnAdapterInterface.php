@@ -12,11 +12,20 @@
 namespace Sulu\Bundle\SecurityBundle\SingleSignOn;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
 /**
  * @experimental
  */
 interface SingleSignOnAdapterInterface
 {
-    public function generateLoginUrl(Request $request, string $redirectUrl): string;
+    public function generateLoginUrl(Request $request, string $redirectUrl, string $domain): string;
+
+    /**
+     * @param array<mixed> $expectedAttributes
+     * @param array<mixed> $givenAttributes
+     */
+    public function isAuthorizationValid(array $expectedAttributes, array $givenAttributes): bool;
+
+    public function createOrUpdateUser(string $token): UserBadge;
 }

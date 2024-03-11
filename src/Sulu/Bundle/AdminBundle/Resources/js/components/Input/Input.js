@@ -19,6 +19,7 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
         skin: 'default',
         type: 'text',
         valid: true,
+        autoFocus: false,
     };
 
     setInputRef = (ref: ?ElementRef<'input'>) => {
@@ -86,6 +87,7 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
             min,
             max,
             step,
+            autoFocus,
         } = this.props;
 
         const inputContainerClass = classNames(
@@ -159,6 +161,7 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
                         ref={inputRef ? this.setInputRef : undefined}
                         step={step}
                         type={type}
+                        autoFocus={autoFocus}
                         value={value == null ? '' : value}
                     />
 

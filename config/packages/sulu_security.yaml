@@ -12,11 +12,6 @@ sulu_security:
         force:
             pattern: '/@sulu\.io$/'
 
-    single_sign_on:
-        providers:
-            'sulu.io':
-                dsn: 'openid://%env(resolve:SULU_OPEN_ID_CLIENT_ID)%:%env(resolve:SULU_OPEN_ID_CLIENT_SECRET)%@%env(resolve:SULU_OPEN_ID_ENDPOINT)%'
-
 when@test:
     sulu_security:
         two_factor:

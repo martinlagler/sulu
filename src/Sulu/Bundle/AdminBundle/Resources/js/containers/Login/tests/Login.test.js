@@ -27,6 +27,8 @@ const mockUserStoreTwoFactorError = jest.fn();
 const mockUserStoreSetResetSuccess = jest.fn();
 const mockUserStoreLoading = jest.fn().mockReturnValue(false);
 const mockUserStoreForgotPasswordSuccess = jest.fn().mockReturnValue(false);
+const mockUserStoreHasJsonLogin = jest.fn().mockReturnValue(false);
+const mockUserStoreHasSingleSignOn = jest.fn().mockReturnValue(false);
 
 jest.mock('../../../stores/userStore', () => {
     return new class {
@@ -64,6 +66,14 @@ jest.mock('../../../stores/userStore', () => {
 
         setResetSuccess(value) {
             return mockUserStoreSetResetSuccess(value);
+        }
+
+        hasSingleSignOn() {
+            return mockUserStoreHasSingleSignOn();
+        }
+
+        get hasJsonLogin() {
+            return mockUserStoreHasJsonLogin();
         }
 
         get loading() {
@@ -246,4 +256,26 @@ test('Should not call the submit handler of the reset password view with not mat
     return promise.then(() => {
         expect(router.reset).not.toBeCalled();
     });
+});
+
+test('Should render the Login with only username/email', () => {
+    const router = new Router();
+    mockUserStoreHasSingleSignOn.mockReturnValueOnce(true);
+
+    const loginForm = mount(
+        <Login initialized={true} onLoginSuccess={jest.fn()} router={router} />
+    );
+
+    expect(loginForm.render()).toMatchSnapshot()
+});
+
+test('Should render the Login with only password', () => {
+    const router = new Router();
+    mockUserStoreHasJsonLogin.mockReturnValue(true);
+
+    const loginForm = mount(
+        <Login initialized={true} onLoginSuccess={jest.fn()} router={router} />
+    );
+
+    expect(loginForm.render()).toMatchSnapshot()
 });

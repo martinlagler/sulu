@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -18,6 +20,10 @@ use Sulu\Bundle\SecurityBundle\Exception\RoleKeyAlreadyExistsException;
 use Sulu\Bundle\SecurityBundle\Exception\RoleNameAlreadyExistsException;
 use Sulu\Bundle\SecurityBundle\Security\Exception\EmailNotUniqueException;
 use Sulu\Bundle\SecurityBundle\Security\Exception\UsernameNotUniqueException;
+use Sulu\Bundle\SecurityBundle\SingleSignOn\Adapter\OpenId\OpenIdSingleSignOnAdapter;
+use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterFactory;
+use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterFactoryInterface;
+use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterInterface;
 use Sulu\Component\HttpKernel\SuluKernel;
 use Sulu\Component\Security\Authentication\RoleRepositoryInterface;
 use Sulu\Component\Security\Authentication\RoleSettingRepositoryInterface;
@@ -26,8 +32,10 @@ use Sulu\Component\Security\Authorization\AccessControl\AccessControlRepositoryI
 use Sulu\Component\Security\Authorization\AccessControl\DescendantProviderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
@@ -76,7 +84,7 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
         /** @var array<string, class-string> $bundles */
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (\in_array(SchebTwoFactorBundle::class, $bundles)) {
+        if (\in_array(SchebTwoFactorBundle::class, $bundles, true)) {
             $loader->load('2fa.xml');
 
             if (\interface_exists(AuthCodeMailerInterface::class)) {
@@ -103,17 +111,27 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
                 RoleRepositoryInterface::class => 'sulu.repository.role',
                 RoleSettingRepositoryInterface::class => 'sulu.repository.role_setting',
                 AccessControlRepositoryInterface::class => 'sulu.repository.access_control',
-            ]
+            ],
         );
 
         $container->setParameter('sulu_security.has_single_sign_on_providers', false);
 
-        if (array_key_exists('single_sign_on', $config)
-            && array_key_exists('providers', $config['single_sign_on'])) {
+        if (\array_key_exists('single_sign_on', $config)
+            && \array_key_exists('providers', $config['single_sign_on'])) {
             $container->setParameter(
                 'sulu_security.has_single_sign_on_providers',
-                \count($config['single_sign_on']['providers']) > 0
+                \count($config['single_sign_on']['providers']) > 0,
             );
+
+            foreach ($config['single_sign_on']['providers'] as $domain => $providerConfig) {
+                $definition = new Definition();
+                $definition->setFactory([new Reference('sulu_security.single_sign_on_adapter_factory'), 'createAdapter']);
+                $definition->setClass(SingleSignOnAdapterInterface::class);
+                $definition->setArguments([$providerConfig['dsn'], $providerConfig['user_role'] ?? null]);
+                $definition->addTag('sulu_security.single_sign_on_adapter', ['domain' => $domain]);
+
+                $container->setDefinition('sulu_security.single_sign_on_adapter_' . \str_replace('.', '_', $domain), $definition);
+            }
         }
     }
 
@@ -130,7 +148,7 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
                         'enabled' => false,
                         'mailer' => 'sulu_security.two_factor_mailer',
                     ],
-                ]
+                ],
             );
         }
 
@@ -146,7 +164,7 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
                             EmailNotUniqueException::class => 409,
                         ],
                     ],
-                ]
+                ],
             );
         }
 
@@ -163,7 +181,7 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
                     'fragments' => [
                         'path' => '/admin/_fragments',
                     ],
-                ]
+                ],
             );
         }
 
@@ -205,7 +223,7 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
                             ],
                         ],
                     ],
-                ]
+                ],
             );
         }
     }

@@ -52,7 +52,7 @@ class SingleSignOnAdapterFactory
      *
      * Inspired by https://github.com/schranz-search/schranz-search/blob/0.3.1/packages/seal/src/Adapter/AdapterFactory.php
      */
-    public function parseDsn(#[\SensitiveParameter] string $dsn): array
+    private function parseDsn(#[\SensitiveParameter] string $dsn): array
     {
         /** @var string|null $adapterName */
         $adapterName = \explode(':', $dsn, 2)[0];
@@ -138,10 +138,10 @@ class SingleSignOnAdapterFactory
         return $parsedDsn;
     }
 
-    public function createAdapter(#[\SensitiveParameter] string $dsn): SingleSignOnAdapterFactoryInterface
+    public function createAdapter(#[\SensitiveParameter] string $dsn, string $userRole): SingleSignOnAdapterInterface
     {
         $parsedDsn = $this->parseDsn($dsn);
 
-        return $this->factories[$parsedDsn['scheme']]->createAdapter($parsedDsn);
+        return $this->factories[$parsedDsn['scheme']]->createAdapter($parsedDsn, $userRole);
     }
 }

@@ -197,7 +197,13 @@ class UserStore {
         this.setLoading(true);
 
         return Requester.post(Config.endpoints.forgotPasswordReset, data)
-            .then(() => {
+            .then((data) => {
+                if (data.method === 'redirect' && data.url) {
+                    window.location.href = data.url;
+
+                    return
+                }
+
                 this.setLoading(false);
                 this.setForgotPasswordSuccess(true);
             })

@@ -119,7 +119,7 @@ class LoginForm extends React.Component<Props> {
                                 />
                             </label>
                         )}
-                        {!this.props.hasSingleSignOn || (this.props.hasSingleSignOn && this.props.hasOnlyPassword) && (
+                        {(!this.props.hasSingleSignOn || (this.props.hasSingleSignOn && this.props.hasOnlyPassword)) && (
                             <label className={inputFieldClass}>
                                 <div className={formStyles.labelText}>
                                     {translate('sulu_admin.password')}
@@ -131,22 +131,23 @@ class LoginForm extends React.Component<Props> {
                                     type="password"
                                     valid={!this.props.error}
                                     value={this.password}
+                                    autoFocus={this.props.hasOnlyPassword}
                                 />
                             </label>
                         )}
-                        <div className={formStyles.buttons}>
-                            <Button onClick={this.props.onChangeForm} skin="link">
-                                {translate('sulu_admin.forgot_password')}
-                            </Button>
-                            <Button
-                                disabled={this.submitButtonDisabled}
-                                loading={this.props.loading}
-                                skin="primary"
-                                type="submit"
-                            >
-                                {translate('sulu_admin.login')}
-                            </Button>
-                        </div>
+                            <div className={formStyles.buttons}>
+                                    <Button onClick={this.props.onChangeForm} skin="link">
+                                        {translate('sulu_admin.forgot_password')}
+                                    </Button>
+                                <Button
+                                    disabled={this.submitButtonDisabled}
+                                    loading={this.props.loading}
+                                    skin="primary"
+                                    type="submit"
+                                >
+                                    {translate('sulu_admin.login')}
+                                </Button>
+                            </div>
                     </fieldset>
                 </form>
             </Fragment>

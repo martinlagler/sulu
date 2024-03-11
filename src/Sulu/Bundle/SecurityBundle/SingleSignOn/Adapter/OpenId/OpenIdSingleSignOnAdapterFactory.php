@@ -11,8 +11,13 @@
 
 namespace Sulu\Bundle\SecurityBundle\SingleSignOn\Adapter\OpenId;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
 use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterFactoryInterface;
 use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterInterface;
+use Sulu\Component\Security\Authentication\RoleRepositoryInterface;
+use Sulu\Component\Security\Authentication\UserRepositoryInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -22,25 +27,37 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class OpenIdSingleSignOnAdapterFactory implements SingleSignOnAdapterFactoryInterface
 {
-    public function __construct(private HttpClientInterface $httpClient)
-    {
+    public function __construct(
+        private HttpClientInterface $httpClient,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ContactRepositoryInterface $contactRepository,
+        private readonly RoleRepositoryInterface $roleRepository,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
-    public function createAdapter(#[\SensitiveParameter] array $dsn): SingleSignOnAdapterInterface
+    public function createAdapter(#[\SensitiveParameter] array $dsn, string $userRole): SingleSignOnAdapterInterface
     {
         $endpoint = (($dsn['query']['no-tls'] ?? false) ? 'http' : 'https') . '://' // http://
             . $dsn['host']                                                          // example.org
-            . ($dsn['port'] ? ':' . $dsn['port'] : '')                              // :8081
-            . $dsn['path'];                                                         // /.well-known/openid-configuration
+            . (($dsn['port'] ?? null) ? ':' . $dsn['port'] : '')                    // :8081
+            . ($dsn['path'] ?? '');                                                 // /.well-known/openid-configuration
 
         $clientId = $dsn['user'] ?? '';
         $clientSecret = $dsn['pass'] ?? '';
 
         return new OpenIdSingleSignOnAdapter(
             $this->httpClient,
+            $this->userRepository,
+            $this->entityManager,
+            $this->contactRepository,
+            $this->roleRepository,
+            $this->urlGenerator,
             $endpoint,
             $clientId,
             $clientSecret,
+            $userRole,
         );
     }
 

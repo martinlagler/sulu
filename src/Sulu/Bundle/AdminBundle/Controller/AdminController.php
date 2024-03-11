@@ -171,6 +171,11 @@ class AdminController
      */
     private $passwordInfoTranslationKey;
 
+    /**
+     * @var bool
+     */
+    private $hasSingleSignOnProvider;
+
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         TokenStorageInterface $tokenStorage,
@@ -198,7 +203,7 @@ class AdminController
         ?bool $collaborationEnabled = null,
         ?string $passwordPattern = null,
         ?string $passwordInfoTranslationKey = null,
-        ?bool $hasSingleSignOnProvider = false
+        bool $hasSingleSignOnProvider = false
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->tokenStorage = $tokenStorage;
