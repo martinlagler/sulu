@@ -27,13 +27,17 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class OpenIdSingleSignOnAdapterFactory implements SingleSignOnAdapterFactoryInterface
 {
+    /**
+     * @param array<string> $translations
+     */
     public function __construct(
         private HttpClientInterface $httpClient,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ContactRepositoryInterface $contactRepository,
-        private readonly RoleRepositoryInterface $roleRepository,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UserRepositoryInterface $userRepository,
+        private EntityManagerInterface $entityManager,
+        private ContactRepositoryInterface $contactRepository,
+        private RoleRepositoryInterface $roleRepository,
+        private UrlGeneratorInterface $urlGenerator,
+        private array $translations
     ) {
     }
 
@@ -58,6 +62,7 @@ class OpenIdSingleSignOnAdapterFactory implements SingleSignOnAdapterFactoryInte
             $clientId,
             $clientSecret,
             $userRole,
+            $this->translations,
         );
     }
 

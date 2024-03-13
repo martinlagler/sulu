@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Sulu.
  *
@@ -34,20 +32,24 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class OpenIdSingleSignOnAdapter implements SingleSignOnAdapterInterface
 {
-    final public const OPEN_ID_ATTRIBUTES = '_sulu_security_open_id_attributes';
+    public const OPEN_ID_ATTRIBUTES = '_sulu_security_open_id_attributes';
 
+    /**
+     * @param array<string> $translations
+     */
     public function __construct(
         private HttpClientInterface $httpClient,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ContactRepositoryInterface $contactRepository,
-        private readonly RoleRepositoryInterface $roleRepository,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UserRepositoryInterface $userRepository,
+        private EntityManagerInterface $entityManager,
+        private ContactRepositoryInterface $contactRepository,
+        private RoleRepositoryInterface $roleRepository,
+        private UrlGeneratorInterface $urlGenerator,
         private string $endpoint,
         private string $clientId,
         #[\SensitiveParameter]
         private string $clientSecret,
         private string $userRole,
+        private array $translations,
     ) {
     }
 
@@ -167,15 +169,15 @@ class OpenIdSingleSignOnAdapter implements SingleSignOnAdapterInterface
         $accessToken = $data['access_token'];
 
         /** @var array{
-         * sub?: string,
-         * name?: string,
-         * given_name?: string,
-         * family_name?: string,
-         * picture?: string,
-         * email?: string,
-         * email_verified?: bool,
-         * locale?: string,
-         * hd?: string,
+         *     sub?: string,
+         *     name?: string,
+         *     given_name?: string,
+         *     family_name?: string,
+         *     picture?: string,
+         *     email?: string,
+         *     email_verified?: bool,
+         *     locale?: string,
+         *     hd?: string,
          * } $attributes
          */
         $attributes = $this->httpClient->request('GET', $userinfoEndpoint, [
@@ -270,7 +272,8 @@ class OpenIdSingleSignOnAdapter implements SingleSignOnAdapterInterface
         $contact = $user->getContact();
         $contact->setFirstName($attributes['given_name'] ?? '');
         $contact->setLastName($attributes['family_name'] ?? '');
-        $user->setLocale((isset($attributes['locale']) && 'de' === $attributes['locale']) ? 'de' : 'en');
+        $locale = (isset($attributes['locale']) && \in_array($attributes['locale'], $this->translations, true)) ? $attributes['locale'] : 'en';
+        $user->setLocale($locale);
 
         $this->entityManager->flush();
     }

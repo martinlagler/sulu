@@ -31,9 +31,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class SingleSignOnLoginRequestSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly SingleSignOnAdapterProvider $singleSignOnAdapterProvider,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly UserRepository $userRepository,
+        private SingleSignOnAdapterProvider $singleSignOnAdapterProvider,
+        private UrlGeneratorInterface $urlGenerator,
+        private UserRepository $userRepository,
     ) {
     }
 
@@ -73,9 +73,9 @@ class SingleSignOnLoginRequestSubscriber implements EventSubscriberInterface
 
         // Todo: Change this, userRepository should not return an error if there was no user found.
         try {
-            /** @var User $user */
+            /** @var ?User $user */
             $user = $this->userRepository->findUserByIdentifier($identifier);
-            $email = $user->getEmail() ?? $user->getUsername();
+            $email = $user ? ($user->getEmail() ?? $user->getUsername()) : $identifier;
         } catch (NoResultException $e) {
             $email = $identifier;
         }

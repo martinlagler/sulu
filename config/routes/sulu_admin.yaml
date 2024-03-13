@@ -113,9 +113,3 @@ sulu_audience_targeting_api:
     type: rest
     resource: "@SuluAudienceTargetingBundle/Resources/config/routing_api.yml"
     prefix: /admin/api
-
-sulu_admin_single_sign_on:
-    path: /openid
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
-    defaults:
-        route: sulu_admin

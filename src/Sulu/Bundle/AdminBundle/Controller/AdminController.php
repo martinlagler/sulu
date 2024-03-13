@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Sulu.
  *
@@ -252,7 +250,7 @@ class AdminController
             'translations' => $this->urlGenerator->generate('sulu_admin.translation'),
             'generateUrl' => $this->urlGenerator->generate('sulu_page.post_resourcelocator', ['action' => 'generate']),
             'routing' => $this->urlGenerator->generate('fos_js_routing_js'),
-            'single_sign_on' => $this->hasSingleSignOnProvider,
+            'has_single_sign_on' => $this->hasSingleSignOnProvider,
         ];
 
         try {
@@ -271,7 +269,7 @@ class AdminController
                 'password_info_translation_key' => $this->passwordInfoTranslationKey,
                 'sulu_version' => $this->suluVersion,
                 'app_version' => $this->appVersion,
-                'single_sign_on' => $this->hasSingleSignOnProvider,
+                'has_single_sign_on' => $this->hasSingleSignOnProvider,
             ]
         ));
     }

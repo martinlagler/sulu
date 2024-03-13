@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Sulu.
  *
@@ -19,7 +17,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 final class SingleSignOnTokenHandler implements AccessTokenHandlerInterface
 {
     public function __construct(
-        private readonly SingleSignOnAdapterProvider $singleSignOnAdapterProvider,
+        private SingleSignOnAdapterProvider $singleSignOnAdapterProvider,
     ) {
     }
 

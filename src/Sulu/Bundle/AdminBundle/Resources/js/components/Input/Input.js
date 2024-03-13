@@ -14,12 +14,12 @@ const LOADER_SIZE = 20;
 export default class Input<T: ?string | ?number> extends React.PureComponent<InputProps<T>> {
     static defaultProps = {
         alignment: 'left',
+        autoFocus: false,
         collapsed: false,
         disabled: false,
         skin: 'default',
         type: 'text',
         valid: true,
-        autoFocus: false,
     };
 
     setInputRef = (ref: ?ElementRef<'input'>) => {
@@ -58,6 +58,7 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
         const {
             alignment,
             autocomplete,
+            autoFocus,
             headline,
             id,
             inputClass,
@@ -87,7 +88,6 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
             min,
             max,
             step,
-            autoFocus,
         } = this.props;
 
         const inputContainerClass = classNames(
@@ -146,6 +146,7 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
 
                     <input
                         autoComplete={autocomplete}
+                        autoFocus={autoFocus}
                         className={inputClass}
                         disabled={disabled}
                         id={id}
@@ -161,7 +162,6 @@ export default class Input<T: ?string | ?number> extends React.PureComponent<Inp
                         ref={inputRef ? this.setInputRef : undefined}
                         step={step}
                         type={type}
-                        autoFocus={autoFocus}
                         value={value == null ? '' : value}
                     />
 

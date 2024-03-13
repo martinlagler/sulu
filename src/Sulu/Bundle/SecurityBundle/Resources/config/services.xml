@@ -400,6 +400,7 @@
             <argument type="service" id="sulu.repository.contact"/>
             <argument type="service" id="sulu.repository.role"/>
             <argument type="service" id="router"/>
+            <argument>%sulu_core.translations%</argument>
 
             <tag name="sulu_security.single_sign_on_factory"/>
         </service>

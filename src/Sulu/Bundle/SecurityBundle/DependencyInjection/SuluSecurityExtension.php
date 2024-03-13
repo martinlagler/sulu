@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Sulu.
  *
@@ -20,9 +18,6 @@ use Sulu\Bundle\SecurityBundle\Exception\RoleKeyAlreadyExistsException;
 use Sulu\Bundle\SecurityBundle\Exception\RoleNameAlreadyExistsException;
 use Sulu\Bundle\SecurityBundle\Security\Exception\EmailNotUniqueException;
 use Sulu\Bundle\SecurityBundle\Security\Exception\UsernameNotUniqueException;
-use Sulu\Bundle\SecurityBundle\SingleSignOn\Adapter\OpenId\OpenIdSingleSignOnAdapter;
-use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterFactory;
-use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterFactoryInterface;
 use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnAdapterInterface;
 use Sulu\Component\HttpKernel\SuluKernel;
 use Sulu\Component\Security\Authentication\RoleRepositoryInterface;

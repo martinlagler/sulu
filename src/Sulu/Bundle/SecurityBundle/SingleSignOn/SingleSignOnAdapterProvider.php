@@ -23,7 +23,7 @@ use Psr\Container\ContainerInterface;
 class SingleSignOnAdapterProvider
 {
     public function __construct(
-        private readonly ContainerInterface $adapters,
+        private ContainerInterface $adapters,
     ) {
     }
 

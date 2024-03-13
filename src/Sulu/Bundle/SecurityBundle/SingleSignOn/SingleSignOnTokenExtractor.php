@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Sulu.
  *
@@ -20,7 +18,7 @@ use Symfony\Component\Security\Http\AccessToken\AccessTokenExtractorInterface;
 
 final class SingleSignOnTokenExtractor implements AccessTokenExtractorInterface
 {
-    public function __construct(private readonly SingleSignOnAdapterProvider $singleSignOnAdapterProvider)
+    public function __construct(private SingleSignOnAdapterProvider $singleSignOnAdapterProvider)
     {
     }
 

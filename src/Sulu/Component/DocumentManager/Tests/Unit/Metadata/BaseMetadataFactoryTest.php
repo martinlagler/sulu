@@ -163,6 +163,6 @@ class BaseMetadataFactoryTest extends TestCase
         $this->assertCount(2, $metadatas);
         $this->assertContainsOnlyInstancesOf(Metadata::class, $metadatas);
         $metadata = \reset($metadatas);
-        $this->assertEquals('Class\Page', $metadata ? $metadata->getClass() : null);
+        $this->assertEquals('Class\Page', $metadata->getClass());
     }
 }
