@@ -21,6 +21,7 @@ use Sulu\Bundle\SecurityBundle\SingleSignOn\SingleSignOnTokenExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Security\Http\AccessToken\AccessTokenExtractorInterface;
 
 class SingleSignOnTokeExtractorTest extends TestCase
 {
@@ -35,6 +36,10 @@ class SingleSignOnTokeExtractorTest extends TestCase
 
     protected function setUp(): void
     {
+        if (!\interface_exists(AccessTokenExtractorInterface::class)) {
+            $this->markTestSkipped('This test requires symfony/security-http ^6.2');
+        }
+
         $this->singleSignOnAdapterProvider = $this->prophesize(SingleSignOnAdapterProvider::class);
 
         $this->tokenExtractor = new SingleSignOnTokenExtractor(

@@ -32,6 +32,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Security\Http\AccessToken\AccessTokenExtractorInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 /**
@@ -111,22 +112,29 @@ class SuluSecurityExtension extends Extension implements PrependExtensionInterfa
 
         $container->setParameter('sulu_security.has_single_sign_on_providers', false);
 
-        if (\array_key_exists('single_sign_on', $config)
-            && \array_key_exists('providers', $config['single_sign_on'])) {
-            $container->setParameter(
-                'sulu_security.has_single_sign_on_providers',
-                \count($config['single_sign_on']['providers']) > 0,
-            );
+        if (!\array_key_exists('single_sign_on', $config) || !\array_key_exists('providers', $config['single_sign_on'])) {
+            return;
+        }
 
-            foreach ($config['single_sign_on']['providers'] as $domain => $providerConfig) {
-                $definition = new Definition();
-                $definition->setFactory([new Reference('sulu_security.single_sign_on_adapter_factory'), 'createAdapter']);
-                $definition->setClass(SingleSignOnAdapterInterface::class);
-                $definition->setArguments([$providerConfig['dsn'], $providerConfig['user_role'] ?? null]);
-                $definition->addTag('sulu_security.single_sign_on_adapter', ['domain' => $domain]);
+        if (!\interface_exists(AccessTokenExtractorInterface::class)) {
+            throw new \RuntimeException('The symfony/security-http package is required to use the SuluSecurityBundle. At least symfony/security-http 6.2 is required.');
+        }
 
-                $container->setDefinition('sulu_security.single_sign_on_adapter_' . \str_replace('.', '_', $domain), $definition);
-            }
+        $loader->load('single_sign_on.xml');
+
+        $container->setParameter(
+            'sulu_security.has_single_sign_on_providers',
+            \count($config['single_sign_on']['providers']) > 0,
+        );
+
+        foreach ($config['single_sign_on']['providers'] as $domain => $providerConfig) {
+            $definition = new Definition();
+            $definition->setFactory([new Reference('sulu_security.single_sign_on_adapter_factory'), 'createAdapter']);
+            $definition->setClass(SingleSignOnAdapterInterface::class);
+            $definition->setArguments([$providerConfig['dsn'], $providerConfig['user_role'] ?? null]);
+            $definition->addTag('sulu_security.single_sign_on_adapter', ['domain' => $domain]);
+
+            $container->setDefinition('sulu_security.single_sign_on_adapter_' . \str_replace('.', '_', $domain), $definition);
         }
     }
 

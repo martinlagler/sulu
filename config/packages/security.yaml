@@ -52,9 +52,9 @@ security:
                 authentication_required_handler: sulu_security.two_factor_authentication_required_handler
                 success_handler: sulu_security.two_factor_authentication_success_handler
                 failure_handler: sulu_security.two_factor_authentication_failure_handler
-            access_token:
-                token_handler: sulu_security.single_sign_on_token_handler
-                token_extractors: sulu_security.single_sign_on_token_extractor
+#            access_token:
+#                token_handler: sulu_security.single_sign_on_token_handler
+#                token_extractors: sulu_security.single_sign_on_token_extractor
 
 #        website:
 #            pattern: ^/
