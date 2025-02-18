@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Article\Tests\Application;
+namespace Sulu\Page\Tests\Application;
 
-use Sulu\Article\Infrastructure\Symfony\HttpKernel\SuluArticleBundle;
 use Sulu\Bundle\AutomationBundle\SuluAutomationBundle;
+use Sulu\Bundle\PageBundle\SuluPageBundle as DeprecatedSuluPageBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Component\HttpKernel\SuluKernel;
 use Sulu\Content\Infrastructure\Symfony\HttpKernel\SuluContentBundle;
@@ -44,9 +44,15 @@ class Kernel extends SuluTestKernel
     {
         $bundles = [...parent::registerBundles()];
 
-        $bundles[] = new SuluPageBundle();
+        foreach ($bundles as $key => $bundle) {
+            // remove old route bundle to avoid conflicts
+            if (DeprecatedSuluPageBundle::class === $bundle::class) {
+                //                unset($bundles[$key]);
+            }
+        }
+
         $bundles[] = new SuluContentBundle();
-        $bundles[] = new SuluArticleBundle();
+        $bundles[] = new SuluPageBundle();
         $bundles[] = new ExampleTestBundle(); // TODO currently required for test content bundle, everybody should setup database by its own
         $bundles[] = new SuluAutomationBundle(); // TODO currently required for test content bundle, everybody should setup database by its own
         $bundles[] = new TaskBundle(); // TODO currently required for test content bundle, everybody should setup database by its own
