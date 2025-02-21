@@ -145,4 +145,12 @@ interface PageRepositoryInterface
     public function add(PageInterface $page): void;
 
     public function remove(PageInterface $page): void;
+
+    /**
+     * @param array{
+     *     uuid?: string,
+     *     uuids?: string[],
+     * } $filters
+     */
+    public function reorderOneBy(array $filters, int $position): void;
 }

@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Sulu\Content\Infrastructure\Doctrine\DimensionContentQueryEnhancer;
 use Sulu\Page\Domain\Exception\PageNotFoundException;
 use Sulu\Page\Domain\Model\PageDimensionContentInterface;
@@ -48,7 +49,7 @@ class PageRepository implements PageRepositoryInterface
     private $entityManager;
 
     /**
-     * @var EntityRepository<PageInterface>
+     * @var NestedTreeRepository<PageInterface>
      */
     protected $entityRepository;
 
@@ -76,7 +77,10 @@ class PageRepository implements PageRepositoryInterface
         EntityManagerInterface $entityManager,
         DimensionContentQueryEnhancer $dimensionContentQueryEnhancer
     ) {
-        $this->entityRepository = $entityManager->getRepository(PageInterface::class);
+        $repository = $entityManager->getRepository(PageInterface::class);
+        Assert::isInstanceOf($repository, NestedTreeRepository::class);
+
+        $this->entityRepository = $repository;
         $this->entityDimensionContentRepository = $entityManager->getRepository(PageDimensionContentInterface::class);
         $this->entityManager = $entityManager;
         $this->dimensionContentQueryEnhancer = $dimensionContentQueryEnhancer;
@@ -178,6 +182,32 @@ class PageRepository implements PageRepositoryInterface
     public function remove(PageInterface $page): void
     {
         $this->entityManager->remove($page);
+    }
+
+    public function reorderOneBy(array $filters, int $position): void
+    {
+        $page = $this->getOneBy($filters);
+
+        $parent = $page->getParent();
+        $siblings = $this->entityRepository->getChildren($parent);
+        $currentPosition = \array_search($page, $siblings);
+
+        if (false === $currentPosition) {
+            throw new \RuntimeException(\sprintf('Page with id "%s" not found in sibling list', $page->getId()));
+        }
+
+        $currentPosition = \intval($currentPosition);
+        $movementSteps = $currentPosition - \max(0, $position - 1);
+
+        if ($movementSteps > 0) {
+            $this->entityRepository->moveUp($page, $movementSteps);
+        } elseif ($movementSteps < 0) {
+            $this->entityRepository->moveDown($page, \abs($movementSteps));
+        }
+
+        if (true !== $this->entityRepository->verify()) {
+            $this->entityRepository->recover();
+        }
     }
 
     /**
