@@ -2005,12 +2005,6 @@ parameters:
 			path: src/Sulu/Bundle/AdminBundle/FormMetadata/FormMetadataMapper.php
 
 		-
-			message: '#^PHPDoc tag @var with type Sulu\\Component\\Content\\Metadata\\PropertyMetadata is not subtype of native type Sulu\\Component\\Content\\Metadata\\ItemMetadata\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Bundle/AdminBundle/FormMetadata/FormMetadataMapper.php
-
-		-
 			message: '#^Parameter \#1 \$attributes of method Sulu\\Bundle\\AdminBundle\\Metadata\\FormMetadata\\TagMetadata\:\:setAttributes\(\) expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -33385,12 +33379,6 @@ parameters:
 			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/FormatManager/FormatManagerTest.php
 
 		-
-			message: '#^Parameter \#4 \$saveImage of class Sulu\\Bundle\\MediaBundle\\Media\\FormatManager\\FormatManager constructor expects string, true given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/FormatManager/FormatManagerTest.php
-
-		-
 			message: '#^Property Sulu\\Bundle\\MediaBundle\\Media\\FormatManager\\FormatManagerTest\:\:\$formats type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -53617,12 +53605,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Routing/RequestListener.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\WebsiteBundle\\Sitemap\\Sitemap\:\:\$lastmod \(DateTime\) does not accept DateTime\|null\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Sitemap/Sitemap.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Sitemap\\SitemapContentQueryBuilder\:\:buildSelect\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -55259,12 +55241,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Unit/Sitemap/SitemapGeneratorTest.php
-
-		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNull\(\) with DateTime will always evaluate to false\.$#'
-			identifier: method.impossibleType
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Tests/Unit/Sitemap/SitemapProviderPoolTest.php
 
 		-
 			message: '#^Class Sulu\\Bundle\\WebsiteBundle\\Sitemap\\XmlSitemapRenderer constructor invoked with 3 parameters, 2 required\.$#'
@@ -57021,12 +56997,6 @@ parameters:
 		-
 			message: '#^Method Sulu\\Component\\Content\\Compat\\Block\\BlockPropertyWrapper\:\:clearProperties\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Component/Content/Compat/Block/BlockPropertyWrapper.php
-
-		-
-			message: '#^Method Sulu\\Component\\Content\\Compat\\Block\\BlockPropertyWrapper\:\:getBlock\(\) should return Sulu\\Component\\Content\\Compat\\Block\\BlockPropertyInterface but returns Sulu\\Component\\Content\\Compat\\PropertyInterface\.$#'
-			identifier: return.type
 			count: 1
 			path: src/Sulu/Component/Content/Compat/Block/BlockPropertyWrapper.php
 
