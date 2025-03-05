@@ -21,7 +21,7 @@ use Sulu\Route\Infrastructure\Doctrine\EventListener\RouteChangedUpdater;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * @phpstan-type RouteData array{resourceId: string, slug: string, parentSlug?: string|null}
+ * @phpstan-type RouteData array{resourceId: string, locale?: string, slug: string, site?: string|null, parentSlug?: string|null}
  */
 #[CoversClass(RouteChangedUpdater::class)]
 class RouteChangedUpdaterTest extends KernelTestCase
@@ -94,10 +94,16 @@ class RouteChangedUpdaterTest extends KernelTestCase
             $route = $repository->findOneBy([
                 'resourceKey' => 'page',
                 'resourceId' => $expectedRoute['resourceId'],
-                'locale' => 'en',
-                'site' => 'website',
+                'locale' => $expectedRoute['locale'] ?? 'en',
+                'site' => $expectedRoute['site'] ?? null,
             ]);
-            $this->assertNotNull($route);
+
+            $this->assertNotNull($route, \sprintf(
+                'Expected route with resourceId "%s", locale "%s" and site "%s" not found.',
+                $expectedRoute['resourceId'],
+                $expectedRoute['locale'] ?? 'en',
+                $expectedRoute['site'] ?? 'NULL',
+            ));
 
             $this->assertSame($expectedRoute['slug'], $route->getSlug());
             $this->assertSame($expectedRoute['parentSlug'] ?? null, $route->getParentRoute()?->getSlug());
@@ -116,6 +122,8 @@ class RouteChangedUpdaterTest extends KernelTestCase
             foreach ($routes as $route) {
                 if ($expectedRoute['resourceId'] === $route['resourceId']
                     && $expectedRoute['slug'] !== $route['slug']
+                    && ($expectedRoute['locale'] ?? 'en') !== ($route['locale'] ?? 'en')
+                    && ($expectedRoute['site'] ?? null) !== ($route['site'] ?? null)
                 ) {
                     $expectedHistoryRoutes[] = $route;
                 }
@@ -125,8 +133,8 @@ class RouteChangedUpdaterTest extends KernelTestCase
         if (\count($expectedHistoryRoutes)) {
             foreach ($expectedHistoryRoutes as $expectedHistoryRoute) {
                 $route = $repository->findOneBy([
-                    'locale' => 'en',
-                    'site' => 'website',
+                    'locale' => $expectedHistoryRoute['locale'] ?? 'en',
+                    'site' => $expectedHistoryRoute['site'] ?? null,
                     'slug' => $expectedHistoryRoute['slug'],
                 ]);
 
@@ -259,6 +267,244 @@ class RouteChangedUpdaterTest extends KernelTestCase
             ],
         ];
 
+        yield 'nested_childs_update_multiple_locales' => [
+            'routes' => [
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test/child-a',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test/child-b',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test/child-b/grand-child-a',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test/child-b/grand-child-b',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test',
+                    'locale' => 'de',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test/child-a',
+                    'locale' => 'de',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test/child-b',
+                    'locale' => 'de',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test/child-b/grand-child-a',
+                    'locale' => 'de',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test/child-b/grand-child-b',
+                    'locale' => 'de',
+                    'parentSlug' => '/test/child-b',
+                ],
+            ],
+            'changeRoute' => '/test-article',
+            'expectedRoutes' => [
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test-article',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test-article/child-a',
+                    'parentSlug' => '/test-article',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test-article/child-b',
+                    'parentSlug' => '/test-article',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test-article/child-b/grand-child-a',
+                    'parentSlug' => '/test-article/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test-article/child-b/grand-child-b',
+                    'parentSlug' => '/test-article/child-b',
+                ],
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test',
+                    'locale' => 'de',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test/child-a',
+                    'locale' => 'de',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test/child-b',
+                    'locale' => 'de',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test/child-b/grand-child-a',
+                    'locale' => 'de',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test/child-b/grand-child-b',
+                    'locale' => 'de',
+                    'parentSlug' => '/test/child-b',
+                ],
+            ],
+        ];
+
+        yield 'nested_childs_update_multiple_sites' => [
+            'routes' => [
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test',
+                    'site' => 'website',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test/child-a',
+                    'site' => 'website',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test/child-b',
+                    'site' => 'website',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test/child-b/grand-child-a',
+                    'site' => 'website',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test/child-b/grand-child-b',
+                    'site' => 'website',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test',
+                    'site' => 'intranet',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test/child-a',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test/child-b',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test/child-b/grand-child-a',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test/child-b/grand-child-b',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test/child-b',
+                ],
+            ],
+            'changeRoute' => '/test-article',
+            'expectedRoutes' => [
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test-article',
+                    'site' => 'website',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test-article/child-a',
+                    'site' => 'website',
+                    'parentSlug' => '/test-article',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test-article/child-b',
+                    'site' => 'website',
+                    'parentSlug' => '/test-article',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test-article/child-b/grand-child-a',
+                    'site' => 'website',
+                    'parentSlug' => '/test-article/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test-article/child-b/grand-child-b',
+                    'site' => 'website',
+                    'parentSlug' => '/test-article/child-b',
+                ],
+                [
+                    'resourceId' => '1',
+                    'slug' => '/test',
+                    'site' => 'intranet',
+                ],
+                [
+                    'resourceId' => '2',
+                    'slug' => '/test/child-a',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '3',
+                    'slug' => '/test/child-b',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test',
+                ],
+                [
+                    'resourceId' => '4',
+                    'slug' => '/test/child-b/grand-child-a',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test/child-b',
+                ],
+                [
+                    'resourceId' => '5',
+                    'slug' => '/test/child-b/grand-child-b',
+                    'site' => 'intranet',
+                    'parentSlug' => '/test/child-b',
+                ],
+            ],
+        ];
+
         // yield 'heavy_load' => static::generateNestedRoutes('/rezepte', '/rezepte-neu', 10, 100_000);
     }
 
@@ -346,9 +592,9 @@ class RouteChangedUpdaterTest extends KernelTestCase
         return new Route(
             'page',
             $route['resourceId'],
-            'en',
+            $route['locale'] ?? 'en',
             $route['slug'],
-            'website',
+            $route['site'] ?? null,
         );
     }
 }
