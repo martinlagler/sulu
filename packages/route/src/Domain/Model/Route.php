@@ -16,6 +16,9 @@ namespace Sulu\Route\Domain\Model;
  */
 class Route
 {
+    /** @internal */
+    public const HISTORY_RESOURCE_KEY = 'route_history';
+
     private ?int $id = null;
 
     private ?string $site;
