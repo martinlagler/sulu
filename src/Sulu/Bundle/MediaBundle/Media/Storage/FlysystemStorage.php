@@ -19,7 +19,7 @@ use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToReadFile;
 use League\Flysystem\Visibility;
 use Sulu\Bundle\MediaBundle\Media\Exception\FilenameAlreadyExistsException;
-use Sulu\Bundle\MediaBundle\Media\Exception\ImageProxyMediaNotFoundException;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 /** @phpstan-import-type StorageOptions from StorageInterface */
 class FlysystemStorage implements StorageInterface
@@ -70,7 +70,7 @@ class FlysystemStorage implements StorageInterface
         try {
             return $this->filesystem->readStream($filePath);
         } catch (UnableToReadFile) {
-            throw new ImageProxyMediaNotFoundException(\sprintf('Original media at path "%s" not found', $filePath));
+            throw new IOException(\sprintf('Failed to open file with path "%s"', $filePath), path: $filePath);
         }
     }
 

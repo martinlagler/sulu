@@ -22711,7 +22711,7 @@ parameters:
 			path: src/Sulu/Bundle/DocumentManagerBundle/DependencyInjection/Compiler/RegisterListenersPass.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\DocumentManagerBundle\\DependencyInjection\\Compiler\\ExtractingEventDispatcher\:\:getSubscribedEvents\(\) should return array\<string, array\<int\|string, array\<int\|string, int\|string\>\|int\|string\>\|string\> but returns array\.$#'
+			message: '#^Method Sulu\\Bundle\\DocumentManagerBundle\\DependencyInjection\\Compiler\\ExtractingEventDispatcher\:\:getSubscribedEvents\(\) should return array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\> but returns array\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Sulu/Bundle/DocumentManagerBundle/DependencyInjection/Compiler/RegisterListenersPass.php
@@ -25058,12 +25058,6 @@ parameters:
 
 		-
 			message: '#^Method Sulu\\Bundle\\MediaBundle\\Api\\Media\:\:getPublishLanguages\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Api/Media.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\MediaBundle\\Api\\Media\:\:getStorageOptions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Bundle/MediaBundle/Api/Media.php
@@ -28831,12 +28825,6 @@ parameters:
 			path: src/Sulu/Bundle/MediaBundle/Media/FormatManager/FormatManager.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Media\\FormatManager\\FormatManager\:\:\$supportedImageFormats is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Media/FormatManager/FormatManager.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\MediaBundle\\Media\\FormatManager\\FormatManagerInterface\:\:getFormats\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -31989,7 +31977,7 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$uri of method Symfony\\Component\\BrowserKit\\AbstractBrowser\<Symfony\\Component\\HttpFoundation\\Request,Symfony\\Component\\HttpFoundation\\Response\>\:\:request\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 5
+			count: 6
 			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/MediaStreamControllerTest.php
 
 		-

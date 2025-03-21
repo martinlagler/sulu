@@ -513,7 +513,7 @@ class Media extends ApiWrapper
     }
 
     /**
-     * @return array
+     * @return array<string, string|null>
      */
     #[VirtualProperty]
     #[SerializedName('storageOptions')]
