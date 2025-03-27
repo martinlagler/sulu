@@ -23515,12 +23515,6 @@ parameters:
 			path: src/Sulu/Bundle/HttpCacheBundle/EventSubscriber/InvalidationSubscriber.php
 
 		-
-			message: '#^Parameter \#1 \$webspaceKey of method Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyPoolInterface\:\:getStrategyByWebspaceKey\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/HttpCacheBundle/EventSubscriber/InvalidationSubscriber.php
-
-		-
 			message: '#^Parameter \#2 \$id of method Sulu\\Bundle\\HttpCacheBundle\\Cache\\CacheManager\:\:invalidateReference\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 2
@@ -23540,24 +23534,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \$structure of method Sulu\\Component\\Content\\Compat\\StructureManagerInterface\:\:wrapStructure\(\) expects Sulu\\Component\\Content\\Metadata\\StructureMetadata, Sulu\\Component\\Content\\Metadata\\StructureMetadata\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/HttpCacheBundle/EventSubscriber/InvalidationSubscriber.php
-
-		-
-			message: '#^Parameter \#2 \$webspaceKey of method Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyInterface\:\:loadByContentUuid\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/HttpCacheBundle/EventSubscriber/InvalidationSubscriber.php
-
-		-
-			message: '#^Parameter \#2 \$webspaceKey of method Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyInterface\:\:loadHistoryByContentUuid\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/HttpCacheBundle/EventSubscriber/InvalidationSubscriber.php
-
-		-
-			message: '#^Parameter \#3 \$webspace of method Sulu\\Bundle\\HttpCacheBundle\\EventSubscriber\\InvalidationSubscriber\:\:findUrlsByResourceLocator\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/HttpCacheBundle/EventSubscriber/InvalidationSubscriber.php
@@ -37117,12 +37093,6 @@ parameters:
 			path: src/Sulu/Bundle/PageBundle/DependencyInjection/SuluPageExtension.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:getNavigationContexts\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:getPermissions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -37131,12 +37101,6 @@ parameters:
 		-
 			message: '#^Method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:getPublished\(\) should return DateTime\|null but returns bool\.$#'
 			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:getWebspaceName\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
 
@@ -37167,12 +37131,6 @@ parameters:
 		-
 			message: '#^Method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:setNavigationContexts\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:setNavigationContexts\(\) has parameter \$navigationContexts with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
 
@@ -37262,12 +37220,6 @@ parameters:
 
 		-
 			message: '#^Property Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:\$children \(Sulu\\Component\\DocumentManager\\Collection\\ChildrenCollection\) does not accept ArrayIterator\<\*NEVER\*, \*NEVER\*\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:\$navigationContexts \(array\<string\>\) does not accept array\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Document/BasePageDocument.php
@@ -37453,90 +37405,6 @@ parameters:
 			path: src/Sulu/Bundle/PageBundle/DocumentManager/ContentInitializer.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageChildrenReorderedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageChildrenReorderedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageCopiedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageCopiedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageCreatedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageCreatedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageDraftRemovedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageDraftRemovedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageModifiedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageModifiedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageMovedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageMovedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PagePublishedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PagePublishedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageRestoredEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageRestoredEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageTranslationAddedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageTranslationAddedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageTranslationCopiedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageTranslationCopiedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageTranslationRemovedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageTranslationRemovedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageTranslationRestoredEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageTranslationRestoredEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageUnpublishedEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageUnpublishedEvent.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageVersionRestoredEvent\:\:getResourceWebspaceKey\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Domain/Event/PageVersionRestoredEvent.php
-
-		-
 			message: '#^Cannot access offset ''locale'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -37598,18 +37466,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \$sourcePageId of class Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageCopiedEvent constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/EventListener/DomainEventSubscriber.php
-
-		-
-			message: '#^Parameter \#2 \$webspaceKey of class Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageRemovedEvent constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/EventListener/DomainEventSubscriber.php
-
-		-
-			message: '#^Parameter \#2 \$webspaceKey of class Sulu\\Bundle\\PageBundle\\Domain\\Event\\PageRouteRemovedEvent constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/EventListener/DomainEventSubscriber.php
@@ -38075,12 +37931,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Preview/PageRouteDefaultsProvider.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Reference\\Provider\\PageReferenceProvider\:\:getReferenceRouterAttributes\(\) should return array\<string, string\> but returns array\<string, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Reference/Provider/PageReferenceProvider.php
 
 		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
@@ -41006,12 +40856,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$permissions of method Sulu\\Bundle\\PageBundle\\Document\\BasePageDocument\:\:setPermissions\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Trash/PageTrashItemHandler.php
-
-		-
-			message: '#^Parameter \#1 \$webspaceKey of static method Sulu\\Bundle\\PageBundle\\Admin\\PageAdmin\:\:getPageSecurityContext\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Trash/PageTrashItemHandler.php
@@ -45821,12 +45665,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: src/Sulu/Bundle/SecurityBundle/Security/Exception/UsernameNotUniqueException.php
-
-		-
-			message: '#^Binary operation "\." between ''sulu\.webspaces\.'' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Sulu/Bundle/SecurityBundle/Serializer/Subscriber/SecuritySubscriber.php
 
 		-
 			message: '#^Method Sulu\\Bundle\\SecurityBundle\\Serializer\\Subscriber\\SecuritySubscriber\:\:getSubscribedEvents\(\) return type has no value type specified in iterable type array\.$#'
@@ -51973,12 +51811,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/EventListener/RouterListener.php
 
 		-
-			message: '#^Binary operation "\." between ''sulu\.webspaces\.'' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/EventListener/SecurityListener.php
-
-		-
 			message: '#^Cannot call method hasWebsiteSecurity\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -53006,12 +52838,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#3 \$languageCode of method Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyInterface\:\:loadByResourceLocator\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Routing/ContentRouteProvider.php
-
-		-
-			message: '#^Parameter \#4 \$webspaceKey of method Sulu\\Component\\Webspace\\Manager\\WebspaceManagerInterface\:\:findUrlByResourceLocator\(\) expects string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Routing/ContentRouteProvider.php
@@ -58525,20 +58351,8 @@ parameters:
 			path: src/Sulu/Component/Content/Document/Behavior/LocalizedAuthorBehavior.php
 
 		-
-			message: '#^Method Sulu\\Component\\Content\\Document\\Behavior\\NavigationContextBehavior\:\:getNavigationContexts\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Component/Content/Document/Behavior/NavigationContextBehavior.php
-
-		-
 			message: '#^Method Sulu\\Component\\Content\\Document\\Behavior\\NavigationContextBehavior\:\:setNavigationContexts\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Component/Content/Document/Behavior/NavigationContextBehavior.php
-
-		-
-			message: '#^Method Sulu\\Component\\Content\\Document\\Behavior\\NavigationContextBehavior\:\:setNavigationContexts\(\) has parameter \$navigationContexts with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Component/Content/Document/Behavior/NavigationContextBehavior.php
 
@@ -58619,12 +58433,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: src/Sulu/Component/Content/Document/Behavior/TargetBehavior.php
-
-		-
-			message: '#^Method Sulu\\Component\\Content\\Document\\Behavior\\WebspaceBehavior\:\:getWebspaceName\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Component/Content/Document/Behavior/WebspaceBehavior.php
 
 		-
 			message: '#^Method Sulu\\Component\\Content\\Document\\Behavior\\WorkflowStageBehavior\:\:setWorkflowStage\(\) has no return type specified\.$#'
@@ -59245,14 +59053,8 @@ parameters:
 			path: src/Sulu/Component/Content/Document/Subscriber/CopyLocaleSubscriber.php
 
 		-
-			message: '#^Parameter \#1 \$webspaceKey of method Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyPoolInterface\:\:getStrategyByWebspaceKey\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Content/Document/Subscriber/CopyLocaleSubscriber.php
-
-		-
-			message: '#^Parameter \#3 \$webspaceKey of method Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyInterface\:\:generate\(\) expects string, mixed given\.$#'
-			identifier: argument.type
+			message: '#^Strict comparison using \!\=\= between null and string will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Sulu/Component/Content/Document/Subscriber/CopyLocaleSubscriber.php
 
@@ -59618,12 +59420,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$history of method Sulu\\Component\\Content\\Document\\Behavior\\RouteBehavior\:\:setHistory\(\) expects bool, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Content/Document/Subscriber/RouteSubscriber.php
-
-		-
-			message: '#^Parameter \#1 \$webspaceKey of method Sulu\\Component\\PHPCR\\SessionManager\\SessionManagerInterface\:\:getRoutePath\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Component/Content/Document/Subscriber/RouteSubscriber.php
@@ -61048,12 +60844,6 @@ parameters:
 			message: '#^Parameter \#3 \$data of method Sulu\\Component\\Content\\Import\\WebspaceImport\:\:setDocumentSettings\(\) expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Sulu/Component/Content/Import/WebspaceImport.php
-
-		-
-			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/Sulu/Component/Content/Import/WebspaceImport.php
 
 		-
@@ -66453,7 +66243,7 @@ parameters:
 		-
 			message: '#^Cannot call method willReturn\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
 			identifier: method.nonObject
-			count: 20
+			count: 21
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
 
 		-
@@ -66472,12 +66262,6 @@ parameters:
 			message: '#^Cannot call method willReturn\(\) on array\|Prophecy\\Prophecy\\MethodProphecy\.$#'
 			identifier: method.nonObject
 			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
 
 		-
@@ -69224,12 +69008,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/CustomUrl/Manager/CustomUrlManager.php
-
-		-
-			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Component/CustomUrl/Manager/CustomUrlManager.php
