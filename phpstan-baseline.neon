@@ -23659,18 +23659,6 @@ parameters:
 			path: src/Sulu/Bundle/HttpCacheBundle/Tests/Unit/EventSubscriber/InvalidationSubscriberTest.php
 
 		-
-			message: '#^Cannot call method willReturn\(\) on array\|Prophecy\\Prophecy\\MethodProphecy\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: src/Sulu/Bundle/HttpCacheBundle/Tests/Unit/EventSubscriber/TagsSubscriberTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\HttpCacheBundle\\Tests\\Unit\\EventListener\\TagsSubscriberTest\:\:\$referenceStores with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Bundle/HttpCacheBundle/Tests/Unit/EventSubscriber/TagsSubscriberTest.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\LocationBundle\\Content\\Types\\LocationContentType\:\:read\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -33691,68 +33679,8 @@ parameters:
 			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/ImageConverter/Transformations/SharpenTransformationTest.php
 
 		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\HttpFoundation\\File\\UploadedFile\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with Sulu\\Bundle\\MediaBundle\\Api\\Media will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|Symfony\\Component\\Security\\Core\\User\\UserInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Cannot call method shouldNotBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|Symfony\\Component\\Security\\Core\\User\\UserInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on int\|Prophecy\\Prophecy\\MethodProphecy\|false\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$token contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$uploadedFile contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
 
@@ -33760,12 +33688,6 @@ parameters:
 			message: '#^Parameter \#1 \$locale of method Sulu\\Bundle\\MediaBundle\\Media\\Manager\\MediaManager\:\:get\(\) expects string, int given\.$#'
 			identifier: argument.type
 			count: 2
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
-
-		-
-			message: '#^Parameter \#1 \$uploadedFile of method Sulu\\Bundle\\MediaBundle\\Media\\Manager\\MediaManager\:\:save\(\) expects Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null, object given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/Manager/MediaManagerTest.php
 
 		-
@@ -54907,68 +54829,8 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtension\:\:sitemapFunction\(\) has parameter \$locale with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtension\:\:sitemapFunction\(\) has parameter \$webspaceKey with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtension\:\:sitemapUrlFunction\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtension\:\:sitemapUrlFunction\(\) has parameter \$locale with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtension\:\:sitemapUrlFunction\(\) has parameter \$url with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtension\:\:sitemapUrlFunction\(\) has parameter \$webspaceKey with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Parameter \#1 \$resourceLocator of method Sulu\\Component\\Webspace\\Manager\\WebspaceManagerInterface\:\:findUrlByResourceLocator\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Parameter \#1 \$webspaceKey of method Sulu\\Bundle\\WebsiteBundle\\Sitemap\\SitemapGeneratorInterface\:\:generate\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Parameter \#2 \$locale of method Sulu\\Bundle\\WebsiteBundle\\Sitemap\\SitemapGeneratorInterface\:\:generate\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Parameter \#3 \$languageCode of method Sulu\\Component\\Webspace\\Manager\\WebspaceManagerInterface\:\:findUrlByResourceLocator\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
-
-		-
-			message: '#^Parameter \#4 \$webspaceKey of method Sulu\\Component\\Webspace\\Manager\\WebspaceManagerInterface\:\:findUrlByResourceLocator\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtension.php
 
@@ -54991,38 +54853,8 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtensionInterface\:\:sitemapFunction\(\) has parameter \$locale with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtensionInterface\:\:sitemapFunction\(\) has parameter \$webspaceKey with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtensionInterface\:\:sitemapUrlFunction\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtensionInterface\:\:sitemapUrlFunction\(\) has parameter \$locale with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtensionInterface\:\:sitemapUrlFunction\(\) has parameter \$url with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Twig\\Sitemap\\SitemapTwigExtensionInterface\:\:sitemapUrlFunction\(\) has parameter \$webspaceKey with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Twig/Sitemap/SitemapTwigExtensionInterface.php
 
@@ -66175,195 +66007,9 @@ parameters:
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/BlameSubscriberTest.php
 
 		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\MethodProphecy\|Sulu\\Bundle\\RouteBundle\\Model\\RouteInterface\:\:willReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\MethodProphecy\|Sulu\\Component\\Content\\Document\\Structure\\PropertyValue\:\:willReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\MethodProphecy\|Sulu\\Component\\Content\\Document\\Structure\\StructureInterface\:\:willReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Bundle\\PageBundle\\Document\\PageDocument\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Document\\Structure\\StructureInterface\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyInterface\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\DocumentManager\\Event\\CopyLocaleEvent\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Route\\Document\\Behavior\\RoutableBehavior\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method object\:\:willReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 12
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
-			identifier: method.nonObject
-			count: 21
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on array\<array\<mixed\>\>\|Prophecy\\Prophecy\\MethodProphecy\|Sulu\\Component\\Content\\Document\\Extension\\ExtensionContainer\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on array\|Prophecy\\Prophecy\\MethodProphecy\.$#'
-			identifier: method.nonObject
-			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
 			message: '#^Missing call to parent\:\:setUp\(\) method\.$#'
 			identifier: phpunit.callParent
 			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$destDocument contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$destStructure contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$document contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$event contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$parentDocument contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$resourceLocatorStrategy contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$structure contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Bundle\\PageBundle\\Document\\PageDocument is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 10
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Document\\Structure\\StructureInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 9
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Types\\ResourceLocator\\Strategy\\ResourceLocatorStrategyInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\DocumentManager\\Event\\CopyLocaleEvent is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 8
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Route\\Document\\Behavior\\RoutableBehavior is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 7
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Parameter \#1 \$destDocument of method Sulu\\Component\\Content\\Document\\Subscriber\\CopyLocaleSubscriber\:\:checkPageTreeRoute\(\) expects Sulu\\Component\\Route\\Document\\Behavior\\RoutableBehavior, object given\.$#'
-			identifier: argument.type
-			count: 7
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Parameter \#1 \$event of method Sulu\\Component\\Content\\Document\\Subscriber\\CopyLocaleSubscriber\:\:handleCopyLocale\(\) expects Sulu\\Component\\DocumentManager\\Event\\CopyLocaleEvent, object given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Parameter \#1 \$extensions of method Prophecy\\Prophecy\\ObjectProphecy\<object\>\:\:setExtensionsData\(\) expects array\<array\<mixed\>\>\|Sulu\\Component\\Content\\Document\\Extension\\ExtensionContainer, array\<string, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
-
-		-
-			message: '#^Parameter \#2 \$document of method Sulu\\Component\\Content\\Document\\Subscriber\\CopyLocaleSubscriber\:\:checkPageTreeRoute\(\) expects Sulu\\Component\\Content\\Document\\Behavior\\StructureBehavior, object given\.$#'
-			identifier: argument.type
-			count: 7
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/CopyLocaleSubscriberTest.php
 
 		-
@@ -66451,24 +66097,6 @@ parameters:
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/RedirectTypeSubscriberTest.php
 
 		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Document\\Behavior\\ResourceSegmentBehavior\:\:getRedirectType\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Document\\Behavior\\ResourceSegmentBehavior\:\:getStructure\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Content\\Document\\Behavior\\ResourceSegmentBehavior\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 42
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
-
-		-
 			message: '#^Cannot call method getRedirectType\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 12
@@ -66489,13 +66117,7 @@ parameters:
 		-
 			message: '#^Cannot call method shouldBeCalled\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 9
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
-			identifier: method.nonObject
-			count: 1
+			count: 8
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
 
 		-
@@ -66507,12 +66129,6 @@ parameters:
 		-
 			message: '#^Method Sulu\\Component\\Content\\Tests\\Unit\\Document\\Subscriber\\ResourceSegmentSubscriberTest\:\:getDocumentMock\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
-
-		-
-			message: '#^Property Sulu\\Component\\Content\\Tests\\Unit\\Document\\Subscriber\\ResourceSegmentSubscriberTest\:\:\$document with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
-			identifier: missingType.generics
 			count: 1
 			path: src/Sulu/Component/Content/Tests/Unit/Document/Subscriber/ResourceSegmentSubscriberTest.php
 
@@ -67489,30 +67105,6 @@ parameters:
 			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/Orm/BaseDataProviderTest.php
 
 		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\MethodProphecy\|Sulu\\Bundle\\AdminBundle\\Metadata\\MetadataInterface\:\:shouldBeCalled\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Bundle\\AdminBundle\\Metadata\\FormMetadata\\FormMetadataProvider\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\Storage\\TokenStorageInterface\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Sulu\\\\Component\\\\Content\\\\Compat\\\\PropertyParameter'' and Sulu\\Component\\Content\\Compat\\PropertyParameter will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
 			count: 1
@@ -67540,24 +67132,6 @@ parameters:
 			message: '#^Cannot call method initializeProxy\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 10
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|Symfony\\Component\\Security\\Core\\User\\UserInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
-			identifier: method.nonObject
-			count: 1
 			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
 
 		-
@@ -67606,66 +67180,6 @@ parameters:
 			message: '#^Offset 1 might not exist on array\<Sulu\\Component\\Content\\Compat\\PropertyParameter\>\|null\.$#'
 			identifier: offsetAccess.notFound
 			count: 2
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$formMetadataProvider contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$token contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$tokenStorage contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$user contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Bundle\\AdminBundle\\Metadata\\FormMetadata\\FormMetadataProvider is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Sulu\\Component\\Security\\Authentication\\UserInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\Storage\\TokenStorageInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Parameter \#10 \$formMetadataProvider of class Sulu\\Component\\Content\\SmartContent\\PageDataProvider constructor expects Sulu\\Bundle\\AdminBundle\\Metadata\\MetadataProviderInterface\|null, object given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
-
-		-
-			message: '#^Parameter \#11 \$tokenStorage of class Sulu\\Component\\Content\\SmartContent\\PageDataProvider constructor expects Symfony\\Component\\Security\\Core\\Authentication\\Token\\Storage\\TokenStorageInterface\|null, object given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Sulu/Component/Content/Tests/Unit/SmartContent/PageDataProviderTest.php
 
 		-
@@ -74311,30 +73825,6 @@ parameters:
 			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
 
 		-
-			message: '#^Call to an undefined method Doctrine\\ORM\\EntityManagerInterface\|Prophecy\\Prophecy\\ObjectProphecy\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Call to an undefined method Doctrine\\ORM\\EntityRepository\<Sulu\\Bundle\\MediaBundle\\Entity\\MediaType\>\:\:shouldBeCalled\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\|Prophecy\\Prophecy\\ObjectProphecy\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Contracts\\Translation\\TranslatorInterface\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Sulu\\\\Component\\\\SmartContent\\\\Configuration\\\\ProviderConfigurationInterface'' and Sulu\\Component\\SmartContent\\Configuration\\ProviderConfigurationInterface will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
 			count: 2
@@ -74366,24 +73856,6 @@ parameters:
 
 		-
 			message: '#^Cannot call method getName\(\) on string\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on array\<int, object\>\|Prophecy\\Prophecy\\MethodProphecy\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
 			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
@@ -74545,44 +74017,8 @@ parameters:
 			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
 
 		-
-			message: '#^PHPDoc tag @var for variable \$entityManager contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$mediaTypeRepository contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
 			message: '#^PHPDoc tag @var for variable \$mediaTypeRepository contains generic interface Doctrine\\Persistence\\ObjectRepository but does not specify its types\: TEntityClass$#'
 			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$translator contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\ORM\\EntityManagerInterface\|Prophecy\\Prophecy\\ObjectProphecy is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\Persistence\\ObjectRepository\|Prophecy\\Prophecy\\ObjectProphecy is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Prophecy\\Prophecy\\ObjectProphecy\|Symfony\\Contracts\\Translation\\TranslatorInterface is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
 
@@ -74618,18 +74054,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$title of method Sulu\\Bundle\\MediaBundle\\Entity\\FileVersionMeta\:\:setTitle\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Parameter \#10 \$entityManager of class Sulu\\Component\\Media\\SmartContent\\MediaDataProvider constructor expects Doctrine\\ORM\\EntityManagerInterface\|null, object given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
-
-		-
-			message: '#^Parameter \#11 \$translator of class Sulu\\Component\\Media\\SmartContent\\MediaDataProvider constructor expects Symfony\\Contracts\\Translation\\TranslatorInterface\|null, object given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Component/Media/Tests/Unit/SmartContent/MediaDataProviderTest.php
@@ -75485,42 +74909,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Sulu/Component/Persistence/EventSubscriber/ORM/UserBlameSubscriber.php
-
-		-
-			message: '#^Call to an undefined method Doctrine\\Persistence\\Mapping\\Driver\\MappingDriver\|Prophecy\\Prophecy\\ObjectProphecy\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Component/Persistence/Tests/Unit/EventSubscriber/ORM/MetadataSubscriberTest.php
-
-		-
-			message: '#^Cannot call method shouldNotBeCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Persistence/Tests/Unit/EventSubscriber/ORM/MetadataSubscriberTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on list\<class\-string\>\|Prophecy\\Prophecy\\MethodProphecy\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sulu/Component/Persistence/Tests/Unit/EventSubscriber/ORM/MetadataSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$mappingDriver contains generic class Prophecy\\Prophecy\\ObjectProphecy but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Sulu/Component/Persistence/Tests/Unit/EventSubscriber/ORM/MetadataSubscriberTest.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\Persistence\\Mapping\\Driver\\MappingDriver\|Prophecy\\Prophecy\\ObjectProphecy is not subtype of native type Prophecy\\Prophecy\\ObjectProphecy\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/Sulu/Component/Persistence/Tests/Unit/EventSubscriber/ORM/MetadataSubscriberTest.php
-
-		-
-			message: '#^Parameter \#2 \$metadata of method Doctrine\\Persistence\\Mapping\\Driver\\MappingDriver\:\:loadMetadataForClass\(\) expects Doctrine\\Persistence\\Mapping\\ClassMetadata\<stdClass\>, Prophecy\\Argument\\Token\\TypeToken given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sulu/Component/Persistence/Tests/Unit/EventSubscriber/ORM/MetadataSubscriberTest.php
 
 		-
 			message: '#^Property Sulu\\Component\\Persistence\\Tests\\Unit\\EventSubscriber\\ORM\\MetadataSubscriberTest\:\:\$classMetadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T$#'
