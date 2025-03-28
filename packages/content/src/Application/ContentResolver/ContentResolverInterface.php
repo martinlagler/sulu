@@ -25,8 +25,8 @@ interface ContentResolverInterface
      *
      * @return array{
      *     resource: object,
-     *     content: mixed,
-     *     view: mixed[],
+     *     content: array<string, mixed>,
+     *     view: array<string, mixed>,
      *     extension: array<string, array<string, mixed>>,
      * }
      */

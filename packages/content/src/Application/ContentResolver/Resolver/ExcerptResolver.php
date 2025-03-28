@@ -30,10 +30,10 @@ readonly class ExcerptResolver implements ResolverInterface
     ) {
     }
 
-    public function resolve(DimensionContentInterface $dimensionContent): ContentView
+    public function resolve(DimensionContentInterface $dimensionContent): ?ContentView
     {
         if (!$dimensionContent instanceof ExcerptInterface) {
-            throw new \RuntimeException('DimensionContent needs to extend the ' . ExcerptInterface::class);
+            return null;
         }
 
         /** @var string $locale */

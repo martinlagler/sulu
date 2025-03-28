@@ -24,5 +24,5 @@ interface ResolverInterface
      *
      * @param DimensionContentInterface<T> $dimensionContent
      */
-    public function resolve(DimensionContentInterface $dimensionContent): ContentView;
+    public function resolve(DimensionContentInterface $dimensionContent): ?ContentView;
 }

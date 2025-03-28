@@ -28,10 +28,10 @@ readonly class TemplateResolver implements ResolverInterface
     ) {
     }
 
-    public function resolve(DimensionContentInterface $dimensionContent): ContentView
+    public function resolve(DimensionContentInterface $dimensionContent): ?ContentView
     {
         if (!$dimensionContent instanceof TemplateInterface) {
-            throw new \RuntimeException('DimensionContent needs to extend the ' . TemplateInterface::class);
+            return null;
         }
 
         /** @var string $locale */

@@ -28,10 +28,10 @@ readonly class SeoResolver implements ResolverInterface
     ) {
     }
 
-    public function resolve(DimensionContentInterface $dimensionContent): ContentView
+    public function resolve(DimensionContentInterface $dimensionContent): ?ContentView
     {
         if (!$dimensionContent instanceof SeoInterface) {
-            throw new \RuntimeException('DimensionContent needs to extend the ' . SeoInterface::class);
+            return null;
         }
 
         /** @var string $locale */
