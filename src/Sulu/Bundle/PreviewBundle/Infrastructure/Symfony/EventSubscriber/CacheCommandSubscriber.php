@@ -20,6 +20,9 @@ use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * @internal No BC promises are given for this class. It may be changed or removed at any time.
+ */
 class CacheCommandSubscriber implements EventSubscriberInterface
 {
     /**
@@ -27,7 +30,7 @@ class CacheCommandSubscriber implements EventSubscriberInterface
      */
     private $application;
 
-    public function __construct(private KernelFactoryInterface $kernelFactory, private string $environment)
+    public function __construct(private KernelFactoryInterface $kernelFactory)
     {
     }
 
@@ -66,7 +69,7 @@ class CacheCommandSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $previewKernel = $this->kernelFactory->create($this->environment);
+        $previewKernel = $this->kernelFactory->create();
 
         $application = $this->application ?: new Application($previewKernel);
         $application->setAutoExit(false);

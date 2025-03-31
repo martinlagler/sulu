@@ -15,15 +15,15 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Creates new Kernels foreach preview request.
+ *
+ * @internal No BC promises are given for this class. It may be changed or removed at any time.
  */
 interface KernelFactoryInterface
 {
     /**
      * Create new kernel for a single preview master-request.
      *
-     * @param string $environment
-     *
      * @return KernelInterface
      */
-    public function create($environment);
+    public function create();
 }

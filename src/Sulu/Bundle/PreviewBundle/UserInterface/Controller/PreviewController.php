@@ -11,7 +11,7 @@
 
 namespace Sulu\Bundle\PreviewBundle\UserInterface\Controller;
 
-use Sulu\Bundle\PreviewBundle\Preview\PreviewInterface;
+use Sulu\Bundle\PreviewBundle\Preview\Preview;
 use Sulu\Component\Rest\RequestParametersTrait;
 use Sulu\Component\Security\Authentication\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,12 +21,15 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @internal No BC promises are given for this class. It may be changed or removed at any time.
+ */
 class PreviewController
 {
     use RequestParametersTrait;
 
     public function __construct(
-        private PreviewInterface $preview,
+        private Preview $preview,
         private TokenStorageInterface $tokenStorage,
         private ?Profiler $profiler = null,
     ) {
