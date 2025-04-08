@@ -516,7 +516,7 @@ class PageTreeRouteContentTypeTest extends TestCase
                 'path' => ['type' => 'string'],
                 'suffix' => ['type' => 'string'],
             ],
-            'required' => ['page', 'path'],
+            'required' => ['page'],
         ], $jsonSchema);
     }
 }
