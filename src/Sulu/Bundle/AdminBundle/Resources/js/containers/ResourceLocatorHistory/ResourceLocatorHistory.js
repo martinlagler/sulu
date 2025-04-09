@@ -3,7 +3,6 @@ import React, {Fragment} from 'react';
 import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import {translate} from '../../utils/Translator';
-import Button from '../../components/Button';
 import Dialog from '../../components/Dialog';
 import Loader from '../../components/Loader';
 import Overlay from '../../components/Overlay';
@@ -66,16 +65,16 @@ class ResourceLocatorHistory extends React.Component<Props> {
     };
 
     render() {
-        const {resourceListStore, props} = this;
-        const {id} = props;
+        const {resourceListStore} = this;
 
         const historyRoutes = resourceListStore ? resourceListStore.data : [];
 
         return (
             <Fragment>
-                <Button disabled={!id} icon="su-process" onClick={this.handleButtonClick} skin="link">
-                    {translate('sulu_admin.show_history')}
-                </Button>
+                {/* TODO Sulu 3.0 does not yet support the Show History controller therefore we disable the button */}
+                {/*<Button disabled={!id} icon="su-process" onClick={this.handleButtonClick} skin="link">*/}
+                {/*    {translate('sulu_admin.show_history')}*/}
+                {/*</Button>*/}
                 <Overlay
                     confirmText={translate('sulu_admin.ok')}
                     onClose={this.handleOverlayClose}
