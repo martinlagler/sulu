@@ -103,6 +103,21 @@ rerun, the existing already migrated content will be overwritten and not duplica
 If everything is done and the migration is successful, you can log in to the Sulu admin interface, set the permissions
 for the articles and snippets and check if everything is working as expected.
 
+### Page, CustomUrl, Snippet JS includes path changed
+
+The paths to the page, custom url and snippet bundle has changed so its JS package
+paths need also be changed. This step is normally automatically done by `bin/console sulu:admin:update-build` command,
+kept here for completness:
+
+```diff
+-        "sulu-custom-url-bundle": "file:../../vendor/sulu/sulu/src/Sulu/Bundle/CustomUrlBundle/Resources/js",
++        "sulu-custom-url-bundle": "file:../../vendor/sulu/sulu/packages/custom-url/assets/js",
+-        "sulu-page-bundle": "file:../../vendor/sulu/sulu/src/Sulu/Bundle/PageBundle/Resources/js",
++        "sulu-page-bundle": "file:../../vendor/sulu/sulu/packages/page/assets/js",
+-        "sulu-snippet-bundle": "file:../../vendor/sulu/sulu/src/Sulu/Bundle/SnippetBundle/Resources/js",
++        "sulu-snippet-bundle": "file:../../vendor/sulu/sulu/packages/snippet/assets/js",
+```
+
 ### Removing deprecated twig functions
 
 - `sulu_meta_alternate` (use the SEO template instead `@SuluWebsite/Extension/seo.html.twig`)
