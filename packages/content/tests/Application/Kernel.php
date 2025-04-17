@@ -15,10 +15,12 @@ namespace Sulu\Content\Tests\Application;
 
 use Sulu\Bundle\AudienceTargetingBundle\SuluAudienceTargetingBundle;
 use Sulu\Bundle\AutomationBundle\SuluAutomationBundle;
+use Sulu\Bundle\SnippetBundle\SuluSnippetBundle as DeprecatedSuluSnippetBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Content\Infrastructure\Symfony\HttpKernel\SuluContentBundle;
 use Sulu\Content\Tests\Application\ExampleTestBundle\ExampleTestBundle;
 use Sulu\Page\Infrastructure\Symfony\HttpKernel\SuluPageBundle;
+use Sulu\Snippet\Infrastructure\Symfony\HttpKernel\SuluSnippetBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Task\TaskBundle\TaskBundle;
 
@@ -32,13 +34,16 @@ class Kernel extends SuluTestKernel
         $bundles[] = new SuluAutomationBundle();
         $bundles[] = new SuluPageBundle();
         $bundles[] = new ExampleTestBundle();
+        $bundles[] = new SuluSnippetBundle();
 
         foreach ($bundles as $key => $bundle) {
             // Audience Targeting is not configured and so should not be here
-            if ($bundle instanceof SuluAudienceTargetingBundle) {
+            // remove deprecated SuluSnippetBundle to avoid conflicts
+            if (
+                $bundle instanceof SuluAudienceTargetingBundle
+                || $bundle instanceof DeprecatedSuluSnippetBundle
+            ) {
                 unset($bundles[$key]);
-
-                break;
             }
         }
 
