@@ -38,11 +38,6 @@ class RoleControllerTest extends SuluTestCase
     private $role2;
 
     /**
-     * @var Role
-     */
-    private $role3;
-
-    /**
      * @var Permission
      */
     private $permission1;
@@ -87,7 +82,6 @@ class RoleControllerTest extends SuluTestCase
         $role3->setSystem('Website');
         $role3->setAnonymous(true);
         $this->em->persist($role3);
-        $this->role3 = $role3;
 
         $permission1 = new Permission();
         $permission1->setRole($role1);

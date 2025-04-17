@@ -211,6 +211,12 @@ parameters:
 			path: src/Sulu/Bundle/ActivityBundle/Domain/Repository/NullActivityRepository.php
 
 		-
+			message: '#^Call to function method_exists\(\) with Doctrine\\DBAL\\Query\\QueryBuilder and ''executeStatement'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Sulu/Bundle/ActivityBundle/Infrastructure/Doctrine/Repository/ActivityRepository.php
+
+		-
 			message: '#^Parameter \#2 \$value of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:setValue\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -7669,6 +7675,12 @@ parameters:
 			path: src/Sulu/Bundle/CategoryBundle/Command/RecoverCommand.php
 
 		-
+			message: '#^Call to function method_exists\(\) with Doctrine\\DBAL\\Statement and ''executeStatement'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Sulu/Bundle/CategoryBundle/Command/RecoverCommand.php
+
+		-
 			message: '#^Cannot call method execute\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -12430,6 +12442,12 @@ parameters:
 			message: '#^Call to an undefined method Sulu\\Bundle\\ContactBundle\\Entity\\AccountRepositoryInterface\:\:createQueryBuilder\(\)\.$#'
 			identifier: method.notFound
 			count: 3
+			path: src/Sulu/Bundle/ContactBundle/Command/AccountRecoverCommand.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Doctrine\\DBAL\\Statement and ''executeStatement'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
 			path: src/Sulu/Bundle/ContactBundle/Command/AccountRecoverCommand.php
 
 		-
@@ -18295,13 +18313,13 @@ parameters:
 			path: src/Sulu/Bundle/ContactBundle/Tests/Functional/Controller/AdminControllerTest.php
 
 		-
-			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, array\|ArrayAccess given\.$#'
+			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 3
 			path: src/Sulu/Bundle/ContactBundle/Tests/Functional/Controller/AdminControllerTest.php
 
 		-
-			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, mixed given\.$#'
+			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, non\-empty\-array\|ArrayAccess given\.$#'
 			identifier: argument.type
 			count: 3
 			path: src/Sulu/Bundle/ContactBundle/Tests/Functional/Controller/AdminControllerTest.php
@@ -30865,12 +30883,6 @@ parameters:
 			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/CollectionControllerTest.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Controller\\CollectionControllerTest\:\:\$roleRepository is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/CollectionControllerTest.php
-
-		-
 			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Controller\\CollectionControllerTest\:\:\$systemCollectionCache \(Sulu\\Component\\Cache\\CacheInterface\) does not accept object\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -30933,12 +30945,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/FormatControllerTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Controller\\FormatControllerTest\:\:\$formatOptions is unused\.$#'
-			identifier: property.unused
 			count: 1
 			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/FormatControllerTest.php
 
@@ -32059,18 +32065,6 @@ parameters:
 			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/MediaWebsiteControllerTest.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Controller\\MediaWebsiteControllerTest\:\:\$category is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/MediaWebsiteControllerTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Controller\\MediaWebsiteControllerTest\:\:\$category2 is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Controller/MediaWebsiteControllerTest.php
-
-		-
 			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Controller\\MediaWebsiteControllerTest\:\:\$em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -32911,12 +32905,6 @@ parameters:
 			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Entity/MediaRepositoryTest.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Entity\\MediaRepositoryTest\:\:\$collections is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Functional/Entity/MediaRepositoryTest.php
-
-		-
 			message: '#^Property Sulu\\Bundle\\MediaBundle\\Tests\\Functional\\Entity\\MediaRepositoryTest\:\:\$em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -33693,18 +33681,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$mediaTypes of class Sulu\\Bundle\\MediaBundle\\Media\\TypeManager\\TypeManager constructor expects array, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/TypeManager/TypeManagerTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Media\\TypeManager\\TypeManagerTest\:\:\$em is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/TypeManager/TypeManagerTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\MediaBundle\\Media\\TypeManager\\TypeManagerTest\:\:\$em with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
-			identifier: missingType.generics
 			count: 1
 			path: src/Sulu/Bundle/MediaBundle/Tests/Unit/Media/TypeManager/TypeManagerTest.php
 
@@ -42595,18 +42571,6 @@ parameters:
 			path: src/Sulu/Bundle/RouteBundle/Tests/Functional/Entity/RouteRepositoryTest.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\RouteBundle\\Tests\\Functional\\Controller\\RouteRepositoryTest\:\:\$route \(Sulu\\Bundle\\RouteBundle\\Entity\\Route\) does not accept Sulu\\Bundle\\RouteBundle\\Model\\RouteInterface\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Sulu/Bundle/RouteBundle/Tests/Functional/Entity/RouteRepositoryTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\RouteBundle\\Tests\\Functional\\Controller\\RouteRepositoryTest\:\:\$route is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/Sulu/Bundle/RouteBundle/Tests/Functional/Entity/RouteRepositoryTest.php
-
-		-
 			message: '#^Cannot access offset ''schema'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -45835,12 +45799,6 @@ parameters:
 			path: src/Sulu/Bundle/SecurityBundle/Tests/Functional/Controller/RoleControllerTest.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\SecurityBundle\\Tests\\Functional\\Controller\\RoleControllerTest\:\:\$role3 is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/Sulu/Bundle/SecurityBundle/Tests/Functional/Controller/RoleControllerTest.php
-
-		-
 			message: '#^Unable to resolve the template type T in call to method static method Sulu\\Component\\Util\\SortUtils\:\:multisort\(\)$#'
 			identifier: argument.templateType
 			count: 2
@@ -46072,12 +46030,6 @@ parameters:
 			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 4
-			path: src/Sulu/Bundle/SecurityBundle/Tests/Functional/Controller/UserControllerTest.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\SecurityBundle\\Tests\\Functional\\Controller\\UserControllerTest\:\:\$contact3 is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
 			path: src/Sulu/Bundle/SecurityBundle/Tests/Functional/Controller/UserControllerTest.php
 
 		-
@@ -46551,12 +46503,6 @@ parameters:
 		-
 			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Bundle/SecurityBundle/User/UserProvider.php
-
-		-
-			message: '#^Class Sulu\\Bundle\\SecurityBundle\\User\\UserProvider implements generic interface Symfony\\Component\\Security\\Core\\User\\PasswordUpgraderInterface but does not specify its types\: TUser$#'
-			identifier: missingType.generics
 			count: 1
 			path: src/Sulu/Bundle/SecurityBundle/User/UserProvider.php
 
