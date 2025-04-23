@@ -12,6 +12,7 @@
 namespace Sulu\Content\Infrastructure\Symfony\HttpKernel\Compiler;
 
 use Sulu\Content\Application\ResourceLoader\Loader\CachedResourceLoader;
+use Sulu\Content\Application\ResourceLoader\Loader\ResourceLoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -38,6 +39,13 @@ class ResourceLoaderCacheCompilerPass implements CompilerPassInterface
                 ->addTag('kernel.reset', ['method' => 'reset'])
                 ->setPublic(false);
 
+            $key = null;
+            $class = $decoratedService->getClass();
+
+            if (null !== $class && \is_subclass_of($class, ResourceLoaderInterface::class)) {
+                $key = $class::getKey();
+            }
+
             $decoratorService = $container->getDefinition($decoratorId);
 
             // Copy all tags from the original service to the decorator to prevent tag loss during service decoration
@@ -47,6 +55,10 @@ class ResourceLoaderCacheCompilerPass implements CompilerPassInterface
                 if (\is_array($tagAttributes)) {
                     foreach ($tagAttributes as $attributes) {
                         if (\is_array($attributes)) {
+                            if ($key && !\array_key_exists('key', $attributes)) {
+                                $attributes['key'] = $key;
+                            }
+
                             $decoratorService->addTag($tagName, $attributes);
                         }
                     }
