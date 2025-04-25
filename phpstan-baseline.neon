@@ -34993,12 +34993,6 @@ parameters:
 			path: src/Sulu/Bundle/PageBundle/Content/PageSelectionContainer.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Content\\PageSelectionContainer\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Content/PageSelectionContainer.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\PageBundle\\Content\\PageSelectionContainer\:\:__construct\(\) has parameter \$ids with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -35079,12 +35073,6 @@ parameters:
 		-
 			message: '#^Property Sulu\\Bundle\\PageBundle\\Content\\PageSelectionContainer\:\:\$data \(array\<Sulu\\Component\\Content\\Compat\\StructureInterface\>\) does not accept mixed\.$#'
 			identifier: assign.propertyType
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Content/PageSelectionContainer.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\PageBundle\\Content\\PageSelectionContainer\:\:\$enabledTwigAttributes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Content/PageSelectionContainer.php
 
@@ -35471,12 +35459,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/PageBundle/Content/Types/Email.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\PageBundle\\Content\\Types\\PageSelection\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/PageBundle/Content/Types/PageSelection.php
 
 		-
 			message: '#^Method Sulu\\Bundle\\PageBundle\\Content\\Types\\PageSelection\:\:exportData\(\) should return string but returns string\|false\.$#'
@@ -49081,12 +49063,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/DependencyInjection/SuluWebsiteExtension.php
 
 		-
-			message: '#^Cannot access offset ''attributes'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/DependencyInjection/SuluWebsiteExtension.php
-
-		-
 			message: '#^Cannot access offset ''cache_lifetime'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
@@ -49167,7 +49143,7 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
 			identifier: argument.type
-			count: 8
+			count: 7
 			path: src/Sulu/Bundle/WebsiteBundle/DependencyInjection/SuluWebsiteExtension.php
 
 		-
@@ -49747,12 +49723,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Navigation/NavigationMapper.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationMapper\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Navigation/NavigationMapper.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationMapper\:\:__construct\(\) has parameter \$permissions with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -49900,12 +49870,6 @@ parameters:
 			message: '#^Parameter \#9 \$permission of method Sulu\\Component\\Content\\Query\\ContentQueryExecutorInterface\:\:execute\(\) expects int\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 2
-			path: src/Sulu/Bundle/WebsiteBundle/Navigation/NavigationMapper.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationMapper\:\:\$enabledTwigAttributes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Navigation/NavigationMapper.php
 
 		-
@@ -50119,12 +50083,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/ReferenceStore/ReferenceStoreInterface.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Resolver\\ParameterResolver\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/ParameterResolver.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Resolver\\ParameterResolver\:\:__construct\(\) has parameter \$segmentSwitchUrl with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -50151,12 +50109,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$array of function array_key_exists expects array, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/ParameterResolver.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\WebsiteBundle\\Resolver\\ParameterResolver\:\:\$enabledTwigAttributes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/ParameterResolver.php
 
@@ -50245,12 +50197,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/StructureResolver.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Resolver\\StructureResolver\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/StructureResolver.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Resolver\\StructureResolver\:\:resolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -50269,12 +50215,6 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/StructureResolver.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\WebsiteBundle\\Resolver\\StructureResolver\:\:\$enabledTwigAttributes \(bool\) does not accept array\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/StructureResolver.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Resolver\\StructureResolverInterface\:\:resolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -50283,17 +50223,11 @@ parameters:
 		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
-			count: 2
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
-
-		-
-			message: '#^Cannot access offset ''_locale'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
 
 		-
-			message: '#^Cannot access offset ''locale'' on mixed\.$#'
+			message: '#^Cannot access offset ''_locale'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
@@ -50305,21 +50239,9 @@ parameters:
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
 
 		-
-			message: '#^Cannot access offset ''url'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
-
-		-
 			message: '#^Cannot call method get\(\) on Symfony\\Component\\HttpFoundation\\Request\|null\.$#'
 			identifier: method.nonObject
 			count: 3
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Resolver\\TemplateAttributeResolver\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
 
 		-
@@ -50355,12 +50277,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$parameters of method Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface\:\:generate\(\) expects array, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\WebsiteBundle\\Resolver\\TemplateAttributeResolver\:\:\$enabledTwigAttributes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Resolver/TemplateAttributeResolver.php
 
@@ -51339,7 +51255,7 @@ parameters:
 		-
 			message: '#^Cannot access offset ''children'' on Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationItem\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 39
+			count: 37
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
 
 		-
@@ -51351,19 +51267,13 @@ parameters:
 		-
 			message: '#^Cannot access offset ''id'' on Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationItem\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 8
-			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
-
-		-
-			message: '#^Cannot access offset ''path'' on Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationItem\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 4
+			count: 6
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
 
 		-
 			message: '#^Cannot access offset ''title'' on Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationItem\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 17
+			count: 15
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
 
 		-
@@ -51375,7 +51285,7 @@ parameters:
 		-
 			message: '#^Cannot access offset ''url'' on Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationItem\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 32
+			count: 28
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
 
 		-
@@ -51441,13 +51351,7 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
 			identifier: argument.type
-			count: 24
-			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
-
-		-
-			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayNotHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, Sulu\\Bundle\\WebsiteBundle\\Navigation\\NavigationItem given\.$#'
-			identifier: argument.type
-			count: 4
+			count: 22
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Functional/Navigation/NavigationMapperTest.php
 
 		-
@@ -51915,18 +51819,12 @@ parameters:
 		-
 			message: '#^Cannot call method resolve\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 3
+			count: 2
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Unit/Resolver/TemplateAttributeResolverTest.php
 
 		-
 			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Tests\\Unit\\Resolver\\TemplateAttributeResolverTest\:\:createTemplateAttributeResolver\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Sulu/Bundle/WebsiteBundle/Tests/Unit/Resolver/TemplateAttributeResolverTest.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\WebsiteBundle\\Tests\\Unit\\Resolver\\TemplateAttributeResolverTest\:\:createTemplateAttributeResolver\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Sulu/Bundle/WebsiteBundle/Tests/Unit/Resolver/TemplateAttributeResolverTest.php
 
@@ -62704,12 +62602,6 @@ parameters:
 			message: '#^Cannot use array destructuring on mixed\.$#'
 			identifier: offsetAccess.nonArray
 			count: 2
-			path: src/Sulu/Component/Content/SmartContent/PageDataProvider.php
-
-		-
-			message: '#^Method Sulu\\Component\\Content\\SmartContent\\PageDataProvider\:\:__construct\(\) has parameter \$enabledTwigAttributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: src/Sulu/Component/Content/SmartContent/PageDataProvider.php
 
 		-
