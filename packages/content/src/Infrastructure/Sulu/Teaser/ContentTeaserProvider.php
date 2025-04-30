@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Sulu\Content\Infrastructure\Sulu\Teaser;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Sulu\Bundle\AdminBundle\Metadata\MetadataProviderRegistry;
 use Sulu\Bundle\PageBundle\Teaser\Provider\TeaserProviderInterface;
 use Sulu\Bundle\PageBundle\Teaser\Teaser;
-use Sulu\Component\Content\Metadata\Factory\StructureMetadataFactoryInterface;
 use Sulu\Content\Application\ContentManager\ContentManagerInterface;
 use Sulu\Content\Application\ContentMetadataInspector\ContentMetadataInspectorInterface;
 use Sulu\Content\Domain\Model\ContentRichEntityInterface;
@@ -55,9 +55,9 @@ abstract class ContentTeaserProvider implements TeaserProviderInterface
     private $contentMetadataInspector;
 
     /**
-     * @var StructureMetadataFactoryInterface
+     * @var MetadataProviderRegistry
      */
-    protected $metadataFactory;
+    protected $metadataProviderRegistry;
 
     /**
      * @var class-string<T>
@@ -77,14 +77,14 @@ abstract class ContentTeaserProvider implements TeaserProviderInterface
         ContentManagerInterface $contentManager,
         EntityManagerInterface $entityManager,
         ContentMetadataInspectorInterface $contentMetadataInspector,
-        StructureMetadataFactoryInterface $metadataFactory,
+        MetadataProviderRegistry $metadataProviderRegistry,
         string $contentRichEntityClass,
         bool $showDrafts
     ) {
         $this->contentManager = $contentManager;
         $this->entityManager = $entityManager;
         $this->contentMetadataInspector = $contentMetadataInspector;
-        $this->metadataFactory = $metadataFactory;
+        $this->metadataProviderRegistry = $metadataProviderRegistry;
         $this->contentRichEntityClass = $contentRichEntityClass;
         $this->showDrafts = $showDrafts;
     }
@@ -259,9 +259,9 @@ abstract class ContentTeaserProvider implements TeaserProviderInterface
         return $this->entityManager;
     }
 
-    protected function getStructureMetadataFactory(): StructureMetadataFactoryInterface
+    protected function getMetadataProviderRegistry(): MetadataProviderRegistry
     {
-        return $this->metadataFactory;
+        return $this->metadataProviderRegistry;
     }
 
     protected function getContentManager(): ContentManagerInterface
