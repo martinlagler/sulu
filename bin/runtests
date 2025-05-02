@@ -355,9 +355,18 @@ if ($target = $input->getOption('target')) {
     $bundles = get_bundles($target);
 }
 
+write_header('Bundle tests');
+$enableGrouping = getenv('CI_GROUP_OUTPUT') === 'true';
 foreach ($bundles as $bundle) {
+    if ($enableGrouping) {
+        echo "::group::". basename($bundle->getPath()). PHP_EOL;
+    }
     run_bundle_tests($bundle);
+    if ($enableGrouping) {
+        echo "::endgroup::\n";
+    }
 }
+echo "\n";
 
 if (false === $input->getOption('no-component-tests') || $input->getOption('all')) {
     write_header('Components');
