@@ -100,13 +100,14 @@ abstract class AbstractLoader implements LoaderInterface
     {
         $result = [];
 
-        foreach ($xpath->query($path) as $node) {
+        foreach ($xpath->query($path) ?: [] as $node) {
             $tag = [
                 'name' => null,
                 'attributes' => [],
             ];
 
-            foreach ($node->attributes as $key => $attr) {
+            /** @var \DOMAttr $attr */
+            foreach ($node->attributes ?? [] as $key => $attr) {
                 if (\in_array($key, ['name'])) {
                     $tag[$key] = $attr->value;
                 } else {
@@ -139,10 +140,11 @@ abstract class AbstractLoader implements LoaderInterface
     {
         $result = [];
 
-        foreach ($xpath->query($path) as $node) {
+        foreach ($xpath->query($path) ?: [] as $node) {
             $area = [];
 
-            foreach ($node->attributes as $key => $attr) {
+            /** @var \DOMAttr $attr */
+            foreach ($node->attributes ?? [] as $key => $attr) {
                 if (\in_array($key, ['key', 'cache-invalidation'])) {
                     $area[$key] = $attr->value;
                 } else {
@@ -172,12 +174,11 @@ abstract class AbstractLoader implements LoaderInterface
     {
         $result = [];
 
-        /** @var \DOMElement $node */
-        foreach ($xpath->query($path, $context) as $node) {
-            $attribute = $node->tagName;
+        foreach ($xpath->query($path, $context) ?: [] as $node) {
+            $attribute = $node->tagName; // @phpstan-ignore-line Recheck this
             $lang = $this->getValueFromXPath('@lang', $xpath, $node);
 
-            if (!isset($result[$node->tagName])) {
+            if (!isset($result[$node->tagName])) { // @phpstan-ignore-line Recheck this
                 $result[$attribute] = [];
             }
             $result[$attribute][$lang] = $node->textContent;
