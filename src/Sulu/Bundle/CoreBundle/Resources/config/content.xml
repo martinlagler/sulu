@@ -186,7 +186,7 @@
             <argument>%sulu.content.language.namespace%</argument>
             <argument type="service" id="sulu_core.webspace.request_analyzer" />
             <argument type="service" id="sulu_audience_targeting.target_group_store" on-invalid="null" />
-            <argument type="tagged" tag="sulu_content.block_visitor" />
+            <argument type="tagged" tag="sulu_content.deprecated_block_visitor" />
             <tag name="sulu.content.type" alias="block"/>
             <tag name="sulu.content.export" format="1.2.xliff" translate="false" />
         </service>
@@ -195,7 +195,7 @@
             id="sulu.content.type.block.hidden_visitor"
             class="Sulu\Component\Content\Types\Block\HiddenBlockVisitor"
         >
-            <tag name="sulu_content.block_visitor" />
+            <tag name="sulu_content.deprecated_block_visitor" />
         </service>
 
         <service
@@ -203,7 +203,7 @@
             class="Sulu\Component\Content\Types\Block\SegmentBlockVisitor"
         >
             <argument type="service" id="sulu_core.webspace.request_analyzer" />
-            <tag name="sulu_content.block_visitor" />
+            <tag name="sulu_content.deprecated_block_visitor" />
         </service>
 
         <service
@@ -212,7 +212,7 @@
         >
             <argument type="service" id="sulu_core.webspace.request_analyzer" />
             <argument type="service" id="sulu_http_cache.cache_lifetime.request_store" on-invalid="null" />
-            <tag name="sulu_content.block_visitor" />
+            <tag name="sulu_content.deprecated_block_visitor" />
         </service>
 
         <service

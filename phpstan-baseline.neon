@@ -55,6 +55,18 @@ parameters:
 			path: packages/article/src/Infrastructure/Symfony/HttpKernel/SuluArticleBundle.php
 
 		-
+			message: '#^Parameter \#1 \$datetime of class DateTime constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 4
+			path: packages/content/src/Application/PropertyResolver/BlockVisitor/ScheduleBlockVisitor.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: packages/content/src/Application/PropertyResolver/Resolver/BlockPropertyResolver.php
+
+		-
 			message: '#^Method Sulu\\Content\\Infrastructure\\Sulu\\SmartContent\\DataItem\\ContentDataItem\:\:getTitle\(\) should return string\|null but returns mixed\.$#'
 			identifier: return.type
 			count: 2
@@ -83,6 +95,36 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: packages/content/tests/Functional/Infrastructure/Sulu/SmartContent/ContentDataProviderTest.php
+
+		-
+			message: '#^Method Sulu\\Content\\Tests\\Unit\\Content\\Application\\PropertyResolver\\BlockVisitor\\ScheduleBlockVisitorTest\:\:provideVisit\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: packages/content/tests/Unit/Content/Application/PropertyResolver/BlockVisitor/ScheduleBlockVisitorTest.php
+
+		-
+			message: '#^Method Sulu\\Content\\Tests\\Unit\\Content\\Application\\PropertyResolver\\BlockVisitor\\ScheduleBlockVisitorTest\:\:testVisit\(\) has parameter \$settings with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: packages/content/tests/Unit/Content/Application/PropertyResolver/BlockVisitor/ScheduleBlockVisitorTest.php
+
+		-
+			message: '#^Cannot access offset non\-falsy\-string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/page/src/Infrastructure/Sulu/Content/PropertyResolver/BlockVisitor/SegmentBlockVisitor.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: packages/page/src/Infrastructure/Sulu/Content/PropertyResolver/BlockVisitor/SegmentBlockVisitor.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: packages/page/src/Infrastructure/Sulu/Content/PropertyResolver/BlockVisitor/SegmentBlockVisitor.php
 
 		-
 			message: '#^Call to function array_key_exists\(\) with ''model'' and array\{model\: class\-string, repository\?\: class\-string\} will always evaluate to true\.$#'
@@ -5621,6 +5663,12 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Sulu/Bundle/AudienceTargetingBundle/EventListener/TargetGroupSubscriber.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of function in_array expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Sulu/Bundle/AudienceTargetingBundle/Infrastructure/Sulu/Content/PropertyResolver/BlockVisitor/TargetGroupBlockVisitor.php
 
 		-
 			message: '#^Parameter \#1 \$uri of static method Symfony\\Component\\HttpFoundation\\Request\:\:create\(\) expects string, string\|null given\.$#'
