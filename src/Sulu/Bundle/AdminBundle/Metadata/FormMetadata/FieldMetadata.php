@@ -31,7 +31,7 @@ class FieldMetadata extends ItemMetadata
     /**
      * @var bool
      */
-    protected $required;
+    protected $required = false;
 
     /**
      * @var bool
@@ -61,7 +61,7 @@ class FieldMetadata extends ItemMetadata
     /**
      * @var TagMetadata[]
      */
-    protected $tags;
+    protected $tags = [];
 
     public function setType(string $type): void
     {
@@ -76,6 +76,11 @@ class FieldMetadata extends ItemMetadata
     public function addOption(OptionMetadata $option): void
     {
         $this->options[$option->getName()] = $option;
+    }
+
+    public function findOption(string $name): ?OptionMetadata
+    {
+        return $this->options[$name] ?? null;
     }
 
     public function getDefaultType(): ?string

@@ -12,11 +12,12 @@
 namespace Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Loader;
 
 use Sulu\Bundle\AdminBundle\Exception\InvalidRootTagException;
-use Sulu\Bundle\AdminBundle\FormMetadata\FormMetadata as ExternalFormMetadata;
-use Sulu\Bundle\AdminBundle\FormMetadata\FormMetadataMapper;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadata;
-use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\DeprecatedPropertiesXmlParser;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\PropertiesXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\SchemaXmlParser;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\TagXmlParser;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\SchemaMetadataProvider;
+use Sulu\Bundle\AdminBundle\Metadata\XmlParserTrait;
 use Sulu\Component\Content\Metadata\Loader\AbstractLoader;
 
 /**
@@ -26,14 +27,17 @@ use Sulu\Component\Content\Metadata\Loader\AbstractLoader;
  */
 class FormXmlLoader extends AbstractLoader
 {
+    use XmlParserTrait;
+
     public const SCHEMA_PATH = '/schema/form-1.0.xsd';
 
     public const SCHEMA_NAMESPACE_URI = 'http://schemas.sulu.io/template/template';
 
     public function __construct(
-        private DeprecatedPropertiesXmlParser $propertiesXmlParser,
+        private PropertiesXmlParser $propertiesXmlParser,
         private SchemaXmlParser $schemaXmlParser,
-        private FormMetadataMapper $formMetadataMapper
+        private TagXmlParser $tagXmlParser,
+        private SchemaMetadataProvider $schemaMetadataProvider,
     ) {
         parent::__construct(
             self::SCHEMA_PATH,
@@ -47,46 +51,34 @@ class FormXmlLoader extends AbstractLoader
             throw new InvalidRootTagException($resource, 'form');
         }
 
-        $form = new ExternalFormMetadata();
-        $form->setResource($resource);
-        $form->setKey($xpath->query('/x:form/x:key')->item(0)->nodeValue);
-        $form->setTags($this->loadStructureTags('/x:form/x:tag', $xpath));
+        $form = new FormMetadata();
+        $form->addResource($resource);
+        $formKey = $this->getValueFromXPath('/x:form/x:key', $xpath);
+        \assert(\is_string($formKey), 'Expected the form key of "' . $resource . '" to be defined.');
+        $form->setKey($formKey);
 
-        $propertiesNode = $xpath->query('/x:form/x:properties')->item(0);
+        $tagNodes = $xpath->query('/x:form/x:tag') ?: [];
+        $form->setTags($this->tagXmlParser->load($xpath, $tagNodes));
+
+        $propertiesNode = ($xpath->query('/x:form/x:properties') ?: null)?->item(0);
+        \assert(null !== $propertiesNode, 'Expected properties be defined for "' . $resource . '".');
         $properties = $this->propertiesXmlParser->load(
             $xpath,
             $propertiesNode,
             $form->getKey()
         );
 
+        $schema = $this->schemaMetadataProvider->getMetadata($properties);
         $schemaNode = $xpath->query('/x:form/x:schema')->item(0);
+
         if ($schemaNode) {
-            $form->setSchema($this->schemaXmlParser->load($xpath, $schemaNode));
+            $schema = $schema->merge($this->schemaXmlParser->load($xpath, $schemaNode));
         }
+        $form->setSchema($schema);
 
         foreach ($properties as $property) {
-            $form->addChild($property);
+            $form->addItem($property);
         }
-        $form->burnProperties();
-
-        return $this->mapFormsMetadata($form);
-    }
-
-    private function mapFormsMetadata(ExternalFormMetadata $formMetadata): FormMetadata
-    {
-        $form = new FormMetadata();
-        $form->addResource($formMetadata->getResource());
-        $form->setTags($this->formMetadataMapper->mapTags($formMetadata->getTags()));
-        $form->setItems($this->formMetadataMapper->mapChildren($formMetadata->getChildren()));
-
-        $schema = $this->formMetadataMapper->mapSchema($formMetadata->getProperties());
-        $xmlSchema = $formMetadata->getSchema();
-        if ($xmlSchema) {
-            $schema = $schema->merge($xmlSchema);
-        }
-
-        $form->setSchema($schema);
-        $form->setKey($formMetadata->getKey());
 
         return $form;
     }

@@ -12,12 +12,14 @@
 namespace Sulu\Bundle\AdminBundle\Tests\Unit\Metadata\FormMetadata;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\AdminBundle\FormMetadata\FormMetadataMapper;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\ItemMetadata;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\SchemaMetadataProvider;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\SectionMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\StructureFormMetadataLoader;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Validation\FieldMetadataValidatorInterface;
@@ -30,6 +32,9 @@ class StructureFormMetadataLoaderTest extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @var string
+     */
     public const CACHE_DIR = __DIR__ . '/../../../../../../../tests/Resources/cache';
 
     /**
@@ -41,6 +46,11 @@ class StructureFormMetadataLoaderTest extends TestCase
      * @var ObjectProphecy<FormMetadataMapper>
      */
     private $formMetadataMapper;
+
+    /**
+     * @var ObjectProphecy<SchemaMetadataProvider>
+     */
+    private $schemaMetadataProvider;
 
     /**
      * @var ObjectProphecy<WebspaceManagerInterface>
@@ -61,12 +71,14 @@ class StructureFormMetadataLoaderTest extends TestCase
     {
         $this->structureMetadataFactory = $this->prophesize(StructureMetadataFactoryInterface::class);
         $this->formMetadataMapper = $this->prophesize(FormMetadataMapper::class);
+        $this->schemaMetadataProvider = $this->prophesize(SchemaMetadataProvider::class);
         $this->webspaceManager = $this->prophesize(WebspaceManagerInterface::class);
         $this->fieldMetadataValidator = $this->prophesize(FieldMetadataValidatorInterface::class);
 
         $this->structureFormMetadataLoader = new StructureFormMetadataLoader(
             $this->structureMetadataFactory->reveal(),
             $this->formMetadataMapper->reveal(),
+            $this->schemaMetadataProvider->reveal(),
             $this->webspaceManager->reveal(),
             $this->fieldMetadataValidator->reveal(),
             [],
@@ -148,7 +160,7 @@ class StructureFormMetadataLoaderTest extends TestCase
         $this->formMetadataMapper->mapChildren([])->willReturn([$propertyMetadata, $sectionMetadata, $blockMetadata]);
 
         $schemaMetadata = new SchemaMetadata();
-        $this->formMetadataMapper->mapSchema([])->willReturn($schemaMetadata);
+        $this->schemaMetadataProvider->getMetadata(Argument::cetera())->willReturn($schemaMetadata);
 
         $this->structureMetadataFactory->getStructureTypes()->willReturn(['page']);
         $this->structureMetadataFactory->getStructures('page')->willReturn([$structure]);
