@@ -531,6 +531,7 @@ Removed classes / services:
 - `Sulu\Component\Content\Metadata\Parser\PropertiesXmlParser` (moved and internal)
 - `Sulu\Component\Content\Metadata\Parser\PropertiesXmlParser` (moved and internal)
 - `Sulu\Bundle\AdminBundle\FormMetadata\FormXmlLoader` (moved and internal)
+- `Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Loader\AbstractLoader` (moved and internal)
 
 Removed deprecated functions and properties:
 
@@ -571,6 +572,14 @@ Removed unused arguments:
 - `sulu_core.symfony_expression_language_provider`: `sulu_admin.symfony_expression_language_provider`
 - `sulu_page.structure.properties_xml_parser`: `sulu_admin.properties_xml_parser`
 - `sulu_page.structure.schema_xml_parser`: `sulu_admin.schema_xml_parser`
+
+### Moved files for 3.0
+
+ - `src/Sulu/Component/Content/Metadata/Loader/schema/form-1.0.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/form-1.0.xsd`
+ - `src/Sulu/Component/Content/Metadata/Loader/schema/properties-1.0.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/properties-1.0.xsd`
+ - `src/Sulu/Component/Content/Metadata/Loader/schema/schema-1.0.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/schema-1.0.xsd`
+ - `src/Sulu/Component/Content/Metadata/Loader/schema/template-1.0.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/template-1.0.xsd`
+ - `src/Sulu/Component/Content/Metadata/Loader/schema/xml.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/xml.xsd`
 
 ### Piwik replaced with Matomo script
 

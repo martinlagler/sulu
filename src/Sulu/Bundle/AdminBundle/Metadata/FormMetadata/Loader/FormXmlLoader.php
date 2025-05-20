@@ -18,7 +18,6 @@ use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\SchemaXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\TagXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\SchemaMetadataProvider;
 use Sulu\Bundle\AdminBundle\Metadata\XmlParserTrait;
-use Sulu\Component\Content\Metadata\Loader\AbstractLoader;
 
 /**
  * @internal this class is not part of the public API and may be changed or removed without further notice
@@ -45,7 +44,7 @@ class FormXmlLoader extends AbstractLoader
         );
     }
 
-    protected function parse($resource, \DOMXPath $xpath, $type): FormMetadata
+    protected function parse(string $resource, \DOMXPath $xpath, ?string $type): FormMetadata
     {
         if (0 === $xpath->query('/x:form')->count()) {
             throw new InvalidRootTagException($resource, 'form');

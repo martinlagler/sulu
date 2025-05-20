@@ -11,6 +11,7 @@
 
 namespace Sulu\Component\Content\Metadata\Loader;
 
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Loader\AbstractLoader;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\DeprecatedPropertiesXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\SchemaXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\XmlParserTrait;
@@ -93,7 +94,7 @@ class StructureXmlLoader extends AbstractLoader
     /**
      * @param string $resource
      */
-    public function load($resource, $type = null): StructureMetadata
+    public function load($resource, ?string $type = null): StructureMetadata
     {
         if (null === $type) {
             $type = 'page';
@@ -129,7 +130,7 @@ class StructureXmlLoader extends AbstractLoader
         return $structure;
     }
 
-    protected function parse($resource, \DOMXPath $xpath, $type)
+    protected function parse(string $resource, \DOMXPath $xpath, ?string $type)
     {
         // init result
         $result = $this->loadTemplateAttributes($resource, $xpath, $type);

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Component\Content\Metadata\Loader;
+namespace Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Loader;
 
 use Sulu\Bundle\AdminBundle\Metadata\XmlParserTrait;
 use Sulu\Exception\FeatureNotImplementedException;
@@ -18,6 +18,8 @@ use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Config\Util\XmlUtils;
 
 /**
+ * @internal this class is not part of the public API and may be changed or removed without further notice
+ *
  * @template T
  *
  * reads a template xml and returns a array representation.
@@ -49,9 +51,9 @@ abstract class AbstractLoader implements LoaderInterface
      *
      * @return T
      */
-    public function load($resource, $type = null): mixed
+    public function load($resource, ?string $type = null): mixed
     {
-        $schemaPath = __DIR__ . $this->schemaPath;
+        $schemaPath = \dirname(__DIR__, 3) . '/Resources/config/' . $this->schemaPath;
 
         $cwd = \getcwd();
         // Necessary only for Windows, no effect on linux. Mute errors for PHP with chdir disabled to avoid E_WARNINGs
@@ -82,11 +84,9 @@ abstract class AbstractLoader implements LoaderInterface
     }
 
     /**
-     * @param string $resource
-     *
      * @return T
      */
-    abstract protected function parse($resource, \DOMXPath $xpath, $type);
+    abstract protected function parse(string $resource, \DOMXPath $xpath, ?string $type);
 
     /**
      * Loads the tags for the structure.
