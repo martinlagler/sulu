@@ -49,9 +49,9 @@ class IcomoonProvider implements IconProviderInterface
              * @var string $path
              */
             foreach ($icon->icon->paths as $index => $path) {
-                /** @var \stdClass $attrs */
-                $attrs = $icon->icon->attrs[$index];
-                /** @var string $fill */
+                /** @var \stdClass|null $attrs */
+                $attrs = $icon->icon->attrs[$index] ?? null;
+                /** @var string|null $fill */
                 $fill = $attrs->fill ?? '#262626';
                 $paths[] = "<path d=\"{$path}\" key=\"{$index}\" fill=\"{$fill}\"></path>";
             }
