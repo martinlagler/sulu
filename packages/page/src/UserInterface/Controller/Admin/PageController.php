@@ -29,7 +29,6 @@ use Sulu\Page\Application\Message\CreatePageMessage;
 use Sulu\Page\Application\Message\ModifyPageMessage;
 use Sulu\Page\Application\Message\OrderPageMessage;
 use Sulu\Page\Application\Message\RemovePageMessage;
-use Sulu\Page\Domain\Model\Page;
 use Sulu\Page\Domain\Model\PageInterface;
 use Sulu\Page\Domain\Repository\PageRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,16 +65,35 @@ final class PageController
     {
         $locale = $request->query->get('locale');
         $parentId = $request->query->get('parentId');
+        $webspaceKey = $request->query->get('webspace');
+        $excludeGhosts = $request->query->getBoolean('exclude-ghosts', false);
+        $excludeShadows = $request->query->getBoolean('exclude-shadows', false);
         $expandedIds = \array_filter(\explode(',', (string) $request->query->get('expandedIds')));
+
+        $filters = [
+            'webspaceKey' => $webspaceKey,
+        ];
+
+        if ($excludeGhosts) {
+            $filters['ghostLocale'] = null;
+        }
+
+        if ($excludeShadows) {
+            $filters['shadowLocale'] = null;
+        }
+
+        $includedFields = ['locale', 'ghostLocale', 'shadowLocale', 'webspaceKey', 'template', 'publishedState'];
 
         // TODO this should be handled by PageRepository, currently copied from
         //      https://github.com/handcraftedinthealps/SuluResourceBundle
         //      see ListRepresentation/DoctrineNestedListRepresentationFactory.php
-        $representation = $this->createDoctrineListRepresentation(PageInterface::RESOURCE_KEY,
+        $representation = $this->createDoctrineListRepresentation(
+            resourceKey: PageInterface::RESOURCE_KEY,
+            filters: $filters,
             parameters: ['locale' => $locale],
             parentId: $parentId,
             expandedIds: $expandedIds,
-            includedFields: ['locale', 'ghostLocale', 'webspaceKey', 'template', 'publishedState'],
+            includedFields: $includedFields,
             listKey: 'pages_next'
         );
 
@@ -219,7 +237,7 @@ final class PageController
     }
 
     /**
-     * @param array<string, string> $filters
+     * @param array<string, bool|float|int|string|null> $filters
      * @param array<string, mixed> $parameters
      * @param string[] $expandedIds
      * @param string[] $includedFields
@@ -250,7 +268,7 @@ final class PageController
         }
 
         foreach ($filters as $key => $value) {
-            $listBuilder->where($fieldDescriptors[$key], $value);
+            $listBuilder->where($fieldDescriptors[$key], $value); // @phpstan-ignore argument.type
         }
 
         foreach ($includedFields as $field) {
