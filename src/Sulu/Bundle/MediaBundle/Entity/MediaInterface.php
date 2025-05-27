@@ -13,7 +13,6 @@ namespace Sulu\Bundle\MediaBundle\Entity;
 
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
 use Sulu\Component\Persistence\Model\AuditableInterface;
-use Sulu\Component\Security\Authentication\UserInterface;
 
 /**
  * MediaInterface.
@@ -28,24 +27,6 @@ interface MediaInterface extends AuditableInterface
      * @return int
      */
     public function getId();
-
-    /**
-     * Set created.
-     *
-     * @param \DateTime $created
-     *
-     * @return $this
-     */
-    public function setCreated($created);
-
-    /**
-     * Set changed.
-     *
-     * @param \DateTime $changed
-     *
-     * @return $this
-     */
-    public function setChanged($changed);
 
     /**
      * Add files.
@@ -95,24 +76,6 @@ interface MediaInterface extends AuditableInterface
      * @return MediaType
      */
     public function getType();
-
-    /**
-     * Set changer.
-     *
-     * @param UserInterface|null $changer
-     *
-     * @return MediaInterface
-     */
-    public function setChanger($changer);
-
-    /**
-     * Set creator.
-     *
-     * @param UserInterface|null $creator
-     *
-     * @return MediaInterface
-     */
-    public function setCreator($creator);
 
     /**
      * Set preview image.

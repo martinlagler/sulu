@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
 use JMS\Serializer\Annotation\Exclude;
 use Sulu\Bundle\SecurityBundle\Entity\PermissionInheritanceInterface;
+use Sulu\Component\Persistence\Model\AuditableTrait;
 use Sulu\Component\Security\Authentication\UserInterface;
 
 /**
@@ -22,6 +23,8 @@ use Sulu\Component\Security\Authentication\UserInterface;
  */
 class Collection implements CollectionInterface, PermissionInheritanceInterface
 {
+    use AuditableTrait;
+
     /**
      * @var int
      */
@@ -51,31 +54,15 @@ class Collection implements CollectionInterface, PermissionInheritanceInterface
     protected $depth;
 
     /**
-     * @var \DateTime
-     */
-    protected $created;
-
-    /**
-     * @var \DateTime
-     */
-    protected $changed;
-
-    /**
      * @var CollectionType
      */
     protected $type;
 
-    /**
-     * @var UserInterface|null
-     */
     #[Exclude]
-    protected $changer;
+    protected ?UserInterface $changer = null;
 
-    /**
-     * @var UserInterface|null
-     */
     #[Exclude]
-    protected $creator;
+    protected ?UserInterface $creator = null;
 
     /**
      * @var string|null
@@ -123,50 +110,6 @@ class Collection implements CollectionInterface, PermissionInheritanceInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set changer.
-     *
-     * @return CollectionInterface
-     */
-    public function setChanger(?UserInterface $changer = null)
-    {
-        $this->changer = $changer;
-
-        return $this;
-    }
-
-    /**
-     * Get changer.
-     *
-     * @return UserInterface|null
-     */
-    public function getChanger()
-    {
-        return $this->changer;
-    }
-
-    /**
-     * Set creator.
-     *
-     * @return CollectionInterface
-     */
-    public function setCreator(?UserInterface $creator = null)
-    {
-        $this->creator = $creator;
-
-        return $this;
-    }
-
-    /**
-     * Get creator.
-     *
-     * @return UserInterface|null
-     */
-    public function getCreator()
-    {
-        return $this->creator;
     }
 
     /**
@@ -263,46 +206,6 @@ class Collection implements CollectionInterface, PermissionInheritanceInterface
     public function getDepth()
     {
         return $this->depth;
-    }
-
-    /**
-     * Get created.
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Get changed.
-     *
-     * @return \DateTime
-     */
-    public function getChanged()
-    {
-        return $this->changed;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setChanged(\DateTime $changed)
-    {
-        $this->changed = $changed;
-
-        return $this;
     }
 
     /**

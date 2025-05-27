@@ -12,36 +12,25 @@
 namespace Sulu\Component\Persistence\Model;
 
 /**
- * Trait with basic implementation of TimestampableInterface.
+ * Trait with basic implementation for the TimestampableInterface.
+ *
+ * @see TimestampableInterface
  */
 trait TimestampableTrait
 {
-    /**
-     * @var \DateTime
-     */
-    protected $created;
+    protected \DateTimeImmutable $created;
 
-    /**
-     * @var \DateTime
-     */
-    protected $changed;
+    protected \DateTimeImmutable $changed;
 
     /**
      * @see TimestampableInterface::getCreated()
      */
-    public function getCreated()
+    public function getCreated(): \DateTimeImmutable
     {
         return $this->created;
     }
 
-    /**
-     * Set created.
-     *
-     * @param \DateTime $created
-     *
-     * @return $this
-     */
-    public function setCreated($created)
+    public function setCreated(\DateTimeImmutable $created): self
     {
         $this->created = $created;
 
@@ -51,19 +40,12 @@ trait TimestampableTrait
     /**
      * @see TimestampableInterface::getChanged()
      */
-    public function getChanged()
+    public function getChanged(): \DateTimeImmutable
     {
         return $this->changed;
     }
 
-    /**
-     * Set changed.
-     *
-     * @param \DateTime $changed
-     *
-     * @return $this
-     */
-    public function setChanged($changed)
+    public function setChanged(\DateTimeImmutable $changed): self
     {
         $this->changed = $changed;
 

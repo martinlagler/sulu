@@ -206,7 +206,7 @@ final class MediaTrashItemHandler implements
         $media->setCollection($collection);
         $media->setType($type);
         $media->setPreviewImage($this->findEntity(MediaInterface::class, $data['previewImageId']));
-        $media->setCreated(new \DateTime($data['created']));
+        $media->setCreated(new \DateTimeImmutable($data['created']));
         $media->setCreator($this->findEntity(UserInterface::class, $data['creatorId']));
 
         foreach ($data['files'] as $fileData) {
@@ -215,7 +215,7 @@ final class MediaTrashItemHandler implements
             $media->addFile($file);
 
             $file->setVersion($fileData['version']);
-            $file->setCreated(new \DateTime($fileData['created']));
+            $file->setCreated(new \DateTimeImmutable($fileData['created']));
             $file->setCreator($this->findEntity(UserInterface::class, $fileData['creatorId']));
 
             foreach ($fileData['fileVersions'] as $fileVersionData) {
@@ -238,7 +238,7 @@ final class MediaTrashItemHandler implements
                 $fileVersion->setProperties($fileVersionData['properties']);
                 $fileVersion->setFocusPointX($fileVersionData['focusPointX']);
                 $fileVersion->setFocusPointY($fileVersionData['focusPointY']);
-                $fileVersion->setCreated(new \DateTime($fileVersionData['created']));
+                $fileVersion->setCreated(new \DateTimeImmutable($fileVersionData['created']));
                 $fileVersion->setCreator($this->findEntity(UserInterface::class, $fileVersionData['creatorId']));
 
                 foreach ($fileVersionData['contentLanguageLocales'] as $contentLanguageLocale) {

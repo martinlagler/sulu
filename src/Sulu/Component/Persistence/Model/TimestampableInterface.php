@@ -17,18 +17,26 @@ namespace Sulu\Component\Persistence\Model;
 interface TimestampableInterface
 {
     /**
-     * Return the date the object implementing this inteface
+     * Return the date the object implementing this interface
      * was created.
-     *
-     * @return \DateTime
      */
-    public function getCreated();
+    public function getCreated(): \DateTimeImmutable;
 
     /**
-     * Return the date the object implementing this inteface
+     * Return the date the object implementing this interface
      * was changed.
-     *
-     * @return \DateTime
      */
-    public function getChanged();
+    public function getChanged(): \DateTimeImmutable;
+
+    /**
+     * Set the date the object implementing this interface
+     * was created.
+     */
+    public function setCreated(\DateTimeImmutable $created): self;
+
+    /**
+     * Set the date the object implementing this interface
+     * was changed.
+     */
+    public function setChanged(\DateTimeImmutable $changed): self;
 }

@@ -46,7 +46,7 @@ class AuditableHasherTest extends TestCase
         $user = $this->prophesize(UserInterface::class);
         $user->getId()->willReturn(1);
         $object->getChanger()->willReturn($user->reveal());
-        $object->getChanged()->willReturn(new \DateTime('2016-02-05'));
+        $object->getChanged()->willReturn(new \DateTimeImmutable('2016-02-05'));
 
         $this->assertSame($this->hasher->hash($object->reveal()), $this->hasher->hash($object->reveal()));
     }
@@ -54,9 +54,9 @@ class AuditableHasherTest extends TestCase
     public static function provideDifferentObjects()
     {
         return [
-            [1, 2, new \DateTime('2016-02-05'), new \DateTime('2016-02-04')],
-            [1, 1, new \DateTime('2016-02-05'), new \DateTime('2016-02-04')],
-            [1, 2, new \DateTime('2016-02-05'), new \DateTime('2016-02-05')],
+            [1, 2, new \DateTimeImmutable('2016-02-05'), new \DateTimeImmutable('2016-02-04')],
+            [1, 1, new \DateTimeImmutable('2016-02-05'), new \DateTimeImmutable('2016-02-04')],
+            [1, 2, new \DateTimeImmutable('2016-02-05'), new \DateTimeImmutable('2016-02-05')],
         ];
     }
 
@@ -87,19 +87,7 @@ class AuditableHasherTest extends TestCase
         /** @var AuditableInterface $object */
         $object = $this->prophesize(AuditableInterface::class);
         $object->getChanger()->willReturn(null);
-        $object->getChanged()->willReturn(new \DateTime('2016-02-05'));
-
-        $this->assertIsString($this->hasher->hash($object->reveal()));
-    }
-
-    public function testHashWithoutDate(): void
-    {
-        $user = $this->prophesize(UserInterface::class);
-        $user->getId()->willReturn(1);
-
-        $object = $this->prophesize(AuditableInterface::class);
-        $object->getChanger()->willReturn($user);
-        $object->getChanged()->willReturn(null);
+        $object->getChanged()->willReturn(new \DateTimeImmutable('2016-02-05'));
 
         $this->assertIsString($this->hasher->hash($object->reveal()));
     }
@@ -108,7 +96,7 @@ class AuditableHasherTest extends TestCase
     {
         $object = $this->prophesize(LocalizedAuditableBehavior::class);
         $object->getChanger()->willReturn(1);
-        $object->getChanged()->willReturn(new \DateTime('2016-02-09'));
+        $object->getChanged()->willReturn(new \DateTimeImmutable('2016-02-09'));
 
         $this->assertIsString($this->hasher->hash($object->reveal()));
     }

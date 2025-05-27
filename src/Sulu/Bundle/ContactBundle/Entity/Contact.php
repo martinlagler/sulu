@@ -24,10 +24,13 @@ use Sulu\Bundle\CategoryBundle\Entity\CategoryInterface;
 use Sulu\Bundle\CoreBundle\Entity\ApiEntity;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Bundle\TagBundle\Tag\TagInterface;
+use Sulu\Component\Persistence\Model\AuditableTrait;
 use Sulu\Component\Security\Authentication\UserInterface;
 
 class Contact extends ApiEntity implements ContactInterface
 {
+    use AuditableTrait;
+
     /**
      * @var int
      */
@@ -61,31 +64,15 @@ class Contact extends ApiEntity implements ContactInterface
     protected $birthday;
 
     /**
-     * @var \DateTime
-     */
-    protected $created;
-
-    /**
-     * @var \DateTime
-     */
-    protected $changed;
-
-    /**
      * @var Collection<int, ContactLocale>
      */
     protected $locales;
 
-    /**
-     * @var UserInterface|null
-     */
     #[Groups(['fullContact'])]
-    protected $changer;
+    protected ?UserInterface $changer = null;
 
-    /**
-     * @var UserInterface|null
-     */
     #[Groups(['fullContact'])]
-    protected $creator;
+    protected ?UserInterface $creator = null;
 
     /**
      * @var string|null
@@ -152,9 +139,7 @@ class Contact extends ApiEntity implements ContactInterface
     protected $account;
 
     /**
-     * main account.
-     *
-     * @var string
+     * @var Collection<int, ContactAddress>
      */
     #[Accessor(getter: 'getAddresses')]
     #[Groups(['fullContact'])]
@@ -357,16 +342,6 @@ class Contact extends ApiEntity implements ContactInterface
         return $this->birthday;
     }
 
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    public function getChanged()
-    {
-        return $this->changed;
-    }
-
     public function addLocale(ContactLocale $locale)
     {
         $this->locales[] = $locale;
@@ -382,40 +357,6 @@ class Contact extends ApiEntity implements ContactInterface
     public function getLocales()
     {
         return $this->locales;
-    }
-
-    /**
-     * Set changer.
-     *
-     * @return Contact
-     */
-    public function setChanger(?UserInterface $changer = null)
-    {
-        $this->changer = $changer;
-
-        return $this;
-    }
-
-    public function getChanger()
-    {
-        return $this->changer;
-    }
-
-    /**
-     * Set creator.
-     *
-     * @return Contact
-     */
-    public function setCreator(?UserInterface $creator = null)
-    {
-        $this->creator = $creator;
-
-        return $this;
-    }
-
-    public function getCreator()
-    {
-        return $this->creator;
     }
 
     public function setNote(?string $note): ContactInterface
@@ -631,7 +572,7 @@ class Contact extends ApiEntity implements ContactInterface
     public function getMainAccount()
     {
         $mainAccountContact = $this->getMainAccountContact();
-        if (!\is_null($mainAccountContact)) {
+        if (null !== $mainAccountContact) {
             return $mainAccountContact->getAccount();
         }
 
@@ -803,26 +744,6 @@ class Contact extends ApiEntity implements ContactInterface
     public function getBankAccounts()
     {
         return $this->bankAccounts;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setCreated(\DateTime $created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setChanged(\DateTime $changed)
-    {
-        $this->changed = $changed;
-
-        return $this;
     }
 
     /**
