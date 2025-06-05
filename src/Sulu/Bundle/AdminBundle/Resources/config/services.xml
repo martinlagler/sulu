@@ -70,6 +70,12 @@
                  class="Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\PropertiesXmlParser"
                  public="false">
             <argument type="service" id="sulu_admin.tag_xml_parser" />
+            <argument type="service" id="sulu_admin.meta_xml_parser" />
+        </service>
+
+        <service id="sulu_admin.meta_xml_parser"
+                 class="Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\MetaXmlParser"
+                 public="false">
             <argument type="service" id="translator" />
             <argument>%sulu_core.translated_locales%</argument>
         </service>
@@ -123,8 +129,20 @@
             <argument>%sulu_admin.forms.directories%</argument>
             <argument>%sulu.cache_dir%/forms</argument>
             <argument>%kernel.debug%</argument>
+
             <tag name="sulu_admin.form_metadata_loader"/>
             <tag name="kernel.cache_warmer" />
+        </service>
+
+        <service id="sulu_admin.template_form_metadata_loader" class="Sulu\Bundle\AdminBundle\Metadata\FormMetadata\XmlTemplateFormMetadataLoader" lazy="true">
+            <argument type="service" id="sulu_admin.form_metadata.template_xml_loader"/>
+            <argument type="service" id="sulu_admin.field_metadata_validator.chain"/>
+            <argument>%sulu_admin.templates.configuration%</argument>
+            <argument>%sulu.cache_dir%/templates</argument>
+            <argument>%kernel.debug%</argument>
+
+            <tag name="sulu_admin.form_metadata_loader"/>
+            <tag name="kernel.cache_warmer" priority="512" />
         </service>
 
         <service
@@ -156,6 +174,14 @@
             <argument type="service" id="sulu_admin.properties_xml_parser"/>
             <argument type="service" id="sulu_admin.schema_xml_parser"/>
             <argument type="service" id="sulu_admin.tag_xml_parser"/>
+            <argument type="service" id="sulu_admin.schema_metadata_provider"/>
+        </service>
+
+        <service id="sulu_admin.form_metadata.template_xml_loader" class="Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Loader\TemplateXmlLoader">
+            <argument type="service" id="sulu_admin.properties_xml_parser"/>
+            <argument type="service" id="sulu_admin.schema_xml_parser"/>
+            <argument type="service" id="sulu_admin.tag_xml_parser"/>
+            <argument type="service" id="sulu_admin.meta_xml_parser"/>
             <argument type="service" id="sulu_admin.schema_metadata_provider"/>
         </service>
 
@@ -209,7 +235,9 @@
             <argument>%sulu_core.locales%</argument>
             <argument>%sulu.cache_dir%/form-structures</argument>
             <argument>%kernel.debug%</argument>
+            <!--
             <tag name="sulu_admin.form_metadata_loader"/>
+            -->
             <tag name="kernel.cache_warmer" priority="512" />
         </service>
 
@@ -337,6 +365,11 @@
         <service id="sulu_admin.form_metadata_validator.locale_options"
                  class="Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Visitor\LocalesOptionFormMetadataVisitor">
             <tag name="sulu_admin.form_metadata_visitor"/>
+        </service>
+
+        <service id="sulu_admin.block_settings_form_metadata_visitor"
+                 class="Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Visitor\BlockSettingsFormMetadataVisitor">
+            <tag name="sulu_admin.typed_form_metadata_visitor" />
         </service>
 
         <service id="sulu_admin.icon_controller"

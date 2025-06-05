@@ -13,6 +13,7 @@ namespace Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Loader;
 
 use Sulu\Bundle\AdminBundle\Exception\InvalidRootTagException;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadata;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\MetaXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\PropertiesXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\SchemaXmlParser;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\Parser\TagXmlParser;
@@ -24,14 +25,14 @@ use Sulu\Bundle\AdminBundle\Metadata\XmlParserTrait;
  *
  * @extends AbstractLoader<FormMetadata>
  */
-class FormXmlLoader extends AbstractLoader
+class TemplateXmlLoader extends AbstractLoader
 {
     use XmlParserTrait;
 
     /**
      * @var string
      */
-    public const SCHEMA_PATH = '/schema/form-1.0.xsd';
+    public const SCHEMA_PATH = '/schema/template-1.0.xsd';
 
     /**
      * @var string
@@ -42,6 +43,7 @@ class FormXmlLoader extends AbstractLoader
         private PropertiesXmlParser $propertiesXmlParser,
         private SchemaXmlParser $schemaXmlParser,
         private TagXmlParser $tagXmlParser,
+        private MetaXmlParser $metaXmlParser,
         private SchemaMetadataProvider $schemaMetadataProvider,
     ) {
         parent::__construct(
@@ -52,21 +54,29 @@ class FormXmlLoader extends AbstractLoader
 
     protected function parse(string $resource, \DOMXPath $xpath, ?string $type): FormMetadata
     {
-        if (0 === $xpath->query('/x:form')->count()) {
-            throw new InvalidRootTagException($resource, 'form');
+        if (0 === $xpath->query('/x:template')->count()) {
+            throw new InvalidRootTagException($resource, 'template');
         }
 
         $form = new FormMetadata();
         $form->addResource($resource);
-        $formKey = $this->getValueFromXPath('/x:form/x:key', $xpath);
-        \assert(\is_string($formKey), 'Expected the form key of "' . $resource . '" to be defined.');
-        $form->setKey($formKey);
+        $templateKey = $this->getValueFromXPath('/x:template/x:key', $xpath);
+        \assert(\is_string($templateKey), 'Expected the template key of "' . $resource . '" to be defined.');
+        $form->setKey($templateKey);
 
-        $tagNodes = $xpath->query('/x:form/x:tag') ?: [];
+        $tagNodes = $xpath->query('/x:template/x:tag') ?: [];
         $form->setTags($this->tagXmlParser->load($xpath, $tagNodes));
 
-        $propertiesNode = ($xpath->query('/x:form/x:properties') ?: null)?->item(0);
-        \assert(null !== $propertiesNode, 'Expected properties be defined for "' . $resource . '".');
+        $templateNode = ($xpath->query('/x:template') ?: null)?->item(0);
+        \assert(null !== $templateNode, 'Expected <template> be defined for "' . $resource . '".');
+        $meta = $this->metaXmlParser->load($xpath, $templateNode);
+
+        if (\array_key_exists('title', $meta)) {
+            $form->setTitles($meta['title']);
+        }
+
+        $propertiesNode = ($xpath->query('/x:template/x:properties') ?: null)?->item(0);
+        \assert(null !== $propertiesNode, 'Expected <properties> be defined for "' . $resource . '".');
         $properties = $this->propertiesXmlParser->load(
             $xpath,
             $propertiesNode,
@@ -74,7 +84,7 @@ class FormXmlLoader extends AbstractLoader
         );
 
         $schema = $this->schemaMetadataProvider->getMetadata($properties);
-        $schemaNode = $xpath->query('/x:form/x:schema')->item(0);
+        $schemaNode = $xpath->query('/x:template/x:schema')->item(0);
 
         if ($schemaNode) {
             $schema = $schema->merge($this->schemaXmlParser->load($xpath, $schemaNode));
