@@ -71,6 +71,7 @@ export default class SingleIconSelection extends React.Component<Props> {
                 } = {},
             } = {},
             value,
+            disabled,
         } = this.props;
 
         if (iconSet === undefined) {
@@ -80,6 +81,7 @@ export default class SingleIconSelection extends React.Component<Props> {
         return (
             <Fragment>
                 <SingleItemSelection
+                    disabled={!!disabled}
                     emptyText={translate('sulu_admin.single_icon_selection.select')}
                     id={value}
                     leftButton={{
