@@ -423,6 +423,25 @@ now independent of the locale and contain all metadata for all locales this mean
 +$metadata->setPlaceholder($placeholder, $locale);
 ```
 
+### FOSRestRouting Bundle removed
+
+As announced in Sulu [2.6.10](https://github.com/sulu/sulu/blob/2.6/UPGRADE-2.x.md)
+the `type: rest` / [FOSRestRouting](https://github.com/handcraftedinthealps/RestRoutingBundle) was removed.
+
+The `HandcraftedInTheAlps\RestRoutingBundle\RestRoutingBundle` class should be removed from your `config/bundles.php`.
+
+Use the `.yaml` extension instead of the old `.yml` for routing files in your `config/routes/` files without `type: rest`:
+
+Example:
+
+```diff
+sulu_tag_api:
+-    resource: "@SuluTagBundle/Resources/config/routing_api.yml"
++    resource: "@SuluTagBundle/Resources/config/routing_api.yaml"
+-    type: rest
+     prefix:   /admin/api
+```
+
 ### Upgrade resourceLocator and route property type
 
 The new content structure used in Sulu 3.0 requires that all the `resource_locators` or `route` properties must be
