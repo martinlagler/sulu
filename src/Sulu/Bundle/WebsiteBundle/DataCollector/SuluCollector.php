@@ -11,10 +11,16 @@
 
 namespace Sulu\Bundle\WebsiteBundle\DataCollector;
 
-use Sulu\Component\Content\Compat\StructureInterface;
+use Sulu\Component\Persistence\Model\AuditableInterface;
+use Sulu\Component\Security\Authentication\UserInterface;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
 use Sulu\Component\Webspace\Portal;
 use Sulu\Component\Webspace\Webspace;
+use Sulu\Content\Domain\Model\DimensionContentInterface;
+use Sulu\Content\Domain\Model\ShadowInterface;
+use Sulu\Content\Domain\Model\TemplateInterface;
+use Sulu\Content\Domain\Model\WorkflowInterface;
+use Sulu\Page\Domain\Model\PageDimensionContentInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -26,12 +32,12 @@ class SuluCollector extends DataCollector
     ) {
     }
 
-    public function data($key)
+    public function data(string|int $key): mixed
     {
         return $this->data[$key] ?? null;
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         if (!$request->attributes->has('_sulu')) {
             return;
@@ -76,37 +82,54 @@ class SuluCollector extends DataCollector
         $this->data['resource_locator_prefix'] = $requestAttributes->getAttribute('resourceLocatorPrefix');
 
         $structure = null;
-        if ($request->attributes->has('_route_params')) {
-            $params = $request->attributes->get('_route_params');
-            if (isset($params['structure'])) {
-                /** @var StructureInterface $structureObject */
-                $structureObject = $params['structure'];
+        if ($request->attributes->has('object')) {
+            $object = $request->attributes->get('object');
 
-                $structure = [
-                    'id' => $structureObject->getUuid(),
-                    'objectClass' => $structureObject::class,
-                    'path' => $structureObject->getPath(),
-                    'nodeType' => $structureObject->getNodeType(),
-                    'internal' => $structureObject->getInternal(),
-                    'nodeState' => $structureObject->getNodeState(),
-                    'published' => $structureObject->getPublished(),
-                    'publishedState' => $structureObject->getPublishedState(),
-                    'navContexts' => $structureObject->getNavContexts(),
-                    'shadowLocales' => $structureObject->getShadowLocales(),
-                    'contentLocales' => $structureObject->getContentLocales(),
-                    'shadowOn' => $structureObject->getIsShadow(),
-                    'shadowBaseLanguage' => $structureObject->getShadowBaseLanguage(),
-                    'template' => $structureObject->getKey(),
-                    'originTemplate' => $structureObject->getOriginTemplate(),
-                    'hasSub' => $structureObject->getHasChildren(),
-                    'creator' => $structureObject->getCreator(),
-                    'changer' => $structureObject->getChanger(),
-                    'created' => $structureObject->getCreated(),
-                    'changed' => $structureObject->getChanged(),
-                ];
+            $structure = [];
+            if ($object instanceof DimensionContentInterface) {
+                $resource = $object->getResource();
+
+                $structure['id'] = $resource->getId();
+                $structure['class'] = $resource::class;
+                $structure['dimensionClass'] = $object::class;
+                $structure['nodeState'] = $object->getStage();
+                $structure['locale'] = $object->getLocale();
+                $structure['availableLocales'] = $object->getAvailableLocales();
+                $structure['ghostLocale'] = $object->getGhostLocale();
+
+                if ($resource instanceof AuditableInterface) {
+                    $structure['created'] = $this->renderUserAndTimeStamp($resource->getCreator(), $resource->getCreated());
+                    $structure['changed'] = $this->renderUserAndTimeStamp($resource->getChanger(), $resource->getChanged());
+                }
+            }
+
+            if ($object instanceof TemplateInterface) {
+                $structure['template'] = $object->getTemplateKey();
+            }
+
+            if ($object instanceof WorkflowInterface) {
+                $structure['published'] = $object->getWorkflowPublished();
+            }
+
+            if ($object instanceof PageDimensionContentInterface) {
+                $structure['navContexts'] = $object->getNavigationContexts();
+            }
+
+            if ($object instanceof ShadowInterface) {
+                $structure['shadowLocales'] = $object->getShadowLocales();
             }
         }
         $this->data['structure'] = $structure;
+    }
+
+    private function renderUserAndTimeStamp(?UserInterface $user, \DateTimeInterface $timestamp): string
+    {
+        $userName = '(unknown user)';
+        if (null !== $user) {
+            $userName = $user->getFullName();
+        }
+
+        return $userName . ' @ ' . $timestamp->format('Y-m-d H:i:s');
     }
 
     /**
@@ -122,12 +145,12 @@ class SuluCollector extends DataCollector
         }
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'sulu';
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
