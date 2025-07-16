@@ -120,7 +120,7 @@
         <service id="sulu.content.type.number" class="Sulu\Component\Content\Types\Number">
             <tag name="sulu_admin.property_metadata_mapper" type="number"/>
             <tag name="sulu.content.type" alias="number"/>
-            <tag name="sulu.content.export" format="1.2.xliff" translate="true" />
+            <tag name="sulu.content.export" format="1.2.xliff" translate="false" />
         </service>
         <service id="sulu.content.type.text_line" class="Sulu\Component\Content\Types\TextLine">
             <tag name="sulu.content.type" alias="text_line"/>
