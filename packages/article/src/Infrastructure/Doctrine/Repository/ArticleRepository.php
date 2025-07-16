@@ -74,7 +74,7 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        DimensionContentQueryEnhancer $dimensionContentQueryEnhancer
+        DimensionContentQueryEnhancer $dimensionContentQueryEnhancer,
     ) {
         $this->entityRepository = $entityManager->getRepository(ArticleInterface::class);
         $this->entityDimensionContentRepository = $entityManager->getRepository(ArticleDimensionContentInterface::class);
@@ -260,7 +260,7 @@ class ArticleRepository implements ArticleRepositoryInterface
                 'article',
                 $this->articleDimensionContentClassName,
                 $filters,
-                $sortBy
+                $sortBy,
             );
         }
 
@@ -281,14 +281,14 @@ class ArticleRepository implements ArticleRepositoryInterface
 
             $queryBuilder->leftJoin(
                 'article.dimensionContents',
-                'dimensionContent'
+                'dimensionContent',
             );
 
             $this->dimensionContentQueryEnhancer->addSelects(
                 $queryBuilder,
                 $this->articleDimensionContentClassName,
                 $filters,
-                $contentSelects
+                $contentSelects,
             );
         }
 

@@ -78,11 +78,18 @@ class DimensionContentQueryEnhancer
      *     tagOperator?: 'AND'|'OR',
      *     templateKeys?: string[],
      *     loadGhost?: bool,
+     *     excludedIds?: string[],
+     *     includeSubFolders?: bool,
+     *     audienceTargeting?: bool,
+     *     targetGroupId?: int,
+     *     segmentKey?: string,
      * } $filters
      * @param array{
      *     title?: 'asc'|'desc',
      *     authored?: 'asc'|'desc',
      *     workflowPublished?: 'asc'|'desc',
+     *     created?: 'asc'|'desc',
+     *     changed?: 'asc'|'desc',
      * } $sortBys
      */
     public function addFilters(
@@ -90,7 +97,7 @@ class DimensionContentQueryEnhancer
         string $contentRichEntityAlias,
         string $dimensionContentClassName,
         array $filters,
-        array $sortBys
+        array $sortBys,
     ): void {
         $effectiveAttributes = $dimensionContentClassName::getEffectiveDimensionAttributes($filters);
 
@@ -98,7 +105,7 @@ class DimensionContentQueryEnhancer
             $dimensionContentClassName,
             'filterDimensionContent',
             Join::WITH,
-            'filterDimensionContent.' . $contentRichEntityAlias . ' = ' . $contentRichEntityAlias
+            'filterDimensionContent.' . $contentRichEntityAlias . ' = ' . $contentRichEntityAlias,
         );
 
         foreach ($effectiveAttributes as $key => $value) {
@@ -129,7 +136,7 @@ class DimensionContentQueryEnhancer
                     'id',
                     'categoryIds',
                     $categoryIds,
-                    $filters['categoryOperator'] ?? 'OR'
+                    $filters['categoryOperator'] ?? 'OR',
                 );
             }
 
@@ -144,7 +151,7 @@ class DimensionContentQueryEnhancer
                     'key',
                     'categoryKeys',
                     $categoryKeys,
-                    $filters['categoryOperator'] ?? 'OR'
+                    $filters['categoryOperator'] ?? 'OR',
                 );
             }
 
@@ -159,7 +166,7 @@ class DimensionContentQueryEnhancer
                     'id',
                     'tagIds',
                     $tagIds,
-                    $filters['tagOperator'] ?? 'OR'
+                    $filters['tagOperator'] ?? 'OR',
                 );
             }
 
@@ -174,7 +181,7 @@ class DimensionContentQueryEnhancer
                     'name',
                     'tagNames',
                     $tagNames,
-                    $filters['tagOperator'] ?? 'OR'
+                    $filters['tagOperator'] ?? 'OR',
                 );
             }
         }
@@ -189,52 +196,29 @@ class DimensionContentQueryEnhancer
             }
         }
 
+        if (($filters['audienceTargeting'] ?? false) && ($filters['targetGroupId'] ?? null)) {
+            // TODO add audience targeting filter when the dimension content supports it.
+        }
+
+        if ($filters['segmentKey'] ?? null) {
+            $segmentKey = $filters['segmentKey'];
+            // TODO add segment filter when the dimension content supports it.
+        }
+
         // Sort by
         foreach ($sortBys as $field => $order) {
-            if (!\in_array($field, ['title', 'authored', 'workflowPublished'], true)) {
-                continue;
+            if (\in_array($field, ['title', 'authored', 'workflowPublished'], true)) {
+                $queryBuilder->addOrderBy('filterDimensionContent.' . $field, $order);
+            } elseif (\in_array($field, ['created', 'changed'], true)) {
+                $queryBuilder->addOrderBy($contentRichEntityAlias . '.' . $field, $order);
             }
-
-            $queryBuilder->addOrderBy('filterDimensionContent.' . $field, $order);
         }
     }
 
-    /**
-     * @param int[]|string[] $parameters
-     * @param 'AND'|'OR' $operator
-     */
-    private function addJoinFilter(
-        QueryBuilder $queryBuilder,
-        string $join,
-        string $targetAlias,
-        string $targetField,
-        string $filterKey,
-        array $parameters,
-        string $operator = 'OR'
-    ): void {
-        if ('OR' === $operator) {
-            $queryBuilder->leftJoin(
-                $join,
-                $targetAlias
-            );
-
-            $queryBuilder->andWhere($targetAlias . '.' . $targetField . ' IN (:' . $filterKey . ')')
-                ->setParameter($filterKey, $parameters);
-        } elseif ('AND' === $operator) {
-            foreach (\array_values($parameters) as $key => $parameter) {
-                $queryBuilder->leftJoin(
-                    $join,
-                    $targetAlias . $key
-                );
-
-                $queryBuilder->andWhere($targetAlias . $key . '.' . $targetField . ' = :' . $filterKey . $key)
-                    ->setParameter($filterKey . $key, $parameter);
-            }
-        } else {
-            throw new \InvalidArgumentException(
-                \sprintf('The operator "%s" is not supported for this filter.', $operator)
-            );
-        }
+    public function addPagination(QueryBuilder $queryBuilder, int $page, int $limit): void
+    {
+        $queryBuilder->setMaxResults($limit);
+        $queryBuilder->setFirstResult(($page - 1) * $limit);
     }
 
     /**
@@ -261,7 +245,7 @@ class DimensionContentQueryEnhancer
         QueryBuilder $queryBuilder,
         string $dimensionContentClassName,
         array $dimensionAttributes,
-        array $selects = []
+        array $selects = [],
     ): void {
         foreach ($selects as $selectGroup => $value) {
             if (!$value) {
@@ -300,7 +284,7 @@ class DimensionContentQueryEnhancer
                     '(
                         contentExcerptCategoryTranslation.locale = contentExcerptCategory.defaultLocale
                         OR contentExcerptCategoryTranslation.locale = :locale
-                    )'
+                    )',
                 )
                     ->addSelect('contentExcerptCategoryTranslation')
                     ->setParameter('locale', $locale);
@@ -328,5 +312,45 @@ class DimensionContentQueryEnhancer
         }
 
         return $criteria;
+    }
+
+    /**
+     * @see SmartContentQueryEnhancer::addJoinFilter
+     *
+     * @param int[]|string[] $parameters
+     * @param 'AND'|'OR' $operator
+     */
+    private function addJoinFilter(
+        QueryBuilder $queryBuilder,
+        string $join,
+        string $targetAlias,
+        string $targetField,
+        string $filterKey,
+        array $parameters,
+        string $operator = 'OR',
+    ): void {
+        if ('OR' === $operator) {
+            $queryBuilder->leftJoin(
+                $join,
+                $targetAlias,
+            );
+
+            $queryBuilder->andWhere($targetAlias . '.' . $targetField . ' IN (:' . $filterKey . ')')
+                ->setParameter($filterKey, $parameters);
+        } elseif ('AND' === $operator) {
+            foreach (\array_values($parameters) as $key => $parameter) {
+                $queryBuilder->leftJoin(
+                    $join,
+                    $targetAlias . $key,
+                );
+
+                $queryBuilder->andWhere($targetAlias . $key . '.' . $targetField . ' = :' . $filterKey . $key)
+                    ->setParameter($filterKey . $key, $parameter);
+            }
+        } else {
+            throw new \InvalidArgumentException(
+                \sprintf('The operator "%s" is not supported for this filter.', $operator),
+            );
+        }
     }
 }

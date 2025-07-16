@@ -34,8 +34,8 @@ use Sulu\Snippet\Infrastructure\Sulu\Content\PropertyResolver\SingleSnippetSelec
 use Sulu\Snippet\Infrastructure\Sulu\Content\PropertyResolver\SnippetSelectionPropertyResolver;
 use Sulu\Snippet\Infrastructure\Sulu\Content\ResourceLoader\SnippetResourceLoader;
 use Sulu\Snippet\Infrastructure\Sulu\Content\SingleSnippetSelectionContentType;
-use Sulu\Snippet\Infrastructure\Sulu\Content\SnippetDataProvider;
 use Sulu\Snippet\Infrastructure\Sulu\Content\SnippetSelectionContentType;
+use Sulu\Snippet\Infrastructure\Sulu\Content\SnippetSmartContentProvider;
 use Sulu\Snippet\UserInterface\Controller\Admin\SnippetController;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -231,15 +231,14 @@ final class SuluSnippetBundle extends AbstractBundle
             ->tag('sulu.content.type', ['alias' => 'snippet_selection']);
 
         // Smart Content services
-        $services->set('sulu_snippet.snippet_data_provider')
-            ->class(SnippetDataProvider::class) // TODO this should not be handled via Content Bundle instead own service which uses the SnippetRepository
+        $services->set('sulu_snippet.snippet_smart_content_provider')
+            ->class(SnippetSmartContentProvider::class)
             ->args([
-                new Reference('sulu_snippet.snippet_repository'),
-                new Reference('sulu_content.content_manager'),
-                new Reference('sulu_snippet.snippet_reference_store'),
-                '%sulu_document_manager.show_drafts%',
+                new Reference('sulu_content.dimension_content_query_enhancer'),
+                new Reference('sulu_admin.smart_content_query_enhancer'),
+                new Reference('doctrine.orm.entity_manager'),
             ])
-            ->tag('sulu.smart_content.data_provider', ['alias' => SnippetInterface::RESOURCE_KEY]);
+            ->tag('sulu_content.smart_content_provider', ['type' => SnippetInterface::RESOURCE_KEY]);
     }
 
     /**

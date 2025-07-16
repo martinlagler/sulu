@@ -29,12 +29,12 @@ use Sulu\Bundle\AdminBundle\FieldType\FieldTypeOptionRegistryInterface;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\MetadataProviderInterface;
 use Sulu\Bundle\AdminBundle\Metadata\MetadataProviderRegistry;
+use Sulu\Bundle\AdminBundle\SmartContent\SmartContentProviderInterface;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkProviderPoolInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Localization\Manager\LocalizationManagerInterface;
-use Sulu\Component\SmartContent\DataProviderPoolInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -119,9 +119,9 @@ class AdminControllerTest extends TestCase
     private $contactManager;
 
     /**
-     * @var ObjectProphecy<DataProviderPoolInterface>
+     * @var \ArrayIterator<string, SmartContentProviderInterface>
      */
-    private $dataProviderPool;
+    private $smartContentProviders;
 
     /**
      * @var ObjectProphecy<LinkProviderPoolInterface>
@@ -195,7 +195,7 @@ class AdminControllerTest extends TestCase
         $this->navigationRegistry = $this->prophesize(NavigationRegistry::class);
         $this->fieldTypeOptionRegistry = $this->prophesize(FieldTypeOptionRegistryInterface::class);
         $this->contactManager = $this->prophesize(ContactManagerInterface::class);
-        $this->dataProviderPool = $this->prophesize(DataProviderPoolInterface::class);
+        $this->smartContentProviders = new \ArrayIterator([]);
         $this->linkProviderPool = $this->prophesize(LinkProviderPoolInterface::class);
         $this->localizationManager = $this->prophesize(LocalizationManagerInterface::class);
 
@@ -216,7 +216,7 @@ class AdminControllerTest extends TestCase
             $this->navigationRegistry->reveal(),
             $this->fieldTypeOptionRegistry->reveal(),
             $this->contactManager->reveal(),
-            $this->dataProviderPool->reveal(),
+            $this->smartContentProviders,
             $this->linkProviderPool->reveal(),
             $this->localizationManager->reveal(),
             $this->environment,
@@ -263,9 +263,6 @@ class AdminControllerTest extends TestCase
         $fieldTypeOptions = ['selection' => []];
         $this->fieldTypeOptionRegistry->toArray()->willReturn($fieldTypeOptions);
 
-        $dataProviders = [];
-        $this->dataProviderPool->getAll()->willReturn($dataProviders);
-
         $admin1 = $this->prophesize(Admin::class);
         $admin1Config = ['test1' => 'value1'];
         $admin1->getConfig()->willReturn($admin1Config);
@@ -282,14 +279,15 @@ class AdminControllerTest extends TestCase
 
         $this->adminPool->getAdmins()->willReturn([$admin1, $admin2, $admin3]);
 
+        $smartContentProviders = [];
         $this->viewHandler->handle(
             Argument::that(
-                function(View $view) use ($dataProviders, $fieldTypeOptions, $views, $admin1Config, $admin2Config) {
+                function(View $view) use ($smartContentProviders, $fieldTypeOptions, $views, $admin1Config, $admin2Config) {
                     $data = $view->getData();
 
                     return 'json' === $view->getFormat()
                         && $data['sulu_admin']['fieldTypeOptions'] === $fieldTypeOptions
-                        && $data['sulu_admin']['smartContent'] === $dataProviders
+                        && $data['sulu_admin']['smartContent'] === $smartContentProviders
                         && $data['sulu_admin']['routes'] === $views
                         && 'navigation_item1' === $data['sulu_admin']['navigation'][0]['title']
                         && 'navigation_item2' === $data['sulu_admin']['navigation'][1]['title']

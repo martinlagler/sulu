@@ -29,7 +29,16 @@ class CollectionRepresentation implements RepresentationInterface
      */
     protected $rel;
 
-    public function __construct($data, string $rel)
+    /**
+     * @var array<string, mixed>
+     */
+    protected $metadata;
+
+    /**
+     * @param mixed $data
+     * @param array<string, mixed> $metadata
+     */
+    public function __construct($data, string $rel, array $metadata = [])
     {
         if (!\is_array($data)) {
             $data = \iterator_to_array($data);
@@ -37,6 +46,7 @@ class CollectionRepresentation implements RepresentationInterface
 
         $this->data = $data;
         $this->rel = $rel;
+        $this->metadata = $metadata;
     }
 
     /**
@@ -47,6 +57,14 @@ class CollectionRepresentation implements RepresentationInterface
         return $this->data;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    public function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
     public function getRel(): string
     {
         return $this->rel;
@@ -55,6 +73,7 @@ class CollectionRepresentation implements RepresentationInterface
     public function toArray(): array
     {
         return [
+            ...$this->metadata,
             '_embedded' => [
                 $this->getRel() => $this->getData(),
             ],

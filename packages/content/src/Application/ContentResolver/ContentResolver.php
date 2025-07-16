@@ -17,8 +17,11 @@ use Sulu\Content\Application\ContentAggregator\ContentAggregatorInterface;
 use Sulu\Content\Application\ContentResolver\Resolver\ResolverInterface;
 use Sulu\Content\Application\ContentResolver\Resolver\SettingsResolver;
 use Sulu\Content\Application\ContentResolver\Value\ContentView;
+use Sulu\Content\Application\ContentResolver\Value\ResolvableInterface;
 use Sulu\Content\Application\ContentResolver\Value\ResolvableResource;
+use Sulu\Content\Application\ContentResolver\Value\SmartResolvable;
 use Sulu\Content\Application\ResourceLoader\ResourceLoaderProvider;
+use Sulu\Content\Application\SmartResolver\SmartResolverProviderInterface;
 use Sulu\Content\Domain\Model\ContentRichEntityInterface;
 use Sulu\Content\Domain\Model\DimensionContentInterface;
 use Webmozart\Assert\Assert;
@@ -38,6 +41,7 @@ class ContentResolver implements ContentResolverInterface
         private iterable $contentResolvers,
         private ResourceLoaderProvider $resourceLoaderProvider,
         private ContentAggregatorInterface $contentAggregator,
+        private SmartResolverProviderInterface $smartResolverProvider,
     ) {
     }
 
@@ -48,7 +52,7 @@ class ContentResolver implements ContentResolverInterface
         $stage = $dimensionContent->getStage();
 
         // Initial resolution to gather ResolvableResources
-        /** @var array<int, array<string, array<int, array<int|string, ResolvableResource>>>> $priorityQueue */
+        /** @var array<int, array<string, array<int, array<int|string, ResolvableInterface>>>> $priorityQueue */
         $priorityQueue = [];
         $resolvedResources = [];
 
@@ -82,6 +86,7 @@ class ContentResolver implements ContentResolverInterface
             // Process loaded resources
             foreach ($loadedResources as $loaderKey => $resources) {
                 foreach ($resources as $id => $resource) {
+                    $depth = $loaderIdDepths[$loaderKey][$id];
                     if ($resource instanceof ContentRichEntityInterface) {
                         // Get the dimension content for this entity
                         $resourceDimension = $this->contentAggregator->aggregate($resource, [
@@ -90,12 +95,29 @@ class ContentResolver implements ContentResolverInterface
                         ]);
 
                         // Resolve this entity
-                        $depth = $loaderIdDepths[$loaderKey][$id];
                         $result = $this->resolveInternal($resourceDimension, $depth, $priorityQueue);
                         $resolvedValue = $this->normalizeContentData(
                             $result['content'],
                             $result['view'],
-                            $resource
+                            $resource,
+                        );
+                    } elseif ($resource instanceof ContentView) {
+                        /** @var array{
+                         *     content: array{'0': array<string, mixed>},
+                         *     view: array{'0': array<string, mixed>},
+                         *     resolvableResources: array<int, array<string, array<int, array<int|string, ResolvableInterface>>>>
+                         * } $result */
+                        $result = $this->resolveContentView($resource, '0', $depth);
+                        $resolvedValue = [
+                            'content' => $result['content']['0'],
+                            // All resolved resources have the same view structure, so we can just take the first one
+                            'view' => \reset($result['view']['0']) ?? $result['view']['0'],
+                        ];
+
+                        // Add resolvable resources to priority queue
+                        $priorityQueue = $this->mergeResolvableResources(
+                            $result['resolvableResources'],
+                            $priorityQueue,
                         );
                     } else {
                         // For non-entity resources, just store the resource directly
@@ -111,13 +133,13 @@ class ContentResolver implements ContentResolverInterface
         $finalContent = $this->replaceResolvableResourcesWithResolvedValues(
             $resolvedContent['content'],
             $resolvedResources,
-            1 // Start at depth 1 since the initial resolution was at depth 0
+            1, // Start at depth 1 since the initial resolution was at depth 0
         );
 
         return $this->normalizeContentData(
             $finalContent,
             $resolvedContent['view'],
-            $dimensionContent->getResource()
+            $dimensionContent->getResource(),
         );
     }
 
@@ -128,18 +150,18 @@ class ContentResolver implements ContentResolverInterface
      *
      * @param DimensionContentInterface<T> $dimensionContent
      * @param int $depth Current depth
-     * @param array<int, array<string, array<int, array<int|string, ResolvableResource>>>> $priorityQueue Reference to the priority queue
+     * @param array<int, array<string, array<int, array<int|string, ResolvableInterface>>>> $priorityQueue Reference to the priority queue
      *
      * @return array{
      *     content: array<string, mixed>,
      *     view: array<string, mixed>,
-     *     resolvableResources: array<int, array<string, array<int, array<string|int, ResolvableResource>>>>,
+     *     resolvableResources: array<int, array<string, array<int, array<string|int, ResolvableInterface>>>>,
      * }
      */
     private function resolveInternal(
         DimensionContentInterface $dimensionContent,
         int $depth,
-        array &$priorityQueue
+        array &$priorityQueue,
     ): array {
         $contentViews = $this->getContentViews($dimensionContent);
         $resolvedContent = $this->resolveContentViews($contentViews, $depth);
@@ -147,7 +169,7 @@ class ContentResolver implements ContentResolverInterface
         // Add resolvable resources to priority queue
         $priorityQueue = $this->mergeResolvableResources(
             $resolvedContent['resolvableResources'],
-            $priorityQueue
+            $priorityQueue,
         );
 
         return $resolvedContent;
@@ -187,7 +209,7 @@ class ContentResolver implements ContentResolverInterface
      * @return array{
      *     content: array<string, mixed>,
      *     view: array<string, mixed>,
-     *     resolvableResources: array<int, array<string, array<int, array<string|int, ResolvableResource>>>>,
+     *     resolvableResources: array<int, array<string, array<int, array<string|int, ResolvableInterface>>>>,
      * }
      */
     private function resolveContentViews(array $contentViews, int $depth): array
@@ -215,7 +237,7 @@ class ContentResolver implements ContentResolverInterface
      * @return array{
      *     content: array<string, mixed>,
      *     view: array<string, mixed>,
-     *     resolvableResources: array<int, array<string, array<int, array<string|int, ResolvableResource>>>>
+     *     resolvableResources: array<int, array<string, array<int, array<string|int, ResolvableInterface>>>>
      * }
      */
     private function resolveContentView(ContentView $contentView, string $name, int $depth): array
@@ -253,12 +275,16 @@ class ContentResolver implements ContentResolverInterface
                     continue;
                 }
 
-                if ($entry instanceof ResolvableResource) {
+                if ($entry instanceof ResolvableInterface) {
                     $resolvableResources[$entry->getPriority()][$entry->getResourceLoaderKey()][$depth][$entry->getId()] = $entry;
                 }
 
                 $result['content'][$name][$key] = $entry;
-                $result['view'][$name][$key] = $view;
+                if (isset($view[$key])) {
+                    $result['view'][$name][$key] = $view[$key];
+                } else {
+                    $result['view'][$name][$key] = $view;
+                }
             }
 
             $result['resolvableResources'] = $resolvableResources;
@@ -266,7 +292,7 @@ class ContentResolver implements ContentResolverInterface
             return $result;
         }
 
-        if ($content instanceof ResolvableResource) {
+        if ($content instanceof ResolvableInterface) {
             // @phpstan-ignore-next-line
             $result['resolvableResources'][$content->getPriority()][$content->getResourceLoaderKey()][$depth][$content->getId()] = $content;
         }
@@ -278,9 +304,51 @@ class ContentResolver implements ContentResolverInterface
     }
 
     /**
+     * @param array<SmartResolvable> $smartResources
+     *
+     * @return array<ContentView>
+     */
+    private function loadSmartResources(array $smartResources, ?string $locale): array
+    {
+        $loadedResources = [];
+
+        foreach ($smartResources as $id => $smartResource) {
+            $resourceLoaderKey = $smartResource->getResourceLoaderKey();
+            $smartResolver = $this->smartResolverProvider->getSmartResolver($resourceLoaderKey);
+
+            $loadedResources[$id] = $smartResolver->resolve(
+                $smartResource,
+                $locale,
+            );
+        }
+
+        return $loadedResources;
+    }
+
+    /**
+     * @param array<ResolvableResource> $resolvableResources
+     *
+     * @return array<string|int, mixed>
+     */
+    private function loadResolvableResources(array $resolvableResources, string $loaderKey, ?string $locale): array
+    {
+        $resourceLoader = $this->resourceLoaderProvider->getResourceLoader($loaderKey);
+        if (!$resourceLoader) {
+            throw new \RuntimeException(\sprintf('ResourceLoader with key "%s" not found', $loaderKey));
+        }
+
+        $resourceIds = \array_map(fn (ResolvableResource $resource) => $resource->getId(), $resolvableResources);
+
+        return $resourceLoader->load(
+            $resourceIds,
+            $locale,
+        );
+    }
+
+    /**
      * Loads and resolves resources from various resource loaders.
      *
-     * @param array<string, array<string, ResolvableResource>> $resourcesPerLoader Resource loaders and their associated resources to load
+     * @param array<string, array<string, ResolvableInterface>> $resourcesPerLoader Resource loaders and their associated resources to load
      *
      * @return array<string, mixed[]> Resolved resources organized by resource loader key
      */
@@ -292,16 +360,25 @@ class ContentResolver implements ContentResolverInterface
                 throw new \RuntimeException(\sprintf('ResourceLoader key "%s" is invalid', $loaderKey));
             }
 
-            $resourceLoader = $this->resourceLoaderProvider->getResourceLoader($loaderKey);
-            if (!$resourceLoader) {
-                throw new \RuntimeException(\sprintf('ResourceLoader with key "%s" not found', $loaderKey));
+            $smartResolvableResources = [];
+            $resolvableResources = [];
+            foreach ($resourcesToLoad as $id => $resource) {
+                if ($resource instanceof SmartResolvable) {
+                    $smartResolvableResources[$id] = $resource;
+                } elseif ($resource instanceof ResolvableResource) {
+                    $resolvableResources[$id] = $resource;
+                } else {
+                    throw new \RuntimeException(\sprintf('Resource with id "%s" is neither a SmartResolvable nor a ResolvableResource', $id));
+                }
             }
 
-            $resourceIds = \array_map(fn (ResolvableResource $resource) => $resource->getId(), $resourcesToLoad);
-            $loadedResources[$loaderKey] = $resourceLoader->load(
-                $resourceIds,
-                $locale
-            );
+            if (\count($smartResolvableResources) > 0) {
+                $loadedResources[$loaderKey] = $this->loadSmartResources($smartResolvableResources, $locale);
+            }
+
+            if (\count($resolvableResources) > 0) {
+                $loadedResources[$loaderKey] = $this->loadResolvableResources($resolvableResources, $loaderKey, $locale);
+            }
         }
 
         return $loadedResources;
@@ -333,9 +410,9 @@ class ContentResolver implements ContentResolverInterface
 
         $hasReplaced = false;
         \array_walk_recursive($content, function(&$value) use ($resolvedResources, &$hasReplaced) {
-            if ($value instanceof ResolvableResource && isset($resolvedResources[$value->getResourceLoaderKey()][$value->getId()])) {
+            if ($value instanceof ResolvableInterface && isset($resolvedResources[$value->getResourceLoaderKey()][$value->getId()])) {
                 $value = $value->executeResourceCallback(
-                    $resolvedResources[$value->getResourceLoaderKey()][$value->getId()]
+                    $resolvedResources[$value->getResourceLoaderKey()][$value->getId()],
                 );
                 $hasReplaced = true;
             }
@@ -357,10 +434,10 @@ class ContentResolver implements ContentResolverInterface
      * Merges the given resolvable resources with the existing resolvable resources.
      * The resolvable resources are ordered by priority and indexed by priority, loader key and object id.
      *
-     * @param array<int, array<string, array<int, array<string|int, ResolvableResource>>>> $resolvableResources
-     * @param array<int, array<string, array<int, array<string|int, ResolvableResource>>>> $existingResolvableResources
+     * @param array<int, array<string, array<int, array<string|int, ResolvableInterface>>>> $resolvableResources
+     * @param array<int, array<string, array<int, array<string|int, ResolvableInterface>>>> $existingResolvableResources
      *
-     * @return array<int, array<string, array<int, array<string|int, ResolvableResource>>>>
+     * @return array<int, array<string, array<int, array<string|int, ResolvableInterface>>>>
      */
     private function mergeResolvableResources(array $resolvableResources, array $existingResolvableResources): array
     {
@@ -416,7 +493,7 @@ class ContentResolver implements ContentResolverInterface
                 'view' => $templateView,
                 'extension' => $extensionData,
             ],
-            $settingsData
+            $settingsData,
         );
     }
 }

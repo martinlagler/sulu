@@ -27,8 +27,8 @@ use Sulu\Article\Domain\Model\ArticleInterface;
 use Sulu\Article\Domain\Repository\ArticleRepositoryInterface;
 use Sulu\Article\Infrastructure\Doctrine\Repository\ArticleRepository;
 use Sulu\Article\Infrastructure\Sulu\Admin\ArticleAdmin;
-use Sulu\Article\Infrastructure\Sulu\Content\ArticleDataProvider;
 use Sulu\Article\Infrastructure\Sulu\Content\ArticleLinkProvider;
+use Sulu\Article\Infrastructure\Sulu\Content\ArticleSmartContentProvider;
 use Sulu\Article\Infrastructure\Sulu\Content\ArticleTeaserProvider;
 use Sulu\Article\Infrastructure\Sulu\Content\PropertyResolver\ArticleSelectionPropertyResolver;
 use Sulu\Article\Infrastructure\Sulu\Content\PropertyResolver\SingleArticleSelectionPropertyResolver;
@@ -54,8 +54,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
  */
 final class SuluArticleBundle extends AbstractBundle
 {
-    use PersistenceExtensionTrait;
     use PersistenceBundleTrait;
+    use PersistenceExtensionTrait;
 
     /**
      * @internal this method is not part of the public API and should only be called by the Symfony framework classes
@@ -244,15 +244,14 @@ final class SuluArticleBundle extends AbstractBundle
             ->tag('sulu_website.reference_store', ['alias' => ArticleInterface::RESOURCE_KEY]);
 
         // Smart Content services
-        $services->set('sulu_article.article_data_provider')
-            ->class(ArticleDataProvider::class) // TODO this should not be handled via Content Bundle instead own service which uses the ArticleRepository
+        $services->set('sulu_article.article_smart_content_provider')
+            ->class(ArticleSmartContentProvider::class)
             ->args([
-                new Reference('sulu_article.article_repository'),
-                new Reference('sulu_content.content_manager'),
-                new Reference('sulu_article.article_reference_store'),
-                '%sulu_document_manager.show_drafts%',
+                new Reference('sulu_content.dimension_content_query_enhancer'),
+                new Reference('sulu_admin.smart_content_query_enhancer'),
+                new Reference('doctrine.orm.entity_manager'),
             ])
-            ->tag('sulu.smart_content.data_provider', ['alias' => ArticleInterface::RESOURCE_KEY]);
+        ->tag('sulu_content.smart_content_provider', ['type' => ArticleInterface::RESOURCE_KEY]);
     }
 
     /**

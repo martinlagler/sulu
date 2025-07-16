@@ -23,7 +23,7 @@ class ContentView
      */
     private function __construct(
         private mixed $content,
-        private array $view
+        private array $view,
     ) {
     }
 
@@ -36,6 +36,26 @@ class ContentView
     }
 
     /**
+     * @param mixed[] $data
+     * @param mixed[] $view
+     */
+    public static function createSmartResolvable(
+        array $data,
+        string $resourceLoaderKey,
+        array $view = [],
+        int $priority = 2048, // Default priority for SmartResolvable should be high
+    ): self {
+        return new self(
+            new SmartResolvable(
+                data: $data,
+                resourceLoaderKey: $resourceLoaderKey,
+                priority: $priority,
+            ),
+            $view,
+        );
+    }
+
+    /**
      * @param mixed[] $view
      */
     public static function createResolvable(string|int $id, string $resourceLoaderKey, array $view, int $priority = 0, ?\Closure $closure = null): self
@@ -45,9 +65,9 @@ class ContentView
                 id: $id,
                 resourceLoaderKey: $resourceLoaderKey,
                 priority: $priority,
-                resourceCallback: $closure
+                resourceCallback: $closure,
             ),
-            $view
+            $view,
         );
     }
 
@@ -59,7 +79,7 @@ class ContentView
         array $ids,
         string $resourceLoaderKey,
         array $view,
-        int $priority = 0
+        int $priority = 0,
     ): self {
         $resolvableResources = [];
 
