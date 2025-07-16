@@ -24,8 +24,10 @@ use Sulu\Page\Application\Mapper\PageMapperInterface;
 use Sulu\Page\Application\Merger\NavigationContextMerger;
 use Sulu\Page\Application\MessageHandler\ApplyWorkflowTransitionPageMessageHandler;
 use Sulu\Page\Application\MessageHandler\CopyLocalePageMessageHandler;
+use Sulu\Page\Application\MessageHandler\CopyPageMessageHandler;
 use Sulu\Page\Application\MessageHandler\CreatePageMessageHandler;
 use Sulu\Page\Application\MessageHandler\ModifyPageMessageHandler;
+use Sulu\Page\Application\MessageHandler\MovePageMessageHandler;
 use Sulu\Page\Application\MessageHandler\OrderPageMessageHandler;
 use Sulu\Page\Application\MessageHandler\RemovePageMessageHandler;
 use Sulu\Page\Domain\Model\Page;
@@ -164,6 +166,23 @@ final class SuluPageBundle extends AbstractBundle
             ])
             ->tag('messenger.message_handler');
 
+        $services->set('sulu_page.move_page_handler')
+            ->class(MovePageMessageHandler::class)
+            ->args([
+                new Reference('sulu_page.page_repository'),
+            ])
+            ->tag('messenger.message_handler');
+
+        $services->set('sulu_page.copy_page_handler')
+            ->class(CopyPageMessageHandler::class)
+            ->args([
+                new Reference('sulu_page.page_repository'),
+                new Reference('sulu_content.content_copier'),
+                new Reference('sulu.core.localization_manager'),
+                new Reference('sulu_content.content_persister'),
+            ])
+            ->tag('messenger.message_handler');
+
         // Mapper service
         $services->set('sulu_page.page_content_mapper')
             ->class(PageContentMapper::class)
@@ -181,6 +200,11 @@ final class SuluPageBundle extends AbstractBundle
         $services->set('sulu_page.navigation_context_merger')
             ->class(NavigationContextMerger::class)
             ->tag('sulu_content.merger');
+
+        // Normalizer service
+        $services->set('sulu_page.page_normalizer')
+            ->class('Sulu\Page\Application\Normalizer\PageNormalizer')
+            ->tag('sulu_content.normalizer');
 
         // Property Resolver services
         $services->set('sulu_page.page_selection_property_resolver')
