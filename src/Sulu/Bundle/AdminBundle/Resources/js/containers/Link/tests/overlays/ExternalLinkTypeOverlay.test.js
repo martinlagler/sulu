@@ -18,6 +18,13 @@ test('Render overlay with an undefined URL', () => {
             onTargetChange={jest.fn()}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: ['_blank', '_self', '_parent', '_top'],
+                }
+            }
             rel={undefined}
             target={undefined}
             title={undefined}
@@ -25,6 +32,19 @@ test('Render overlay with an undefined URL', () => {
     );
 
     expect(externalLinkOverlay.find('Form').render()).toMatchSnapshot();
+});
+
+test('Render overlay without options', () => {
+    expect(() => shallow(
+        <ExternalLinkTypeOverlay
+            href={undefined}
+            onCancel={jest.fn()}
+            onConfirm={jest.fn()}
+            onHrefChange={jest.fn()}
+            open={true}
+            options={undefined}
+        />
+    )).toThrow('The ExternalLinkTypeOverlay needs atleast targets as options in order to work!');
 });
 
 test('Render overlay with mailto URL', () => {
@@ -38,6 +58,18 @@ test('Render overlay with mailto URL', () => {
             onTargetChange={jest.fn()}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target={undefined}
             title={undefined}
@@ -58,6 +90,18 @@ test('Render overlay with a URL', () => {
             onTargetChange={jest.fn()}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target={undefined}
             title={undefined}
@@ -81,6 +125,18 @@ test('Pass correct props to Dialog', () => {
             onTargetChange={jest.fn()}
             onTitleChange={jest.fn()}
             open={false}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target={undefined}
             title={undefined}
@@ -105,6 +161,18 @@ test('Display given URL with query parameters in href input', () => {
             onTargetChange={targetChangeSpy}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             target="_blank"
             title={undefined}
         />
@@ -127,6 +195,18 @@ test('Do not call onHrefChange handler if input did not loose focus', () => {
             onTargetChange={targetChangeSpy}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target="_blank"
             title={undefined}
@@ -151,6 +231,18 @@ test('Fields should change immediately after protocol was changed', () => {
             onTargetChange={targetChangeSpy}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target="_blank"
             title={undefined}
@@ -183,6 +275,18 @@ test('Call onHrefChange with URL that includes mail subject and mail body for ma
             onTargetChange={targetChangeSpy}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target="_blank"
             title={undefined}
@@ -221,6 +325,18 @@ test('Should not include mail subject and body in URL after switching to another
             onTargetChange={jest.fn()}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             target="_blank"
             title={undefined}
         />
@@ -247,6 +363,18 @@ test('Reset target to self when a mailto link is entered', () => {
             onTargetChange={targetChangeSpy}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target="_blank"
             title={undefined}
@@ -273,6 +401,18 @@ test('Should not reset target to self when a non-mail URL is entered', () => {
             onTargetChange={targetChangeSpy}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel={undefined}
             target="_blank"
             title={undefined}
@@ -299,6 +439,18 @@ test('Rel value should be transformed correctly', () => {
             onTargetChange={jest.fn()}
             onTitleChange={jest.fn()}
             open={true}
+            options={
+                {
+                    displayProperties: [],
+                    resourceKey: '',
+                    targets: {
+                        '_blank': 'sulu_admin.link_blank',
+                        '_self': 'sulu_admin.link_self',
+                        '_parent': 'sulu_admin.link_parent',
+                        '_top': 'sulu_admin.link_top',
+                    },
+                }
+            }
             rel="noopener  noreferrer "
             target={undefined}
             title={undefined}

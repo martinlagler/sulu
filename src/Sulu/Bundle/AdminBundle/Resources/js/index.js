@@ -18,7 +18,6 @@ import userStore, {
 } from './stores/userStore';
 import {Config, resourceRouteRegistry} from './services';
 import initializer from './services/initializer';
-import {translate} from './utils';
 import ResourceTabs from './views/ResourceTabs';
 import List, {
     listItemActionRegistry,
@@ -306,9 +305,12 @@ function registerTextEditors() {
 function registerInternalLinkTypes(internalLinkTypes) {
     for (const internalLinkTypeKey in internalLinkTypes) {
         const internalLinkType = internalLinkTypes[internalLinkTypeKey];
+        // Todo: This should not be necessary anymore, when the overlay registry is implemented.
+        const overlay = internalLinkTypeKey === 'external' ? ExternalLinkTypeOverlay : LinkTypeOverlay;
+
         linkTypeRegistry.add(
             internalLinkTypeKey,
-            LinkTypeOverlay,
+            overlay,
             internalLinkType.title,
             {
                 displayProperties: internalLinkType.displayProperties,
@@ -317,17 +319,10 @@ function registerInternalLinkTypes(internalLinkTypes) {
                 listAdapter: internalLinkType.listAdapter,
                 overlayTitle: internalLinkType.overlayTitle,
                 resourceKey: internalLinkType.resourceKey,
+                targets: internalLinkType.targets,
             }
         );
     }
-
-    // Add external LinkType
-    linkTypeRegistry.add(
-        'external',
-        ExternalLinkTypeOverlay,
-        translate('sulu_admin.external_link'),
-        undefined
-    );
 }
 
 function registerFormToolbarActions() {

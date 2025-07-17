@@ -89,5 +89,9 @@
     "sulu_activity.description.pages.preview_link_generated": "{userFullName} hat den öffentlichen Vorschaulink \"{resourceTitle}\" erstellt",
     "sulu_activity.description.pages.preview_link_revoked": "{userFullName} hat den öffentlichen Vorschaulink \"{resourceTitle}\" widerrufen",
     "sulu_reference.resource.pages": "Seite",
-    "sulu_reference.resource.snippets": "Schnipsel"
+    "sulu_reference.resource.snippets": "Schnipsel",
+    "sulu_admin.link_target_blank":  "_blank",
+    "sulu_admin.link_target_self": "_self",
+    "sulu_admin.link_target_parent": "_parent",
+    "sulu_admin.link_target_top": "_top"
 }

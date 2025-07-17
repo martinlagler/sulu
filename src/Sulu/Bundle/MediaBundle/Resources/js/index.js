@@ -64,6 +64,7 @@ initializer.addUpdateConfigHook('sulu_media', (config: Object, initialized: bool
 
     TeaserSelection.Item.mediaUrl = imageFormatUrl + '?locale=en&format=sulu-25x25';
 
+    // Todo: Remove this and add overlay registry.
     when(
         () => !!initializer.initializedTranslationsLocale,
         (): void => {
