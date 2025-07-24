@@ -123,7 +123,7 @@ import {smartContentConfigStore} from './containers/SmartContent';
 import PreviewForm from './views/PreviewForm';
 import FormOverlayList from './views/FormOverlayList';
 import {initializeJexl} from './utils/jexl';
-import {ExternalLinkTypeOverlay, LinkTypeOverlay} from './containers/Link';
+import {ExternalLinkTypeOverlay, linkOverlayRegistry, LinkTypeOverlay} from './containers/Link';
 import linkTypeRegistry from './containers/Link/registries/linkTypeRegistry';
 import AiApplication from './containers/AiApplication';
 
@@ -172,6 +172,7 @@ initializer.addUpdateConfigHook('sulu_admin', (config: Object, initialized: bool
         registerListItemActions();
         registerFieldTypes(config.fieldTypeOptions);
         registerTextEditors();
+        registerLinkOverlays();
         registerInternalLinkTypes(config.internalLinkTypes);
         registerFormToolbarActions();
         registerListToolbarActions();
@@ -302,11 +303,15 @@ function registerTextEditors() {
     textEditorRegistry.add('ckeditor5', CKEditor5);
 }
 
+function registerLinkOverlays() {
+    linkOverlayRegistry.setDefaultOverlay(LinkTypeOverlay);
+    linkOverlayRegistry.add('external', ExternalLinkTypeOverlay);
+}
+
 function registerInternalLinkTypes(internalLinkTypes) {
     for (const internalLinkTypeKey in internalLinkTypes) {
         const internalLinkType = internalLinkTypes[internalLinkTypeKey];
-        // Todo: This should not be necessary anymore, when the overlay registry is implemented.
-        const overlay = internalLinkTypeKey === 'external' ? ExternalLinkTypeOverlay : LinkTypeOverlay;
+        const overlay = linkOverlayRegistry.getOverlay(internalLinkTypeKey);
 
         linkTypeRegistry.add(
             internalLinkTypeKey,

@@ -29,14 +29,13 @@ class MediaLinkProvider implements LinkProviderInterface
 
     public function getConfiguration()
     {
-        /** @var LinkConfigurationBuilder $linkConfigurationBuilder */
         $linkConfigurationBuilder = LinkConfigurationBuilder::create();
 
         return $linkConfigurationBuilder
             ->setTitle($this->translator->trans('sulu_media.media', [], 'admin'))
             ->setResourceKey('media')
-            ->setListAdapter('')
             ->setDisplayProperties(['title'])
+            ->setListAdapter('')
             ->setOverlayTitle('')
             ->setEmptyText('')
             ->setIcon('');
