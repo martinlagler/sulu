@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Bundle\PageBundle\Markup\Link;
+namespace Sulu\Bundle\MarkupBundle\Markup\Link;
 
 use Ramsey\Uuid\Uuid;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;

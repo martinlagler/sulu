@@ -33,22 +33,7 @@ export default class MediaLinkTypeOverlay extends React.Component<LinkTypeOverla
             options,
         } = this.props;
 
-        if (!options || !options.targets) {
-            throw new Error('The MediaLinkTypeOverlay needs atleast targets as options in order to work!');
-        }
-
-        const {
-            targets = {
-                '_blank': 'sulu_admin.link_target_blank',
-                '_self': 'sulu_admin.link_target_self',
-                '_parent': 'sulu_admin.link_target_parent',
-                '_top': 'sulu_admin.link_target_top',
-            },
-        } = options;
-
-        if (typeof href === 'string') {
-            throw new Error('The id of a media should always be a number!');
-        }
+        const targets = options?.targets || ['_blank', '_self', '_parent', '_top'];
 
         return (
             <Dialog
@@ -64,7 +49,7 @@ export default class MediaLinkTypeOverlay extends React.Component<LinkTypeOverla
                         <SingleMediaSelection
                             locale={locale || observable.box(userStore.contentLocale)}
                             onChange={this.handleChange}
-                            value={{displayOption: undefined, id: href}}
+                            value={{displayOption: undefined, id: parseInt(href)}}
                         />
                     </Form.Field>
 
@@ -77,9 +62,9 @@ export default class MediaLinkTypeOverlay extends React.Component<LinkTypeOverla
                     {!!onTargetChange &&
                         <Form.Field label={translate('sulu_admin.link_target')} required={true}>
                             <SingleSelect onChange={onTargetChange} value={target}>
-                                {Object.keys(targets).map((targetValue) => (
+                                {targets.map((targetValue) => (
                                     <SingleSelect.Option key={targetValue} value={targetValue}>
-                                        {translate(targets[targetValue])}
+                                        {translate(`sulu_admin.link${targetValue}`)}
                                     </SingleSelect.Option>
                                 ))}
                             </SingleSelect>

@@ -39,7 +39,7 @@ export default class LinkTypeOverlay extends React.Component<LinkTypeOverlayProp
             listAdapter = '',
             overlayTitle = '',
             resourceKey,
-            targets,
+            targets = ['_blank', '_self', '_parent', '_top'],
         } = options;
 
         return (
@@ -82,9 +82,9 @@ export default class LinkTypeOverlay extends React.Component<LinkTypeOverlayProp
                     {onTargetChange &&
                         <Form.Field label={translate('sulu_admin.link_target')} required={true}>
                             <SingleSelect onChange={onTargetChange} value={target}>
-                                {Object.keys(targets).map((targetValue) => (
+                                {targets.map((targetValue) => (
                                     <SingleSelect.Option key={targetValue} value={targetValue}>
-                                        {translate(targets[targetValue])}
+                                        {translate(`sulu_admin.link${targetValue}`)}
                                     </SingleSelect.Option>
                                 ))}
                             </SingleSelect>

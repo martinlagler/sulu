@@ -14,12 +14,5 @@
 
             <tag name="sulu.link.provider" alias="page"/>
         </service>
-
-        <service id="sulu_page.link_tag.external_provider"
-                 class="Sulu\Bundle\PageBundle\Markup\Link\ExternalLinkProvider">
-            <argument type="service" id="translator"/>
-
-            <tag name="sulu.link.provider" alias="external"/>
-        </service>
     </services>
 </container>

@@ -27,12 +27,7 @@ test('Render overlay with minimal config', () => {
                     listAdapter: 'column_list',
                     overlayTitle: 'Choose page',
                     resourceKey: 'pages',
-                    targets: {
-                        '_blank': 'sulu_admin.link_blank',
-                        '_self': 'sulu_admin.link_self',
-                        '_parent': 'sulu_admin.link_parent',
-                        '_top': 'sulu_admin.link_top',
-                    },
+                    targets: ['_blank', '_self', '_parent', '_top'],
                 }
             }
         />
@@ -71,12 +66,7 @@ test('Render overlay with query enabled', () => {
                     listAdapter: 'column_list',
                     overlayTitle: 'Choose page',
                     resourceKey: 'pages',
-                    targets: {
-                        '_blank': 'sulu_admin.link_blank',
-                        '_self': 'sulu_admin.link_self',
-                        '_parent': 'sulu_admin.link_parent',
-                        '_top': 'sulu_admin.link_top',
-                    },
+                    targets: ['_blank', '_self', '_parent', '_top'],
                 }
             }
         />
@@ -102,12 +92,7 @@ test('Render overlay with anchor enabled', () => {
                     listAdapter: 'column_list',
                     overlayTitle: 'Choose page',
                     resourceKey: 'pages',
-                    targets: {
-                        '_blank': 'sulu_admin.link_blank',
-                        '_self': 'sulu_admin.link_self',
-                        '_parent': 'sulu_admin.link_parent',
-                        '_top': 'sulu_admin.link_top',
-                    },
+                    targets: ['_blank', '_self', '_parent', '_top'],
                 }
             }
         />
@@ -133,12 +118,7 @@ test('Render overlay with target enabled', () => {
                     listAdapter: 'column_list',
                     overlayTitle: 'Choose page',
                     resourceKey: 'pages',
-                    targets: {
-                        '_blank': 'sulu_admin.link_blank',
-                        '_self': 'sulu_admin.link_self',
-                        '_parent': 'sulu_admin.link_parent',
-                        '_top': 'sulu_admin.link_top',
-                    },
+                    targets: ['_blank', '_self', '_parent', '_top'],
                 }
             }
         />
@@ -164,12 +144,7 @@ test('Render overlay with title enabled', () => {
                     listAdapter: 'column_list',
                     overlayTitle: 'Choose page',
                     resourceKey: 'pages',
-                    targets: {
-                        '_blank': 'sulu_admin.link_blank',
-                        '_self': 'sulu_admin.link_self',
-                        '_parent': 'sulu_admin.link_parent',
-                        '_top': 'sulu_admin.link_top',
-                    },
+                    targets: ['_blank', '_self', '_parent', '_top'],
                 }
             }
         />

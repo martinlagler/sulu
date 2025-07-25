@@ -30,12 +30,7 @@ test('Add internal link type to LinkTypeRegistry', () => {
         listAdapter: 'listAdapter',
         overlayTitle: 'overlayTitle',
         resourceKey: 'resourceKey',
-        targets: {
-            '_blank': 'sulu_admin.link_blank',
-            '_self': 'sulu_admin.link_self',
-            '_parent': 'sulu_admin.link_parent',
-            '_top': 'sulu_admin.link_top',
-        },
+        targets: ['_blank', '_self', '_parent', '_top'],
     };
 
     linkTypeRegistry.add('test1', Component, 'Test1', options);

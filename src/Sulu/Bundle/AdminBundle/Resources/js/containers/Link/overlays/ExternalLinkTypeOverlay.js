@@ -173,18 +173,7 @@ class ExternalLinkTypeOverlay extends React.Component<LinkTypeOverlayProps> {
             options,
         } = this.props;
 
-        if (!options || !options.targets) {
-            throw new Error('The ExternalLinkTypeOverlay needs atleast targets as options in order to work!');
-        }
-
-        const {
-            targets = {
-                '_blank': 'sulu_admin.link_target_blank',
-                '_self': 'sulu_admin.link_target_self',
-                '_parent': 'sulu_admin.link_target_parent',
-                '_top': 'sulu_admin.link_target_top',
-            },
-        } = options;
+        const targets = options?.targets || ['_blank', '_self', '_parent', '_top'];
 
         return (
             <Dialog
@@ -211,9 +200,9 @@ class ExternalLinkTypeOverlay extends React.Component<LinkTypeOverlayProps> {
                     {this.protocol && this.protocol !== 'mailto:' && onTargetChange
                         && <Form.Field label={translate('sulu_admin.link_target')} required={true}>
                             <SingleSelect onChange={onTargetChange} value={target}>
-                                {Object.keys(targets).map((targetValue) => (
+                                {targets.map((targetValue) => (
                                     <SingleSelect.Option key={targetValue} value={targetValue}>
-                                        {translate(targets[targetValue])}
+                                        {translate(`sulu_admin.link${targetValue}`)}
                                     </SingleSelect.Option>
                                 ))}
                             </SingleSelect>

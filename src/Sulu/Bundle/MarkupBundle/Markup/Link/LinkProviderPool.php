@@ -51,7 +51,11 @@ class LinkProviderPool implements LinkProviderPoolInterface
             $providerConfiguration = $provider->getConfiguration();
 
             if ($providerConfiguration instanceof LinkConfiguration) {
-                @trigger_deprecation('sulu/sulu', '2.6', 'The LinkProvider should return a LinkConfigurationBuilder and not a LinkConfiguration. The LinkConfigurationBuilder will not be supported in 3.0.');
+                @trigger_deprecation(
+                    'sulu/sulu',
+                    '2.6',
+                    'The LinkProvider should return a LinkConfigurationBuilder and not a LinkConfiguration. The LinkConfiguration will not be supported in 3.0.'
+                );
             }
 
             $configuration[$name] = $providerConfiguration instanceof LinkConfigurationBuilder ? $providerConfiguration->getLinkConfiguration() : $providerConfiguration;
