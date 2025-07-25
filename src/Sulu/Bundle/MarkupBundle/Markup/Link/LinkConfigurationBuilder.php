@@ -53,6 +53,9 @@ class LinkConfigurationBuilder
      */
     private $targets = null;
 
+    /**
+     * @return LinkConfigurationBuilder
+     */
     public static function create()
     {
         return new self();

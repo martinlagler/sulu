@@ -127,8 +127,8 @@ class PageLinkProviderTest extends TestCase
         $this->translator->trans('sulu_page.single_selection_overlay_title', [], 'admin')->willReturn('Choose page');
         $this->translator->trans('sulu_page.no_page_selected', [], 'admin')->willReturn('No page selected');
 
-        /** @var LinkConfigurationBuilder $pageProviderConfiguration */
-        $pageProviderConfiguration = $this->pageLinkProvider->getConfiguration();
+        /** @var LinkConfigurationBuilder $configurationBuilder */
+        $configurationBuilder = $this->pageLinkProvider->getConfiguration();
         $this->assertEquals(
             new LinkConfiguration(
                 'Pages',
@@ -138,14 +138,9 @@ class PageLinkProviderTest extends TestCase
                 'Choose page',
                 'No page selected',
                 'su-document',
-                [
-                    '_blank' => 'sulu_admin.link_blank',
-                    '_self' => 'sulu_admin.link_self',
-                    '_parent' => 'sulu_admin.link_parent',
-                    '_top' => 'sulu_admin.link_top',
-                ],
+                ['_blank', '_self', '_parent', '_top'],
             ),
-            $pageProviderConfiguration->getLinkConfiguration()
+            $configurationBuilder->getLinkConfiguration()
         );
     }
 

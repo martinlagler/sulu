@@ -35,6 +35,10 @@ export default class MediaLinkTypeOverlay extends React.Component<LinkTypeOverla
 
         const targets = options?.targets || ['_blank', '_self', '_parent', '_top'];
 
+        if (typeof href === 'string') {
+            throw new Error('The id of a media should always be a number!');
+        }
+
         return (
             <Dialog
                 cancelText={translate('sulu_admin.cancel')}
@@ -49,7 +53,7 @@ export default class MediaLinkTypeOverlay extends React.Component<LinkTypeOverla
                         <SingleMediaSelection
                             locale={locale || observable.box(userStore.contentLocale)}
                             onChange={this.handleChange}
-                            value={{displayOption: undefined, id: parseInt(href)}}
+                            value={{displayOption: undefined, id: href}}
                         />
                     </Form.Field>
 

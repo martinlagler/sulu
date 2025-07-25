@@ -11,10 +11,6 @@
 
 namespace Sulu\Bundle\MarkupBundle\Markup\Link;
 
-use Ramsey\Uuid\Uuid;
-use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;
-use Sulu\Bundle\MarkupBundle\Markup\Link\LinkItem;
-use Sulu\Bundle\MarkupBundle\Markup\Link\LinkProviderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**

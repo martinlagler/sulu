@@ -9,15 +9,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Bundle\PageBundle\Tests\Unit\Markup\Link;
+namespace Sulu\Bundle\MarkupBundle\Tests\Unit\Markup\Link;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Sulu\Bundle\MarkupBundle\Markup\Link\ExternalLinkProvider;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfiguration;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkItem;
-use Sulu\Bundle\PageBundle\Markup\Link\ExternalLinkProvider;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExternalLinkProviderTest extends TestCase
@@ -34,10 +34,7 @@ class ExternalLinkProviderTest extends TestCase
      */
     protected $translator;
 
-    /**
-     * @var ExternalLinkProvider
-     */
-    protected $externalLinkProvider;
+    protected ExternalLinkProvider $externalLinkProvider;
 
     public function setUp(): void
     {
@@ -52,8 +49,8 @@ class ExternalLinkProviderTest extends TestCase
     {
         $this->translator->trans('sulu_admin.external_link', [], 'admin')->willReturn('External Link');
 
-        /** @var LinkConfigurationBuilder $externalLinkProviderConfiguration */
-        $externalLinkProviderConfiguration = $this->externalLinkProvider->getConfiguration();
+        /** @var LinkConfigurationBuilder $configurationBuilder */
+        $configurationBuilder = $this->externalLinkProvider->getConfiguration();
         $this->assertEquals(
             new LinkConfiguration(
                 'External Link',
@@ -63,14 +60,9 @@ class ExternalLinkProviderTest extends TestCase
                 '',
                 '',
                 '',
-                [
-                    '_blank',
-                    '_self',
-                    '_parent',
-                    '_top',
-                ],
+                ['_blank', '_self', '_parent', '_top'],
             ),
-            $externalLinkProviderConfiguration->getLinkConfiguration()
+            $configurationBuilder->getLinkConfiguration()
         );
     }
 
@@ -84,12 +76,12 @@ class ExternalLinkProviderTest extends TestCase
 
         $this->assertCount(2, $result);
 
-        $this->assertEquals($url1, $result[0]->getUrl());
-        $this->assertEquals($url1, $result[0]->getTitle());
+        $this->assertSame($url1, $result[0]->getUrl());
+        $this->assertSame('', $result[0]->getTitle());
         $this->assertTrue($result[0]->isPublished());
 
-        $this->assertEquals($url2, $result[1]->getUrl());
-        $this->assertEquals($url2, $result[1]->getTitle());
+        $this->assertSame($url2, $result[1]->getUrl());
+        $this->assertSame('', $result[1]->getTitle());
         $this->assertTrue($result[1]->isPublished());
     }
 }

@@ -69,7 +69,7 @@ class LinkConfiguration
     ];
 
     /**
-     * @param array<string, string>|null $targets
+     * @param array<string>|null $targets
      */
     public function __construct(
         string $title,
