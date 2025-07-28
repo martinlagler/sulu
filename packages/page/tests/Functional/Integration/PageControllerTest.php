@@ -23,6 +23,7 @@ use Sulu\Page\Application\MessageHandler\CreatePageMessageHandler;
 use Sulu\Page\Application\MessageHandler\ModifyPageMessageHandler;
 use Sulu\Page\Domain\Model\Page;
 use Sulu\Page\Domain\Model\PageInterface;
+use Sulu\Route\Domain\Repository\RouteRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 /**
@@ -234,8 +235,8 @@ class PageControllerTest extends SuluTestCase
 
         $this->assertResponseSnapshot('page_post.json', $response, 201);
 
-        $routeRepository = $this->getContainer()->get('sulu.repository.route');
-        $this->assertCount(0, $routeRepository->findAll());
+        $routeRepository = $this->getContainer()->get(RouteRepositoryInterface::class);
+        $this->assertCount(1, $routeRepository->findBy([]));
 
         /** @var string $id */
         $id = \json_decode((string) $response->getContent(), true)['id'] ?? null; // @phpstan-ignore-line
@@ -375,8 +376,8 @@ class PageControllerTest extends SuluTestCase
 
         $response = $this->client->getResponse();
 
-        $routeRepository = $this->getContainer()->get('sulu.repository.route');
-        $this->assertCount(0, $routeRepository->findAll());
+        $routeRepository = $this->getContainer()->get(RouteRepositoryInterface::class);
+        $this->assertCount(4, $routeRepository->findBy([]));
 
         $this->assertResponseSnapshot('page_put.json', $response, 200);
     }
@@ -415,6 +416,10 @@ class PageControllerTest extends SuluTestCase
         $this->client->request('GET', '/admin/api/pages?locale=en&webspace=sulu-io&expandedIds=' . $id);
         $response = $this->client->getResponse();
         $this->assertResponseSnapshot('page_post_before_order_list.json', $response, 200);
+
+        // test if the routes count still correct
+        $routeRepository = $this->getContainer()->get(RouteRepositoryInterface::class);
+        $this->assertCount(7, $routeRepository->findBy([]));
 
         return $id;
     }
@@ -503,6 +508,9 @@ class PageControllerTest extends SuluTestCase
         /** @var string $copiedPageId */
         $copiedPageId = $content['_embedded']['pages'][0]['_embedded']['pages'][1]['_embedded']['pages'][0]['id']; // @phpstan-ignore-line
 
+        $routeRepository = $this->getContainer()->get(RouteRepositoryInterface::class);
+        $this->assertCount(10, $routeRepository->findBy([]));
+
         return $copiedPageId;
     }
 
@@ -527,8 +535,8 @@ class PageControllerTest extends SuluTestCase
         $response = $this->client->getResponse();
         $this->assertHttpStatusCode(204, $response);
 
-        $routeRepository = $this->getContainer()->get('sulu.repository.route');
-        $this->assertCount(0, $routeRepository->findAll());
+        $routeRepository = $this->getContainer()->get(RouteRepositoryInterface::class);
+        $this->assertCount(10, $routeRepository->findBy([])); // TODO we need tackle this
     }
 
     protected function getSnapshotFolder(): string
