@@ -15,7 +15,6 @@ use Sulu\Bundle\PageBundle\DependencyInjection\Compiler\ContentExportCompilerPas
 use Sulu\Bundle\PageBundle\DependencyInjection\Compiler\StructureExtensionCompilerPass;
 use Sulu\Bundle\PageBundle\DependencyInjection\Compiler\SuluNextPageCompilerPass;
 use Sulu\Bundle\PageBundle\DependencyInjection\Compiler\VersioningCompilerPass;
-use Sulu\Bundle\PageBundle\DependencyInjection\Compiler\WebspacesPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -30,7 +29,6 @@ final class SuluPageBundle extends Bundle
 
         $container->addCompilerPass(new SuluNextPageCompilerPass());
         $container->addCompilerPass(new ContentExportCompilerPass());
-        $container->addCompilerPass(new WebspacesPass());
         $container->addCompilerPass(new StructureExtensionCompilerPass());
         $container->addCompilerPass(new VersioningCompilerPass());
     }

@@ -11,7 +11,6 @@
 
 namespace Sulu\Bundle\CategoryBundle\DependencyInjection;
 
-use Sulu\Bundle\CategoryBundle\Admin\CategoryAdmin;
 use Sulu\Bundle\CategoryBundle\Entity\CategoryInterface;
 use Sulu\Bundle\CategoryBundle\Entity\CategoryMetaRepositoryInterface;
 use Sulu\Bundle\CategoryBundle\Entity\CategoryRepositoryInterface;
@@ -162,28 +161,6 @@ class SuluCategoryExtension extends Extension implements PrependExtensionInterfa
                                     ],
                                 ],
                             ],
-                        ],
-                    ],
-                ]
-            );
-        }
-
-        if ($container->hasExtension('sulu_search')) {
-            $container->prependExtensionConfig(
-                'sulu_search',
-                [
-                    'indexes' => [
-                        'category' => [
-                            'name' => 'sulu_category.categories',
-                            'icon' => 'su-tag',
-                            'view' => [
-                                'name' => CategoryAdmin::EDIT_FORM_VIEW,
-                                'result_to_view' => [
-                                    'id' => 'id',
-                                    'locale' => 'locale',
-                                ],
-                            ],
-                            'security_context' => CategoryAdmin::SECURITY_CONTEXT,
                         ],
                     ],
                 ]
