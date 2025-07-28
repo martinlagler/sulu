@@ -503,10 +503,10 @@ from the SuluContentBundle. Be aware that also your custom controllers have to b
 +        <controller>Sulu\Content\UserInterface\Controller\Website\ContentController::indexAction</controller>
 ```
 
-### Page, CustomUrl, Snippet JS includes path changed
+### Page, CustomUrl, Snippet, Search JS includes path changed
 
-The paths to the page, custom url and snippet bundle has changed so its JS package
-paths need also be changed. This step is normally automatically done by `bin/console sulu:admin:update-build` command,
+Some bundles have undergone path changes, requiring corresponding updates to their JS package
+paths. This step is normally automatically handled by the `bin/console sulu:admin:update-build` command,
 kept here for completeness:
 
 ```diff
@@ -514,6 +514,8 @@ kept here for completeness:
 +        "sulu-custom-url-bundle": "file:../../vendor/sulu/sulu/packages/custom-url/assets/js",
 -        "sulu-page-bundle": "file:../../vendor/sulu/sulu/src/Sulu/Bundle/PageBundle/Resources/js",
 +        "sulu-page-bundle": "file:../../vendor/sulu/sulu/packages/page/assets/js",
+-        "sulu-search-bundle": "file:../../vendor/sulu/sulu/src/Sulu/Bundle/SearchBundle/Resources/js",
++        "sulu-search-bundle": "file:../../vendor/sulu/sulu/packages/search/assets/js",
 -        "sulu-snippet-bundle": "file:../../vendor/sulu/sulu/src/Sulu/Bundle/SnippetBundle/Resources/js",
 +        "sulu-snippet-bundle": "file:../../vendor/sulu/sulu/packages/snippet/assets/js",
 ```
