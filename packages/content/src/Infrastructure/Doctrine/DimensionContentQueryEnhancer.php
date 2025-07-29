@@ -83,6 +83,7 @@ class DimensionContentQueryEnhancer
      *     audienceTargeting?: bool,
      *     targetGroupId?: int,
      *     segmentKey?: string,
+     *     version?: int|null,
      * } $filters
      * @param array{
      *     title?: 'asc'|'desc',
@@ -122,6 +123,11 @@ class DimensionContentQueryEnhancer
 
             $queryBuilder->andWhere('filterDimensionContent.' . $key . '= :' . $key)
                 ->setParameter($key, $value);
+        }
+
+        if ($version = $filters['version'] ?? null) {
+            $queryBuilder->andWhere('filterDimensionContent.version = :version')
+                ->setParameter('version', $version);
         }
 
         if (\is_subclass_of($dimensionContentClassName, ExcerptInterface::class)) {

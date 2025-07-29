@@ -1,0 +1,22 @@
+{
+    "_embedded": {
+        "articles_versions": [
+            {
+                "title": "Test modified version article",
+                "version": "@integer@",
+                "changer": "Max Mustermann",
+                "id": "@string@"
+            },
+            {
+                "title": "Test Article",
+                "version": "@integer@",
+                "changer": "Max Mustermann",
+                "id": "@string@"
+            }
+        ]
+    },
+    "limit": 10,
+    "total": 2,
+    "page": 1,
+    "pages": 1
+}

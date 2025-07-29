@@ -17,8 +17,8 @@
 
             <tag name="sulu.context" context="admin"/>
         </service>
-
         <service id="Sulu\Content\Infrastructure\Sulu\Admin\ContentViewBuilderFactoryInterface" alias="sulu_content.content_view_builder_factory"/>
+
         <service
             id="sulu_content.webspace_select"
             class="Sulu\Content\Infrastructure\Sulu\Page\Select\WebspaceSelect"

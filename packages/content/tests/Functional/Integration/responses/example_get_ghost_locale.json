@@ -1,6 +1,8 @@
 {
     "author": null,
     "authored": null,
+    "changer" : null,
+    "creator" : null,
     "availableLocales": ["en"],
     "contentLocales": ["en"],
     "excerptCategories": [],
@@ -30,6 +32,7 @@
     "shadowOn": false,
     "stage": "draft",
     "template": null,
+    "version": 0,
     "title": null,
     "workflowPlace": null
 }

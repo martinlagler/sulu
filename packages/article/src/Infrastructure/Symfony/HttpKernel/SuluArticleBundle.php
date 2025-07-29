@@ -20,6 +20,7 @@ use Sulu\Article\Application\MessageHandler\CopyLocaleArticleMessageHandler;
 use Sulu\Article\Application\MessageHandler\CreateArticleMessageHandler;
 use Sulu\Article\Application\MessageHandler\ModifyArticleMessageHandler;
 use Sulu\Article\Application\MessageHandler\RemoveArticleMessageHandler;
+use Sulu\Article\Application\MessageHandler\RestoreArticleVersionMessageHandler;
 use Sulu\Article\Domain\Model\Article;
 use Sulu\Article\Domain\Model\ArticleDimensionContent;
 use Sulu\Article\Domain\Model\ArticleDimensionContentInterface;
@@ -139,6 +140,14 @@ final class SuluArticleBundle extends AbstractBundle
             ])
             ->tag('messenger.message_handler');
 
+        $services->set('sulu_article.restore_article_version_handler')
+            ->class(RestoreArticleVersionMessageHandler::class)
+            ->args([
+                new Reference('sulu_article.article_repository'),
+                new Reference('sulu_content.content_copier'),
+            ])
+            ->tag('messenger.message_handler');
+
         // Mapper service
         $services->set('sulu_article.article_content_mapper')
             ->class(ArticleContentMapper::class)
@@ -155,6 +164,7 @@ final class SuluArticleBundle extends AbstractBundle
                 new Reference('sulu_content.content_view_builder_factory'),
                 new Reference('sulu_security.security_checker'),
                 new Reference('sulu.core.localization_manager'),
+                new Reference('sulu_activity.activity_list_view_builder_factory'),
             ])
             ->tag('sulu.context', ['context' => 'admin'])
             ->tag('sulu.admin');
@@ -284,6 +294,12 @@ final class SuluArticleBundle extends AbstractBundle
                         'articles' => [
                             'routes' => [
                                 'list' => 'sulu_article.get_articles',
+                                'detail' => 'sulu_article.get_article',
+                            ],
+                        ],
+                        'articles_versions' => [
+                            'routes' => [
+                                'list' => 'sulu_article.get_article_versions',
                                 'detail' => 'sulu_article.get_article',
                             ],
                         ],

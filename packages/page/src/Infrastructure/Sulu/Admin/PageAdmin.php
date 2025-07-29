@@ -16,7 +16,6 @@ use Sulu\Bundle\AdminBundle\Admin\Admin;
 use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItem;
 use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItemCollection;
 use Sulu\Bundle\AdminBundle\Admin\View\DropdownToolbarAction;
-use Sulu\Bundle\AdminBundle\Admin\View\ListItemAction;
 use Sulu\Bundle\AdminBundle\Admin\View\PreviewFormViewBuilder;
 use Sulu\Bundle\AdminBundle\Admin\View\SaveWithFormDialogToolbarAction;
 use Sulu\Bundle\AdminBundle\Admin\View\ToolbarAction;
@@ -59,8 +58,8 @@ class PageAdmin extends Admin
         private ViewBuilderFactoryInterface $viewBuilderFactory,
         private WebspaceManagerInterface $webspaceManager,
         private SecurityCheckerInterface $securityChecker,
-        private ActivityViewBuilderFactoryInterface $activityViewBuilderFactory,
         private ContentViewBuilderFactoryInterface $contentViewBuilderFactory,
+        private ActivityViewBuilderFactoryInterface $activityViewBuilderFactory,
     ) {
     }
 
@@ -235,14 +234,14 @@ class PageAdmin extends Admin
             $tabCondition = 'shadowOn == false';
             /** @var PreviewFormViewBuilder $viewBuilder */
             foreach ($viewBuilders as $viewBuilder) {
-                if ('sulu_page.page_add_form.content' === $viewBuilder->getName()) {
+                if (PageAdmin::ADD_FORM_VIEW . '.content' === $viewBuilder->getName()) {
                     $viewBuilder
                         ->addRouterAttributesToEditView(['webspace'])
                         ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
                         ->addRouterAttributesToFormMetadata($routerAttributesToFormMetadata);
                 }
 
-                if ('sulu_page.page_edit_form.content' === $viewBuilder->getName()) {
+                if (PageAdmin::EDIT_FORM_VIEW . '.content' === $viewBuilder->getName()) {
                     $viewBuilder
                         ->disablePreviewWebspaceChooser()
                         ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
@@ -251,14 +250,14 @@ class PageAdmin extends Admin
                         ->setPreviewCondition($previewCondition);
                 }
 
-                if ('sulu_page.page_edit_form.seo' === $viewBuilder->getName()) {
+                if (PageAdmin::EDIT_FORM_VIEW . '.seo' === $viewBuilder->getName()) {
                     $viewBuilder
                         ->disablePreviewWebspaceChooser()
                         ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
                         ->setPreviewCondition($previewCondition);
                 }
 
-                if ('sulu_page.page_edit_form.excerpt' === $viewBuilder->getName()) {
+                if (PageAdmin::EDIT_FORM_VIEW . '.excerpt' === $viewBuilder->getName()) {
                     $viewBuilder
                         ->disablePreviewWebspaceChooser()
                         ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
@@ -267,7 +266,7 @@ class PageAdmin extends Admin
                         ->setTabCondition($tabCondition);
                 }
 
-                if ('sulu_page.page_edit_form.settings' === $viewBuilder->getName()) {
+                if (PageAdmin::EDIT_FORM_VIEW . '.settings' === $viewBuilder->getName()) {
                     $viewBuilder
                         ->disablePreviewWebspaceChooser()
                         ->addRouterAttributesToFormRequest($routerAttributesToFormRequest)
@@ -275,6 +274,19 @@ class PageAdmin extends Admin
                 }
 
                 $viewCollection->add($viewBuilder);
+            }
+
+            if ($this->activityViewBuilderFactory->hasActivityListPermission()) {
+                $insightsResourceTabViewName = PageAdmin::EDIT_FORM_VIEW . '.insights';
+                $viewCollection->add(
+                    $this->activityViewBuilderFactory
+                        ->createActivityListViewBuilder(
+                            $insightsResourceTabViewName . '.activity',
+                            '/activities',
+                            PageInterface::RESOURCE_KEY
+                        )
+                        ->setParent($insightsResourceTabViewName)
+                );
             }
 
             $viewCollection->add(
@@ -298,53 +310,6 @@ class PageAdmin extends Admin
                     ->setTabOrder(5120)
                     ->setParent(static::EDIT_FORM_VIEW)
             );
-
-            if ($this->activityViewBuilderFactory->hasActivityListPermission()) {
-                $activityResourceTabViewName = PageAdmin::EDIT_FORM_VIEW . '.activity';
-
-                $viewCollection->add(
-                    $this->viewBuilderFactory
-                        ->createResourceTabViewBuilder($activityResourceTabViewName, '/activity')
-                        ->setResourceKey(PageInterface::RESOURCE_KEY)
-                        ->setTabOrder(6144)
-                        ->setTabTitle('sulu_admin.activity_versions')
-                        ->setParent(PageAdmin::EDIT_FORM_VIEW)
-                );
-
-                $viewCollection->add(
-                    $this->activityViewBuilderFactory
-                        ->createActivityListViewBuilder(
-                            $activityResourceTabViewName . '.activity',
-                            '/activities',
-                            PageInterface::RESOURCE_KEY
-                        )
-                        ->setParent($activityResourceTabViewName)
-                );
-
-                $viewCollection->add(
-                    $this->viewBuilderFactory
-                        ->createListViewBuilder($activityResourceTabViewName . '.versions', '/versions')
-                        ->setTabTitle('sulu_admin.versions')
-                        ->setResourceKey('page_versions')
-                        ->setListKey('page_versions')
-                        ->addListAdapters(['table'])
-                        ->addAdapterOptions([
-                            'table' => [
-                                'skin' => 'flat',
-                            ],
-                        ])
-                        ->disableTabGap()
-                        ->disableSearching()
-                        ->disableSelection()
-                        ->disableColumnOptions()
-                        ->disableFiltering()
-                        ->addRouterAttributesToListRequest(['id', 'webspace'])
-                        ->addItemActions([
-                            new ListItemAction('restore_version', ['success_view' => PageAdmin::EDIT_FORM_VIEW]),
-                        ])
-                        ->setParent($activityResourceTabViewName)
-                );
-            }
         }
     }
 

@@ -28,6 +28,7 @@ use Sulu\Page\Application\MessageHandler\ModifyPageMessageHandler;
 use Sulu\Page\Application\MessageHandler\MovePageMessageHandler;
 use Sulu\Page\Application\MessageHandler\OrderPageMessageHandler;
 use Sulu\Page\Application\MessageHandler\RemovePageMessageHandler;
+use Sulu\Page\Application\MessageHandler\RestorePageVersionMessageHandler;
 use Sulu\Page\Domain\Model\Page;
 use Sulu\Page\Domain\Model\PageDimensionContent;
 use Sulu\Page\Domain\Model\PageDimensionContentInterface;
@@ -184,6 +185,14 @@ final class SuluPageBundle extends AbstractBundle
             ])
             ->tag('messenger.message_handler');
 
+        $services->set('sulu_page.restore_page_version_handler')
+            ->class(RestorePageVersionMessageHandler::class)
+            ->args([
+                new Reference('sulu_page.page_repository'),
+                new Reference('sulu_content.content_copier'),
+            ])
+            ->tag('messenger.message_handler');
+
         // Mapper service
         $services->set('sulu_page.page_content_mapper')
             ->class(PageContentMapper::class)
@@ -243,8 +252,8 @@ final class SuluPageBundle extends AbstractBundle
                 new Reference('sulu_admin.view_builder_factory'),
                 new Reference('sulu_core.webspace.webspace_manager'),
                 new Reference('sulu_security.security_checker'),
-                new Reference('sulu_activity.activity_list_view_builder_factory'),
                 new Reference('sulu_content.content_view_builder_factory'),
+                new Reference('sulu_activity.activity_list_view_builder_factory'),
             ])
             ->tag('sulu.context', ['context' => 'admin'])
             ->tag('sulu.admin');
@@ -407,6 +416,12 @@ final class SuluPageBundle extends AbstractBundle
                         'pages' => [
                             'routes' => [
                                 'list' => 'sulu_page.get_pages',
+                                'detail' => 'sulu_page.get_page',
+                            ],
+                        ],
+                        'pages_versions' => [
+                            'routes' => [
+                                'list' => 'sulu_page.get_page_versions',
                                 'detail' => 'sulu_page.get_page',
                             ],
                         ],

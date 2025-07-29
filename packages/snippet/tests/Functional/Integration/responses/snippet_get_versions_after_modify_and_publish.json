@@ -1,0 +1,22 @@
+{
+    "_embedded": {
+        "snippets_versions": [
+            {
+                "title": "Test modified version snippet",
+                "version": "@integer@",
+                "changer": "Max Mustermann",
+                "id": "@string@"
+            },
+            {
+                "title": "Test Snippet",
+                "version": "@integer@",
+                "changer": "Max Mustermann",
+                "id": "@string@"
+            }
+        ]
+    },
+    "limit": 10,
+    "total": 2,
+    "page": 1,
+    "pages": 1
+}

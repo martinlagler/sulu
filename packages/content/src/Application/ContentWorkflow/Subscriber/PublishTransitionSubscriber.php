@@ -49,12 +49,6 @@ class PublishTransitionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($dimensionContent instanceof WorkflowInterface) {
-            if (!$dimensionContent->getWorkflowPublished()) {
-                $dimensionContent->setWorkflowPublished(new \DateTimeImmutable());
-            }
-        }
-
         $context = $transitionEvent->getContext();
 
         $dimensionContentCollection = $context[ContentWorkflowInterface::DIMENSION_CONTENT_COLLECTION_CONTEXT_KEY] ?? null;
@@ -77,12 +71,27 @@ class PublishTransitionSubscriber implements EventSubscriberInterface
         $targetDimensionAttributes = $dimensionAttributes;
         $targetDimensionAttributes['stage'] = DimensionContentInterface::STAGE_LIVE;
 
+        /** @var string $locale */
+        $locale = $dimensionContent->getLocale();
+
+        if ($dimensionContent instanceof WorkflowInterface) {
+            if (!$dimensionContent->getWorkflowPublished()) {
+                $dimensionContent->setWorkflowPublished(new \DateTimeImmutable());
+            }
+        }
+
+        // Create a new version of the content before it is published
+        $this->contentCopier->copy(
+            $contentRichEntity,
+            \array_merge($dimensionAttributes, ['locale' => $locale, 'version' => DimensionContentInterface::CURRENT_VERSION]),
+            $contentRichEntity,
+            \array_merge($dimensionAttributes, ['locale' => $locale, 'version' => \time()]),
+            ['ignoredAttributes' => ['url']] // ignore url, because we cannot restore it from a version
+        );
+
         $shadowLocale = $dimensionContent instanceof ShadowInterface
             ? $dimensionContent->getShadowLocale()
             : null;
-
-        /** @var string $locale */
-        $locale = $dimensionContent->getLocale();
 
         if (!$shadowLocale) {
             $publishedDimensionContent = $this->contentCopier->copyFromDimensionContentCollection(

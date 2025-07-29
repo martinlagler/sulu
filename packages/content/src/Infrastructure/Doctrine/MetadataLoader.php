@@ -49,9 +49,12 @@ final class MetadataLoader
             $this->addField($metadata, 'locale', 'string', ['length' => 15, 'nullable' => true]);
             $this->addField($metadata, 'ghostLocale', 'string', ['length' => 15, 'nullable' => true]);
             $this->addField($metadata, 'availableLocales', 'json', ['nullable' => true, 'options' => ['jsonb' => true]]);
+            $this->addField($metadata, 'version', 'integer', ['columnName' => 'version', 'nullable' => false]);
+
             $this->addIndex($metadata, 'dimension', ['stage', 'locale']);
             $this->addIndex($metadata, 'locale', ['locale']);
             $this->addIndex($metadata, 'stage', ['stage']);
+            $this->addIndex($metadata, 'version', ['version']);
         }
 
         if ($reflection->implementsInterface(ShadowInterface::class)) {

@@ -22,6 +22,7 @@ use Sulu\Content\Domain\Model\RoutableTrait;
 use Sulu\Content\Domain\Model\SeoTrait;
 use Sulu\Content\Domain\Model\ShadowTrait;
 use Sulu\Content\Domain\Model\TemplateTrait;
+//use Sulu\Content\Domain\Model\WebspaceTrait;
 use Sulu\Content\Domain\Model\WebspaceTrait;
 use Sulu\Content\Domain\Model\WorkflowTrait;
 
