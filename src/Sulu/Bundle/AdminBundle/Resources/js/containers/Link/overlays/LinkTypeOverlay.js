@@ -84,7 +84,7 @@ export default class LinkTypeOverlay extends React.Component<LinkTypeOverlayProp
                             <SingleSelect onChange={onTargetChange} value={target}>
                                 {targets.map((targetValue) => (
                                     <SingleSelect.Option key={targetValue} value={targetValue}>
-                                        {translate(`sulu_admin.link${targetValue}`)}
+                                        {translate(`sulu_admin.link_target${targetValue}`)}
                                     </SingleSelect.Option>
                                 ))}
                             </SingleSelect>
