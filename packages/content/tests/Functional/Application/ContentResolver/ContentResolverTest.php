@@ -137,6 +137,105 @@ class ContentResolverTest extends SuluTestCase
         self::assertTrue($seo['hideInSitemap']);
     }
 
+    public function testResolveContentWithProperties(): void
+    {
+        $example0 = static::createExample(
+            [
+                'en' => [
+                    'live' => [
+                        'template' => 'default-example-selection',
+                        'title' => 'Nested example',
+                        'url' => '/nested-example',
+                        'description' => 'Nested example description',
+
+                        'excerptTitle' => 'excerpt-example-title-0',
+                        'excerptDescription' => 'excerpt-example-description-0',
+
+                        'seoTitle' => 'seo-example-title-0',
+                        'seoDescription' => 'seo-example-description-0',
+                    ],
+                ],
+            ]
+        );
+        static::getEntityManager()->flush();
+
+        $example1 = static::createExample(
+            [
+                'en' => [
+                    'live' => [
+                        'template' => 'default-example-selection',
+                        'title' => 'Lorem Ipsum',
+                        'url' => '/lorem-ipsum',
+                        'examples' => [$example0->getId()],
+                        'examples_with_properties' => [$example0->getId()],
+                        'excerptTitle' => 'excerpt-title-1',
+                        'excerptMore' => 'excerpt-more-1',
+                        'excerptDescription' => 'excerpt-description-1',
+
+                        'seoTitle' => 'seo-title-1',
+                        'seoDescription' => 'seo-description-1',
+                        'seoKeywords' => 'seo-keywords-1',
+                        'seoCanonicalUrl' => 'https://sulu.io',
+                        'seoNoIndex' => true,
+                        'seoNoFollow' => true,
+                        'seoHideInSitemap' => true,
+                    ],
+                ],
+            ]
+        );
+
+        static::getEntityManager()->flush();
+
+        $dimensionContent = $this->contentAggregator->aggregate($example1, ['locale' => 'en', 'stage' => 'live']);
+        $result = $this->contentResolver->resolve(
+            $dimensionContent,
+            [
+                'title' => 'title',
+                'url' => 'url',
+                'examplesWithProperties' => 'examples_with_properties',
+                'examplesWithoutProperties' => 'examples',
+            ]
+        );
+
+        self::assertEmpty($result['content']); // content is empty because all fields are extracted to root // TODO is this correct?
+
+        // The result contains dynamically mapped properties at the root level
+        // PHPStan doesn't know about these dynamic properties, so we suppress the warnings
+        // @phpstan-ignore-next-line offsetAccess.notFound
+        self::assertSame('Lorem Ipsum', $result['title']);
+        // @phpstan-ignore-next-line offsetAccess.notFound
+        self::assertSame('/lorem-ipsum', $result['url']);
+
+        /** @var array<int, mixed> $examplesWithProperties */
+        // @phpstan-ignore-next-line offsetAccess.notFound
+        $examplesWithProperties = $result['examplesWithProperties'];
+        self::assertCount(1, $examplesWithProperties);
+
+        /** @var array<int, mixed> $examplesWithoutProperties */
+        // @phpstan-ignore-next-line offsetAccess.notFound
+        $examplesWithoutProperties = $result['examplesWithoutProperties'];
+        self::assertCount(1, $examplesWithoutProperties);
+
+        /** @var array<string, mixed> $exampleWithProperties */
+        $exampleWithProperties = $examplesWithProperties[0];
+        self::assertIsInt($exampleWithProperties['id']);
+        self::assertSame('Nested example', $exampleWithProperties['title']);
+        self::assertSame('Nested example description', $exampleWithProperties['description']);
+        self::assertSame('excerpt-example-title-0', $exampleWithProperties['excerptTitle']);
+        self::assertSame('excerpt-example-description-0', $exampleWithProperties['excerptDescription']);
+        self::assertSame('seo-example-title-0', $exampleWithProperties['seoTitle']);
+        self::assertSame('seo-example-description-0', $exampleWithProperties['seoDescription']);
+
+        /** @var array<string, mixed> $exampleWithoutProperties */
+        $exampleWithoutProperties = $examplesWithoutProperties[0];
+        self::assertSame('Nested example', $exampleWithoutProperties['title']);
+        self::assertSame('/nested-example', $exampleWithoutProperties['url']);
+        self::assertSame('Nested example description', $exampleWithoutProperties['description']);
+        self::assertNull($exampleWithoutProperties['image']);
+        self::assertEmpty($exampleWithoutProperties['examples']);
+        self::assertEmpty($exampleWithoutProperties['examples_with_properties']);
+    }
+
     public function testResolveMedias(): void
     {
         // @phpstan-ignore-next-line

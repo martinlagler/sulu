@@ -22,6 +22,12 @@ use Sulu\Content\Application\PropertyResolver\Resolver\PropertyResolverInterface
  */
 class ArticleSelectionPropertyResolver implements PropertyResolverInterface
 {
+    /**
+     * @param array{
+     *     resourceLoader?: string,
+     *     properties?: array<string, mixed>|null,
+     * } $params
+     */
     public function resolve(mixed $data, string $locale, array $params = []): ContentView
     {
         if (
@@ -50,7 +56,10 @@ class ArticleSelectionPropertyResolver implements PropertyResolverInterface
                 'ids' => $identifiers,
                 ...$params,
             ],
-            priority: 100
+            priority: 100,
+            metadata: [
+                'properties' => $params['properties'] ?? null,
+            ]
         );
     }
 

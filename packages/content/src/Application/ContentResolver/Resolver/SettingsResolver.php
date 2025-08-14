@@ -49,13 +49,14 @@ readonly class SettingsResolver implements ResolverInterface
     ) {
     }
 
-    public function resolve(DimensionContentInterface $dimensionContent): ?ContentView
+    public function resolve(DimensionContentInterface $dimensionContent, ?array $properties = null): ?ContentView
     {
         /** @var SettingsData $result */
         $result = [
             'availableLocales' => $dimensionContent->getAvailableLocales() ?? [],
         ];
 
+        // TODO handle properties filtering
         if ($dimensionContent instanceof RoutableInterface && $dimensionContent instanceof TemplateInterface) {
             $result = \array_merge($result, $this->getLocalizationsData($dimensionContent));
         }

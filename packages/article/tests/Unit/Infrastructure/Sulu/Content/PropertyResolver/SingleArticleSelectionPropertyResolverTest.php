@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sulu\Article\Infrastructure\Sulu\Content\PropertyResolver\SingleArticleSelectionPropertyResolver;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
 use Sulu\Content\Application\ContentResolver\Value\ResolvableResource;
 
 #[CoversClass(SingleArticleSelectionPropertyResolver::class)]
@@ -101,5 +102,51 @@ class SingleArticleSelectionPropertyResolverTest extends TestCase
         $this->assertInstanceOf(ResolvableResource::class, $content);
         $this->assertSame('1', $content->getId());
         $this->assertSame('custom_article', $content->getResourceLoaderKey());
+    }
+
+    public function testResolveWithMetadata(): void
+    {
+        $contentView = $this->resolver->resolve('1', 'en', [
+            'properties' => [
+                'property1' => 'value1',
+                'property2' => 'value2',
+            ],
+        ]);
+
+        $content = $contentView->getContent();
+        $this->assertInstanceOf(ResolvableResource::class, $content);
+
+        $this->assertSame([
+            'properties' => [
+                'property1' => 'value1',
+                'property2' => 'value2',
+            ],
+        ], $content->getMetadata());
+    }
+
+    public function testResolveWithoutMetadata(): void
+    {
+        $contentView = $this->resolver->resolve('1', 'en');
+
+        $content = $contentView->getContent();
+        $this->assertInstanceOf(ResolvableResource::class, $content);
+
+        $this->assertSame([
+            'properties' => null,
+        ], $content->getMetadata());
+    }
+
+    public function testResolveWithEmptyMetadata(): void
+    {
+        $metadata = new FieldMetadata('test_field');
+
+        $contentView = $this->resolver->resolve('1', 'en', ['metadata' => $metadata]);
+
+        $content = $contentView->getContent();
+        $this->assertInstanceOf(ResolvableResource::class, $content);
+
+        $this->assertSame([
+            'properties' => null,
+        ], $content->getMetadata());
     }
 }

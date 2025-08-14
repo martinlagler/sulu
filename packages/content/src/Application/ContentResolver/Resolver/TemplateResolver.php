@@ -28,7 +28,7 @@ readonly class TemplateResolver implements ResolverInterface
     ) {
     }
 
-    public function resolve(DimensionContentInterface $dimensionContent): ?ContentView
+    public function resolve(DimensionContentInterface $dimensionContent, ?array $properties = null): ?ContentView
     {
         if (!$dimensionContent instanceof TemplateInterface) {
             return null;
@@ -50,8 +50,26 @@ readonly class TemplateResolver implements ResolverInterface
             );
         }
 
+        $formMetadataItems = $formMetadata->getItems();
+        $data = $dimensionContent->getTemplateData();
+        if (null !== $properties) {
+            $filteredFormMetadataItems = [];
+            $filteredTemplateData = [];
+            /** @var int|string $value */
+            foreach ($properties as $key => $value) {
+                if (\array_key_exists($value, $formMetadataItems)) {
+                    $filteredFormMetadataItems[$key] = $formMetadataItems[$value];
+                }
+                if (\array_key_exists($value, $data)) {
+                    $filteredTemplateData[$key] = $data[$value];
+                }
+            }
+            $formMetadataItems = $filteredFormMetadataItems;
+            $data = $filteredTemplateData;
+        }
+
         return ContentView::create(
-            $this->metadataResolver->resolveItems($formMetadata->getItems(), $dimensionContent->getTemplateData(), $locale),
+            $this->metadataResolver->resolveItems($formMetadataItems, $data, $locale),
             []
         );
     }

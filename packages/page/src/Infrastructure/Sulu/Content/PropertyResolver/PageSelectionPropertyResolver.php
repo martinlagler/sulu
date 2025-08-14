@@ -22,6 +22,12 @@ use Sulu\Page\Infrastructure\Sulu\Content\ResourceLoader\PageResourceLoader;
  */
 class PageSelectionPropertyResolver implements PropertyResolverInterface
 {
+    /**
+     * @param array{
+     *     resourceLoader?: string,
+     *     properties?: array<string, mixed>|null,
+     * } $params
+     */
     public function resolve(mixed $data, string $locale, array $params = []): ContentView
     {
         if (!\is_array($data)
@@ -44,7 +50,10 @@ class PageSelectionPropertyResolver implements PropertyResolverInterface
                 'ids' => $ids,
                 ...$params,
             ],
-            priority: 150
+            priority: 150,
+            metadata: [
+                'properties' => $params['properties'] ?? null,
+            ]
         );
     }
 

@@ -16,6 +16,7 @@ namespace Sulu\Bundle\SnippetBundle\Tests\Unit\Infrastructure\Sulu\Content\Prope
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
 use Sulu\Content\Application\ContentResolver\Value\ResolvableResource;
 use Sulu\Snippet\Infrastructure\Sulu\Content\PropertyResolver\SnippetSelectionPropertyResolver;
 
@@ -119,5 +120,54 @@ class SnippetSelectionPropertyResolverTest extends TestCase
         $this->assertInstanceOf(ResolvableResource::class, $content[0]);
         $this->assertSame('1', $content[0]->getId());
         $this->assertSame('custom_snippet', $content[0]->getResourceLoaderKey());
+    }
+
+    public function testResolveWithMetadata(): void
+    {
+        $contentView = $this->resolver->resolve(['1'], 'en', [
+            'properties' => [
+                'property1' => 'value1',
+                'property2' => 'value2',
+            ],
+        ]);
+
+        $content = $contentView->getContent();
+        $this->assertIsArray($content);
+        $this->assertInstanceOf(ResolvableResource::class, $content[0]);
+
+        $this->assertSame([
+            'properties' => [
+                'property1' => 'value1',
+                'property2' => 'value2',
+            ],
+        ], $content[0]->getMetadata());
+    }
+
+    public function testResolveWithoutMetadata(): void
+    {
+        $contentView = $this->resolver->resolve(['1'], 'en');
+
+        $content = $contentView->getContent();
+        $this->assertIsArray($content);
+        $this->assertInstanceOf(ResolvableResource::class, $content[0]);
+
+        $this->assertSame([
+            'properties' => null,
+        ], $content[0]->getMetadata());
+    }
+
+    public function testResolveWithEmptyMetadata(): void
+    {
+        $metadata = new FieldMetadata('test_field');
+
+        $contentView = $this->resolver->resolve(['1'], 'en', ['metadata' => $metadata]);
+
+        $content = $contentView->getContent();
+        $this->assertIsArray($content);
+        $this->assertInstanceOf(ResolvableResource::class, $content[0]);
+
+        $this->assertSame([
+            'properties' => null,
+        ], $content[0]->getMetadata());
     }
 }
