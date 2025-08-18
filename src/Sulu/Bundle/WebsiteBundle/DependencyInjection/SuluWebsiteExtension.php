@@ -12,7 +12,6 @@
 namespace Sulu\Bundle\WebsiteBundle\DependencyInjection;
 
 use Sulu\Bundle\PersistenceBundle\DependencyInjection\PersistenceExtensionTrait;
-use Sulu\Bundle\WebsiteBundle\Controller\DefaultController;
 use Sulu\Bundle\WebsiteBundle\Entity\AnalyticsRepositoryInterface;
 use Sulu\Bundle\WebsiteBundle\Sitemap\SitemapProviderInterface;
 use Sulu\Component\HttpKernel\SuluKernel;
@@ -142,10 +141,6 @@ class SuluWebsiteExtension extends Extension implements PrependExtensionInterfac
 
             // default local provider
             $container->setAlias('sulu_website.default_locale.provider', $config['default_locale']['provider_service_id']);
-
-            // add alias for default controller
-            $container->setAlias(DefaultController::class, 'sulu_website.default_controller')
-                ->setPublic(true);
         }
 
         $this->configurePersistence($config['objects'], $container);
