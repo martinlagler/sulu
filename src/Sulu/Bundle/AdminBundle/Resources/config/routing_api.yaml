@@ -15,6 +15,15 @@ sulu_admin.delete_collaborations:
     requirements:
         _format: json|csv
 
+# Icon
+sulu_admin.get_icons:
+    path: '/icons.{_format}'
+    methods: GET
+    controller: 'sulu_admin.icon_controller::cgetAction'
+    format: json
+    requirements:
+        _format: json|csv
+
 # Teaser
 sulu_page.get_teasers:
     path: '/teasers.{_format}'
