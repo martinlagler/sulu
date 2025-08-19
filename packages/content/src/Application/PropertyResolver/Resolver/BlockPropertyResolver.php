@@ -22,7 +22,7 @@ use Sulu\Content\Application\ContentResolver\Value\ContentView;
 use Sulu\Content\Application\MetadataResolver\MetadataResolver;
 use Sulu\Content\Application\PropertyResolver\BlockVisitor\BlockVisitorInterface;
 
-class BlockPropertyResolver implements PropertyResolverInterface
+class BlockPropertyResolver implements PropertyResolverMetadataAwareInterface
 {
     private MetadataResolver $metadataResolver;
 
@@ -43,17 +43,21 @@ class BlockPropertyResolver implements PropertyResolverInterface
         $this->metadataResolver = $metadataResolver;
     }
 
-    public function resolve(mixed $data, string $locale, array $params = []): ContentView
+    /**
+     * @param array<string, mixed> $params
+     */
+    public function resolve(mixed $data, string $locale, array $params = [], ?FieldMetadata $metadata = null): ContentView
     {
-        $metadata = $params['metadata'] ?? null;
         $returnedParams = $params;
-        unset($returnedParams['metadata']); // TODO we may should implement a PropertyResolverAwareMetadataInterface
 
         if (!\is_array($data) || !\array_is_list($data)) {
             return ContentView::create([], [...$returnedParams]);
         }
 
-        \assert($metadata instanceof FieldMetadata, 'Metadata must be set to resolve blocks.');
+        if (null === $metadata) {
+            throw new \InvalidArgumentException('Metadata must be provided for block resolving.');
+        }
+
         $metadataTypes = $metadata->getTypes();
 
         $typedFormMetadata = $this->metadataProviderRegistry->getMetadataProvider('form')

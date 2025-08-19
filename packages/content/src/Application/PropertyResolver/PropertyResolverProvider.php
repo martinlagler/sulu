@@ -26,7 +26,7 @@ use Sulu\Content\Application\PropertyResolver\Resolver\PropertyResolverInterface
 final class PropertyResolverProvider implements PropertyResolverProviderInterface
 {
     /**
-     * @var PropertyResolverInterface[]
+     * @var array<PropertyResolverInterface>
      */
     private array $propertyResolvers;
 
