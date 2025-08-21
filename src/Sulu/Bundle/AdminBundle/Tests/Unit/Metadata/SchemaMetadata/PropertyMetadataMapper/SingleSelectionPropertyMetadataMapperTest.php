@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Bundle\AdminBundle\Tests\Unit\Metadata\SchemaMetadata;
+namespace Sulu\Bundle\AdminBundle\Tests\Unit\Metadata\SchemaMetadata\PropertyMetadataMapper;
 
 use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
-use Sulu\Bundle\AdminBundle\Metadata\SchemaMetadata\SingleSelectionPropertyMetadataMapper;
+use Sulu\Bundle\AdminBundle\Metadata\SchemaMetadata\PropertyMetadataMapper\SingleSelectionPropertyMetadataMapper;
 
 class SingleSelectionPropertyMetadataMapperTest extends TestCase
 {
@@ -27,6 +27,9 @@ class SingleSelectionPropertyMetadataMapperTest extends TestCase
         $this->singleSelectionPropertyMetadataMapper = new SingleSelectionPropertyMetadataMapper();
     }
 
+    /**
+     * @return array{type: 'null'}
+     */
     private function getNullSchema(): array
     {
         return [
@@ -34,6 +37,9 @@ class SingleSelectionPropertyMetadataMapperTest extends TestCase
         ];
     }
 
+    /**
+     * @return array{type: 'object', maxProperties: 0}
+     */
     private function getEmptyObjectSchema(): array
     {
         return [

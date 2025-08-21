@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Bundle\AdminBundle\Tests\Unit\Metadata\SchemaMetadata;
+namespace Sulu\Bundle\AdminBundle\Tests\Unit\Metadata\SchemaMetadata\PropertyMetadataMapper;
 
 use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\OptionMetadata;
+use Sulu\Bundle\AdminBundle\Metadata\SchemaMetadata\PropertyMetadataMapper\SelectionPropertyMetadataMapper;
 use Sulu\Bundle\AdminBundle\Metadata\SchemaMetadata\PropertyMetadataMinMaxValueResolver;
-use Sulu\Bundle\AdminBundle\Metadata\SchemaMetadata\SelectionPropertyMetadataMapper;
 
 class SelectionPropertyMetadataMapperTest extends TestCase
 {
@@ -31,6 +31,9 @@ class SelectionPropertyMetadataMapperTest extends TestCase
         );
     }
 
+    /**
+     * @return array{type: 'null'}
+     */
     private function getNullSchema(): array
     {
         return [
@@ -38,6 +41,13 @@ class SelectionPropertyMetadataMapperTest extends TestCase
         ];
     }
 
+    /**
+     * @return array{
+     *     type: 'array',
+     *     items: array{type: array<string>},
+     *     maxItems: 0,
+     * }
+     */
     private function getEmptyArraySchema(): array
     {
         return [
