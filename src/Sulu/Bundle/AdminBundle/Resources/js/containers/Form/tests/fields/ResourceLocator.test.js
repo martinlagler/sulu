@@ -71,8 +71,8 @@ test('Pass props correctly to ResourceLocator', () => {
             {...fieldTypeDefaultProps}
             disabled={true}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -101,8 +101,8 @@ test('Render just slash instead of ResourceLocatorComponent if used on the homep
             {...fieldTypeDefaultProps}
             disabled={true}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -120,7 +120,7 @@ test('Render just slash instead of ResourceLocatorComponent if used on the homep
     });
 });
 
-test('Pass correct options to ResourceLocatorHistory if entity already existed', () => {
+test('Pass correct options to ResourceLocatorHistory if resource already existed', () => {
     const formInspector = new FormInspector(
         new ResourceFormStore(new ResourceStore('test', 1), 'test', {webspace: 'sulu'})
     );
@@ -131,15 +131,13 @@ test('Pass correct options to ResourceLocatorHistory if entity already existed',
         <ResourceLocator
             {...fieldTypeDefaultProps}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resourcelocators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
                 options: {history: true},
             }}
             formInspector={formInspector}
-            schemaOptions={{
-                entity_class: {name: 'entity_class', value: 'entity-class-value'},
-            }}
+            schemaOptions={{}}
         />
     );
 
@@ -147,8 +145,8 @@ test('Pass correct options to ResourceLocatorHistory if entity already existed',
         resourceLocator.update();
         expect(resourceLocator.find('ResourceLocatorHistory')).toHaveLength(1);
         expect(resourceLocator.find('ResourceLocatorHistory').prop('options'))
-            .toEqual({entityClass: 'entity-class-value', history: true, webspace: 'sulu', resourceKey: 'test'});
-        expect(resourceLocator.find('ResourceLocatorHistory').prop('resourceKey')).toEqual('page_resourcelocators');
+            .toEqual({history: true, webspace: 'sulu', resourceKey: 'test'});
+        expect(resourceLocator.find('ResourceLocatorHistory').prop('resourceKey')).toEqual('resource-locators');
         expect(resourceLocator.find('ResourceLocatorHistory').prop('id')).toEqual(1);
     });
 });
@@ -172,8 +170,8 @@ test('Pass locale from userStore to ResourceLocator and ResourceLocatorHistory i
             {...fieldTypeDefaultProps}
             disabled={true}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
                 options: {history: true},
             }}
@@ -194,8 +192,8 @@ test('Do not add an addFinishFieldHandler for URL generation if used on the home
         <ResourceLocator
             {...fieldTypeDefaultProps}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -213,7 +211,7 @@ test('Do not add an addFinishFieldHandler for URL generation if no generationUrl
         <ResourceLocator
             {...fieldTypeDefaultProps}
             fieldTypeOptions={{
-                historyResourceKey: 'page_resourcelocators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -231,8 +229,8 @@ test.each(['leaf', 'full'])('Set mode correctly', (mode) => {
         <ResourceLocator
             {...fieldTypeDefaultProps}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -256,8 +254,8 @@ test('Should fire onFinish callback without argument when ResourceLocatorCompone
         <ResourceLocator
             {...fieldTypeDefaultProps}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -294,8 +292,8 @@ test('Should automatically request new URL when part field is finished on add fo
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -322,7 +320,7 @@ test('Should automatically request new URL when part field is finished on add fo
     expect(formInspector.getSchemaEntryByPath).toBeCalledWith('/title');
     expect(formInspector.getPathsByTag).toBeCalledWith('sulu.rlp.part');
     expect(Requester.post).toBeCalledWith(
-        '/admin/api/resourcelocators?action=generate',
+        '/admin/api/resource-locators',
         {
             locale: 'en',
             resourceKey: 'tests',
@@ -358,8 +356,8 @@ test('Should request URL with parameters from FormInspector options, fieldTypeOp
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
                 resourceStorePropertiesToRequest: {
                     propertyName: 'requestParamKey',
@@ -368,8 +366,7 @@ test('Should request URL with parameters from FormInspector options, fieldTypeOp
             formInspector={formInspector}
             onChange={changeSpy}
             schemaOptions={{
-                entity_class: {name: 'entity_class', value: 'entity-class-value'},
-                route_schema: {name: 'entity_class', value: '/events/{implode("-", object)}'},
+                route_schema: {name: 'route_schema', value: '/events/{implode("-", object)}'},
             }}
             schemaPath="/url"
         />
@@ -393,12 +390,11 @@ test('Should request URL with parameters from FormInspector options, fieldTypeOp
     expect(formInspector.getSchemaEntryByPath).toBeCalledWith('/title');
     expect(formInspector.getPathsByTag).toBeCalledWith('sulu.rlp.part');
     expect(Requester.post).toBeCalledWith(
-        '/admin/api/resourcelocators?action=generate',
+        '/admin/api/resource-locators',
         {
             locale: 'en',
             parts: {title: 'title-value', subtitle: 'subtitle-value'},
             resourceKey: 'test',
-            entityClass: 'entity-class-value',
             routeSchema: '/events/{implode("-", object)}',
             webspace: 'example',
             requestParamKey: 'property-value',
@@ -430,8 +426,8 @@ test('Should not request new URL when part field is finished on edit form', () =
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -472,8 +468,8 @@ test('Should not request new URL when part field is finished if all parts are em
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -522,8 +518,8 @@ test('Should not request new URL when part field is finished if input was alread
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -570,8 +566,8 @@ test('Should not request new URL when field without the "sulu.rlp.part" tag is f
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -613,8 +609,8 @@ test('Should not request new URL when field without any tags has finished editin
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => Promise.resolve('leaf'),
             }}
             formInspector={formInspector}
@@ -653,8 +649,8 @@ test('Should enable refresh button when value of part field changes on edit form
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -693,8 +689,8 @@ test('Should enable refresh button when input is changed manually on edit form',
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -733,8 +729,8 @@ test('Should not enable refresh button when value of part field changes on add f
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -773,8 +769,8 @@ test('Should enable refresh button when input is changed manually on add form', 
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -813,8 +809,8 @@ test('Should not enable refresh button when value of part field changes if all p
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
             }}
             formInspector={formInspector}
@@ -861,8 +857,8 @@ test('Should request new URL with correct options and disable button when refres
             {...fieldTypeDefaultProps}
             dataPath="/block/0/url"
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators?action=generate',
-                historyResourceKey: 'page_resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
+                historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
                 resourceStorePropertiesToRequest: {
                     propertyName: 'requestParamKey',
@@ -889,7 +885,7 @@ test('Should request new URL with correct options and disable button when refres
         expect(resourceLocator.find('Button').props().disabled).toBeTruthy();
         expect(formInspector.getPathsByTag).toBeCalledWith('sulu.rlp.part');
         expect(Requester.post).toBeCalledWith(
-            '/admin/api/resourcelocators?action=generate',
+            '/admin/api/resource-locators',
             {
                 id: 5,
                 locale: 'en',
