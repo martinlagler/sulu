@@ -2,40 +2,46 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
 import {extendObservable as mockExtendObservable, observable} from 'mobx';
-import fieldTypeDefaultProps from '../../../../utils/TestHelper/fieldTypeDefaultProps';
-import FormInspector from '../../FormInspector';
-import ResourceFormStore from '../../stores/ResourceFormStore';
-import Requester from '../../../../services/Requester';
-import ResourceStore from '../../../../stores/ResourceStore';
+import fieldTypeDefaultProps from 'sulu-admin-bundle/utils/TestHelper/fieldTypeDefaultProps';
+import FormInspector from 'sulu-admin-bundle/containers/Form/FormInspector';
+import ResourceFormStore from 'sulu-admin-bundle/containers/Form/stores/ResourceFormStore';
+import Requester from 'sulu-admin-bundle/services/Requester';
+import ResourceStore from 'sulu-admin-bundle/stores/ResourceStore';
+import userStore from 'sulu-admin-bundle/stores/userStore';
 import ResourceLocator from '../../fields/ResourceLocator';
 import ResourceLocatorComponent from '../../../../components/ResourceLocator';
-import userStore from '../../../../stores/userStore';
 
-jest.mock('../../../../utils/Translator', () => ({
+jest.mock('sulu-admin-bundle/utils/Translator', () => ({
     translate: jest.fn((key) => key),
 }));
 
-jest.mock('../../../../stores/userStore', () => ({}));
+jest.mock('sulu-admin-bundle/stores/userStore', () => ({}));
 
-jest.mock('../../../../stores/ResourceStore', () => jest.fn(function(resourceKey, id, observableOptions = {}) {
-    this.resourceKey = resourceKey;
-    this.id = id;
-    this.locale = observableOptions.locale;
+jest.mock(
+    'sulu-admin-bundle/containers/Form/stores/ResourceFormStore',
+    () => jest.fn(function(resourceKey, id, observableOptions = {}) {
+        this.resourceKey = resourceKey;
+        this.id = id;
+        this.locale = observableOptions.locale;
 
-    mockExtendObservable(this, {
-        data: {},
-    });
-}));
+        mockExtendObservable(this, {
+            data: {},
+        });
+    })
+);
 
-jest.mock('../../stores/ResourceFormStore', () => jest.fn(function(resourceStore, formKey, options) {
-    this.resourceKey = resourceStore.resourceKey;
-    this.id = resourceStore.id;
-    this.locale = resourceStore.locale;
-    this.options = options || {};
-    this.resourceStore = resourceStore;
-}));
+jest.mock(
+    'sulu-admin-bundle/containers/Form/stores/ResourceFormStore',
+    () => jest.fn(function(resourceStore, formKey, options) {
+        this.resourceKey = resourceStore.resourceKey;
+        this.id = resourceStore.id;
+        this.locale = resourceStore.locale;
+        this.options = options || {};
+        this.resourceStore = resourceStore;
+    })
+);
 
-jest.mock('../../FormInspector', () => jest.fn(function(formStore) {
+jest.mock('sulu-admin-bundle/containers/Form/FormInspector', () => jest.fn(function(formStore) {
     this.id = formStore.id;
     this.locale = formStore.locale;
     this.options = formStore.options;
@@ -48,7 +54,7 @@ jest.mock('../../FormInspector', () => jest.fn(function(formStore) {
     this.isFieldModified = jest.fn().mockReturnValue(false);
 }));
 
-jest.mock('../../../../services/Requester', () => ({
+jest.mock('sulu-admin-bundle/services/Requester', () => ({
     post: jest.fn(),
 }));
 
@@ -131,7 +137,7 @@ test('Pass correct options to ResourceLocatorHistory if resource already existed
         <ResourceLocator
             {...fieldTypeDefaultProps}
             fieldTypeOptions={{
-                generationUrl: '/admin/api/resourcelocators',
+                generationUrl: '/admin/api/resource-locators',
                 historyResourceKey: 'resource-locators',
                 modeResolver: () => modePromise,
                 options: {history: true},
@@ -311,7 +317,7 @@ test('Should automatically request new URL when part field is finished on add fo
     });
 
     const resourceLocatorPromise = Promise.resolve({
-        resourcelocator: '/test',
+        resourceLocator: '/test',
     });
     Requester.post.mockReturnValue(resourceLocatorPromise);
 
@@ -381,7 +387,7 @@ test('Should request URL with parameters from FormInspector options, fieldTypeOp
     });
 
     const resourceLocatorPromise = Promise.resolve({
-        resourcelocator: '/test',
+        resourceLocator: '/test',
     });
     Requester.post.mockReturnValue(resourceLocatorPromise);
 
@@ -870,7 +876,7 @@ test('Should request new URL with correct options and disable button when refres
         />
     );
     const resourceLocatorPromise = Promise.resolve({
-        resourcelocator: '/test',
+        resourceLocator: '/test',
     });
     Requester.post.mockReturnValue(resourceLocatorPromise);
 
