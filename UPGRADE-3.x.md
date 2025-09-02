@@ -59,6 +59,7 @@ After that you need to register the new Sulu bundles in your `config/bundles.php
 
 return [
      // ...
+-    Sulu\Bundle\RouteBundle\SuluRouteBundle::class => ['all' => true],
 -    Sulu\Bundle\SnippetBundle\SuluSnippetBundle::class => ['all' => true],
 -    Sulu\Bundle\ArticleBundle\SuluArticleBundle::class => ['all' => true],
 -    ONGR\ElasticsearchBundle\ONGRElasticsearchBundle::class => ['all' => true],
@@ -93,6 +94,10 @@ Then you need to update the route configuration in your `config/routes/sulu_admi
 +    resource: "@SuluSnippetBundle/config/routing_admin_api.yaml"
      prefix: /admin/api
 
+-sulu_route_api:
+-    resource: "@SuluRouteBundle/Resources/config/routing_api.yaml"
+-    prefix: /admin/api
+-
 +sulu_next_route_api:
 +    resource: "@SuluNextRouteBundle/config/routing_admin_api.yaml"
 +    prefix: /admin/api
@@ -794,6 +799,12 @@ The corresponding traits `TimestampableTrait` and `UserBlameTrait` have been upd
  - `src/Sulu/Component/Content/Metadata/Loader/schema/schema-1.0.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/schema-1.0.xsd`
  - `src/Sulu/Component/Content/Metadata/Loader/schema/template-1.0.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/template-1.0.xsd`
  - `src/Sulu/Component/Content/Metadata/Loader/schema/xml.xsd` -> `src/Sulu/Bundle/AdminBundle/Resources/config/schema/xml.xsd`
+
+### RouteBundle replaced
+
+The `Sulu\Bundle\RouteBundle` was completely rewritten from scratch and is now replaced by the new `Sulu\Route` classes and services.
+Services such as the `RouteManager` (`sulu_route.manager.route_manager`) have been replaced by the new `RouteRepository`,
+and directly modifying the new `Route` entity is sufficient.
 
 ### Changed methods for 3.0
 
