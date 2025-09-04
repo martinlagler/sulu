@@ -15,9 +15,7 @@ namespace Sulu\Content\Tests\Application;
 
 use Sulu\Bundle\AudienceTargetingBundle\SuluAudienceTargetingBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
-use Sulu\Content\Infrastructure\Symfony\HttpKernel\SuluContentBundle;
 use Sulu\Content\Tests\Application\ExampleTestBundle\ExampleTestBundle;
-use Sulu\Page\Infrastructure\Symfony\HttpKernel\SuluPageBundle;
 use Sulu\Snippet\Infrastructure\Symfony\HttpKernel\SuluSnippetBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -26,8 +24,6 @@ class Kernel extends SuluTestKernel
     public function registerBundles(): iterable
     {
         $bundles = [...parent::registerBundles()];
-        $bundles[] = new SuluContentBundle();
-        $bundles[] = new SuluPageBundle();
         $bundles[] = new ExampleTestBundle();
         $bundles[] = new SuluSnippetBundle();
 

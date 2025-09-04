@@ -14,7 +14,6 @@ namespace Sulu\Bundle\TestBundle\Kernel;
 use Sulu\Bundle\TestBundle\SuluTestBundle;
 use Sulu\Component\HttpKernel\SuluKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -34,13 +33,13 @@ class SuluTestKernel extends SuluKernel
 
     public function registerBundles(): iterable
     {
+        /** @var array<mixed, BundleInterface> $bundles */
         $bundles = [
             // Dependencies
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \Sulu\Bundle\CoreBundle\SuluCoreBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new \Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \FOS\RestBundle\FOSRestBundle(),
@@ -51,7 +50,6 @@ class SuluTestKernel extends SuluKernel
             new \Sulu\Messenger\Infrastructure\Symfony\HttpKernel\SuluMessengerBundle(),
             new \Sulu\Bundle\AdminBundle\SuluAdminBundle(),
             new \Sulu\Bundle\PersistenceBundle\SuluPersistenceBundle(),
-            new \Sulu\Bundle\PageBundle\SuluPageBundle(),
             new \Sulu\Bundle\ContactBundle\SuluContactBundle(),
             new \Sulu\Bundle\SecurityBundle\SuluSecurityBundle(),
             new \Sulu\Bundle\WebsiteBundle\SuluWebsiteBundle(),
@@ -61,7 +59,6 @@ class SuluTestKernel extends SuluKernel
             new \Sulu\Bundle\CategoryBundle\SuluCategoryBundle(),
             new \Sulu\Bundle\HttpCacheBundle\SuluHttpCacheBundle(),
             new \Sulu\Bundle\LocationBundle\SuluLocationBundle(),
-            new \Sulu\Bundle\DocumentManagerBundle\SuluDocumentManagerBundle(),
             new \Sulu\Bundle\HashBundle\SuluHashBundle(),
             new \Sulu\Bundle\ActivityBundle\SuluActivityBundle(),
             new \Sulu\Route\Infrastructure\Symfony\HttpKernel\SuluRouteBundle(),
@@ -70,15 +67,9 @@ class SuluTestKernel extends SuluKernel
             new \Sulu\Bundle\AudienceTargetingBundle\SuluAudienceTargetingBundle(),
             new \Sulu\Bundle\TrashBundle\SuluTrashBundle(),
             new \Sulu\Bundle\ReferenceBundle\SuluReferenceBundle(),
+            new \Sulu\Content\Infrastructure\Symfony\HttpKernel\SuluContentBundle(),
+            new \Sulu\Page\Infrastructure\Symfony\HttpKernel\SuluPageBundle(),
         ];
-
-        if (\class_exists(\PHPCR\PhpcrMigrationsBundle\PhpcrMigrationsBundle::class)) {
-            $bundles[] = new \PHPCR\PhpcrMigrationsBundle\PhpcrMigrationsBundle();
-        } elseif (\class_exists(\DTL\Bundle\PhpcrMigrations\PhpcrMigrationsBundle::class)) {
-            // @deprecated use the phpcr/phpcr-migration-bundle
-            @trigger_deprecation('sulu/sulu', '2.6', 'Using "%s" is deprecated, use "%s" instead.', 'dantleech/phpcr-migrations-bundle', 'phpcr/phpcr-migrations-bundle');
-            $bundles[] = new \DTL\Bundle\PhpcrMigrations\PhpcrMigrationsBundle();
-        }
 
         if (\class_exists(\Symfony\Bundle\MonologBundle\MonologBundle::class)) {
             $bundles[] = new \Symfony\Bundle\MonologBundle\MonologBundle();
@@ -104,7 +95,6 @@ class SuluTestKernel extends SuluKernel
             $bundles[] = new \Symfony\Bundle\SecurityBundle\SecurityBundle();
         }
 
-        /** @var iterable<mixed, BundleInterface> */
         return $bundles;
     }
 
@@ -126,14 +116,5 @@ class SuluTestKernel extends SuluKernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(SuluTestBundle::getConfigDir() . '/config.php');
-
-        // we need to resolve the SULU_PHPCR_TRANSPORT environment variable at this point,
-        // because the doctrine phpcr configuration is not working with unresolved environment variables
-        $loader->load(function(ContainerBuilder $container) {
-            $container->setParameter('phpcr.transport', $container->resolveEnvPlaceholders(
-                $container->getParameter('phpcr.transport'),
-                true
-            ));
-        });
     }
 }
