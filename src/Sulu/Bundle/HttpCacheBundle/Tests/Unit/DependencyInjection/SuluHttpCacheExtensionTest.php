@@ -17,7 +17,6 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
-use Sulu\Bundle\DocumentManagerBundle\Bridge\DocumentInspector;
 use Sulu\Bundle\HttpCacheBundle\DependencyInjection\SuluHttpCacheExtension;
 use Sulu\Bundle\TagBundle\Tag\TagManagerInterface;
 use Sulu\Bundle\WebsiteBundle\ReferenceStore\ReferenceStorePoolInterface;
@@ -86,7 +85,6 @@ class SuluHttpCacheExtensionTest extends AbstractExtensionTestCase
         $this->container->set('logger', $this->logger->reveal());
         $this->container->set('sulu_website.reference_store_pool', $this->referenceStore->reveal());
         $this->container->set('sulu.content.structure_manager', $this->prophesize(StructureManagerInterface::class)->reveal());
-        $this->container->set('sulu_document_manager.document_inspector', $this->prophesize(DocumentInspector::class)->reveal());
         $this->container->set('sulu.content.resource_locator.strategy_pool', $this->prophesize(ResourceLocatorStrategyPoolInterface::class)->reveal());
         $this->container->set('sulu_tag.tag_manager', $this->prophesize(TagManagerInterface::class)->reveal());
         $this->container->set('fos_http_cache.cache_manager', $this->prophesize(CacheManager::class)->reveal());
