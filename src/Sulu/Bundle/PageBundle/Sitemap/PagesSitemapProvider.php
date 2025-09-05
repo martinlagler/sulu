@@ -37,7 +37,7 @@ class PagesSitemapProvider extends AbstractSitemapProvider
     ) {
     }
 
-    public function build(int $page, string $scheme, string $host)
+    public function build($page, $scheme, $host)
     {
         $portalInformations = $this->webspaceManager->findPortalInformationsByHostIncludingSubdomains(
             $host, $this->environment
