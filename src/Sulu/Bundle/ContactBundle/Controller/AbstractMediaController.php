@@ -22,7 +22,6 @@ use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Sulu\Component\Rest\Exception\RestException;
-use Sulu\Component\Rest\ListBuilder\CollectionRepresentation;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineFieldDescriptor;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineJoinDescriptor;
@@ -192,53 +191,48 @@ abstract class AbstractMediaController extends AbstractRestController
             $user = $this->getUser();
             $locale = $this->getUser()->getLocale();
 
-            if ('true' === $request->get('flat')) {
-                $fieldDescriptors = $this->fieldDescriptorFactory->getFieldDescriptors('media');
+            $fieldDescriptors = $this->fieldDescriptorFactory->getFieldDescriptors('media');
 
-                $fieldDescriptors['contactId'] = new DoctrineFieldDescriptor(
-                    'id',
-                    'contactId',
-                    $entityName,
-                    null,
-                    [
-                        $entityName => new DoctrineJoinDescriptor(
-                            $entityName,
-                            $entityName,
-                            $entityName . '.id = :contactId'
-                        ),
-                        static::$mediaEntityKey => new DoctrineJoinDescriptor(
-                            static::$mediaEntityKey,
-                            $entityName . '.medias',
-                            static::$mediaEntityKey . '.id = ' . $this->mediaClass . '.id',
-                            DoctrineJoinDescriptor::JOIN_METHOD_INNER
-                        ),
-                    ],
-                    FieldDescriptorInterface::VISIBILITY_NEVER,
-                    FieldDescriptorInterface::SEARCHABILITY_NEVER
-                );
+            $fieldDescriptors['contactId'] = new DoctrineFieldDescriptor(
+                'id',
+                'contactId',
+                $entityName,
+                null,
+                [
+                    $entityName => new DoctrineJoinDescriptor(
+                        $entityName,
+                        $entityName,
+                        $entityName . '.id = :contactId'
+                    ),
+                    static::$mediaEntityKey => new DoctrineJoinDescriptor(
+                        static::$mediaEntityKey,
+                        $entityName . '.medias',
+                        static::$mediaEntityKey . '.id = ' . $this->mediaClass . '.id',
+                        DoctrineJoinDescriptor::JOIN_METHOD_INNER
+                    ),
+                ],
+                FieldDescriptorInterface::VISIBILITY_NEVER,
+                FieldDescriptorInterface::SEARCHABILITY_NEVER
+            );
 
-                $listBuilder = $this->mediaListBuilderFactory->getListBuilder(
-                    $fieldDescriptors,
-                    $user,
-                    [],
-                    !$request->get('sortBy'),
-                    null
-                );
+            $listBuilder = $this->mediaListBuilderFactory->getListBuilder(
+                $fieldDescriptors,
+                $user,
+                [],
+                !$request->get('sortBy'),
+                null
+            );
 
-                $listBuilder->setParameter('contactId', $contactId);
-                $listBuilder->where($fieldDescriptors['contactId'], $contactId);
+            $listBuilder->setParameter('contactId', $contactId);
+            $listBuilder->where($fieldDescriptors['contactId'], $contactId);
 
-                $listRepresentation = $this->mediaListRepresentationFactory->getListRepresentation(
-                    $listBuilder,
-                    $locale,
-                    static::$mediaEntityKey,
-                    $routeName,
-                    \array_merge(['contactId' => $contactId], $request->query->all())
-                );
-            } else {
-                $media = $contactManager->getById($contactId, $locale)->getMedias();
-                $listRepresentation = new CollectionRepresentation($media, static::$mediaEntityKey);
-            }
+            $listRepresentation = $this->mediaListRepresentationFactory->getListRepresentation(
+                $listBuilder,
+                $locale,
+                static::$mediaEntityKey,
+                $routeName,
+                \array_merge(['contactId' => $contactId], $request->query->all())
+            );
 
             $view = $this->view($listRepresentation, 200);
         } catch (EntityNotFoundException $e) {

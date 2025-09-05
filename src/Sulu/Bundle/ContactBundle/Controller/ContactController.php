@@ -14,16 +14,13 @@ namespace Sulu\Bundle\ContactBundle\Controller;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
-use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
-use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
 use Sulu\Bundle\ContactBundle\Util\IndexComparatorInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Sulu\Component\Rest\Exception\MissingArgumentException;
 use Sulu\Component\Rest\Exception\RestException;
-use Sulu\Component\Rest\ListBuilder\CollectionRepresentation;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilder;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineConcatenationFieldDescriptor;
@@ -33,7 +30,6 @@ use Sulu\Component\Rest\ListBuilder\FieldDescriptorInterface;
 use Sulu\Component\Rest\ListBuilder\Metadata\FieldDescriptorFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\PaginatedRepresentation;
 use Sulu\Component\Rest\RestHelperInterface;
-use Sulu\Component\Security\Authentication\UserRepositoryInterface;
 use Sulu\Component\Security\SecuredControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,12 +76,9 @@ class ContactController extends AbstractRestController implements SecuredControl
         private FieldDescriptorFactoryInterface $fieldDescriptorFactory,
         private DoctrineListBuilderFactoryInterface $listBuilderFactory,
         private ContactManagerInterface $contactManager,
-        private ContactRepositoryInterface $contactRepository,
         private MediaManagerInterface $mediaManager,
-        private UserRepositoryInterface $userRepository,
         private IndexComparatorInterface $indexComparator,
         private string $contactClass,
-        private string $suluSecuritySystem
     ) {
         parent::__construct($viewHandler, $tokenStorage);
     }
@@ -184,44 +177,11 @@ class ContactController extends AbstractRestController implements SecuredControl
      */
     public function cgetAction(Request $request)
     {
-        $serializationGroups = [];
         $locale = $this->getLocale($request);
-        $excludedAccountId = $request->query->get('excludedAccountId');
 
-        if ('true' == $request->get('flat')) {
-            $list = $this->getList($request, $locale);
-        } else {
-            if (true == $request->get('bySystem')) {
-                $contacts = $this->getContactsByUserSystem();
-                $serializationGroups[] = 'select';
-            } elseif ($excludedAccountId) {
-                $contacts = $this->contactRepository->findByExcludedAccountId($excludedAccountId, $request->get('search'));
-                $serializationGroups[] = 'select';
-            } else {
-                $contacts = $this->contactRepository->findAll();
-                $serializationGroups = \array_merge(
-                    $serializationGroups,
-                    static::$contactSerializationGroups
-                );
-            }
-
-            // convert to api-contacts
-            $apiContacts = [];
-            foreach ($contacts as $contact) {
-                $apiContacts[] = $this->contactManager->getContact($contact, $locale);
-            }
-
-            $list = new CollectionRepresentation($apiContacts, ContactInterface::RESOURCE_KEY);
-        }
+        $list = $this->getList($request, $locale);
 
         $view = $this->view($list, 200);
-
-        // set serialization groups
-        if (\count($serializationGroups) > 0) {
-            $context = new Context();
-            $context->setGroups($serializationGroups);
-            $view->setContext($context);
-        }
 
         return $this->handleView($view);
     }
@@ -240,9 +200,15 @@ class ContactController extends AbstractRestController implements SecuredControl
         $listBuilder->addGroupBy($fieldDescriptors['id']);
         $this->restHelper->initializeListBuilder($listBuilder, $fieldDescriptors);
 
-        $account = $request->get('accountId');
-        if ($account) {
-            $listBuilder->where($fieldDescriptors['accountId'], $account);
+        $accountId = $request->get('accountId');
+        if ($accountId) {
+            $listBuilder->where($fieldDescriptors['accountId'], $accountId);
+        }
+
+        $excludedAccountId = $request->query->get('excludedAccountId');
+        if ($excludedAccountId) {
+            $listBuilder->setParameter('excludedAccountId', $excludedAccountId);
+            $listBuilder->where($fieldDescriptors['excludedAccountId'], null);
         }
 
         $listResponse = $this->prepareListResponse($listBuilder, $locale);
@@ -413,21 +379,6 @@ class ContactController extends AbstractRestController implements SecuredControl
         }
 
         return $this->handleView($view);
-    }
-
-    /**
-     * Returns a list of contacts which have a user in the sulu system.
-     */
-    protected function getContactsByUserSystem()
-    {
-        $users = $this->userRepository->findUserBySystem($this->suluSecuritySystem);
-        $contacts = [];
-
-        foreach ($users as $user) {
-            $contacts[] = $user->getContact();
-        }
-
-        return $contacts;
     }
 
     public function getSecurityContext()

@@ -39,9 +39,7 @@ use Sulu\Bundle\MediaBundle\Entity\File;
 use Sulu\Bundle\MediaBundle\Entity\FileVersion;
 use Sulu\Bundle\MediaBundle\Entity\Media;
 use Sulu\Bundle\MediaBundle\Entity\MediaType;
-use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Sulu\Bundle\TrashBundle\Domain\Model\TrashItemInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -836,17 +834,17 @@ class ContactControllerTest extends SuluTestCase
 
         // dont use max here because the user for tests also is called max
 
-        $this->client->jsonRequest('GET', '/api/contacts?flat=false&search=Erika&excludedAccountId=' . $account1->getId());
+        $this->client->jsonRequest('GET', '/api/contacts?flat=true&search=Erika&excludedAccountId=' . $account1->getId());
         $this->assertHttpStatusCode(200, $this->client->getResponse());
         $response = \json_decode($this->client->getResponse()->getContent());
         $this->assertEquals(0, \count($response->_embedded->contacts));
 
-        $this->client->jsonRequest('GET', '/api/contacts?flat=false&search=Erika&excludedAccountId=' . $account2->getId());
+        $this->client->jsonRequest('GET', '/api/contacts?flat=true&search=Erika&excludedAccountId=' . $account2->getId());
         $this->assertHttpStatusCode(200, $this->client->getResponse());
         $response = \json_decode($this->client->getResponse()->getContent());
         $this->assertEquals(0, \count($response->_embedded->contacts));
 
-        $this->client->jsonRequest('GET', '/api/contacts?flat=false&search=Erika&excludedAccountId=' . $account3->getId());
+        $this->client->jsonRequest('GET', '/api/contacts?flat=true&search=Erika&excludedAccountId=' . $account3->getId());
         $this->assertHttpStatusCode(200, $this->client->getResponse());
         $response = \json_decode($this->client->getResponse()->getContent());
         $this->assertEquals(1, \count($response->_embedded->contacts));
@@ -899,41 +897,6 @@ class ContactControllerTest extends SuluTestCase
         $this->assertEquals(1, $response->total);
         $this->assertEquals(1, \count($response->_embedded->contacts));
         $this->assertEquals('Erika Mustermann', $response->_embedded->contacts[0]->fullName);
-    }
-
-    public function testGetListBySystem(): void
-    {
-        $suluContact = new Contact();
-        $suluContact->setFirstName('Max');
-        $suluContact->setLastName('Mustermann');
-
-        $user = new User();
-        $user->setUsername('max');
-        $user->setPassword('max');
-        $user->setLocale('de');
-        $user->setSalt('salt');
-        $role = new Role();
-        $role->setName('User');
-        $role->setSystem('Sulu');
-        $userRole = new UserRole();
-        $userRole->setRole($role);
-        $userRole->setUser($user);
-        $userRole->setLocale('[]');
-        $user->setContact($suluContact);
-
-        $this->em->persist($suluContact);
-        $this->em->persist($user);
-        $this->em->persist($userRole);
-        $this->em->persist($role);
-        $this->em->flush();
-
-        $this->client->jsonRequest('GET', '/api/contacts?bySystem=true');
-
-        $this->assertHttpStatusCode(200, $this->client->getResponse());
-        $response = \json_decode($this->client->getResponse()->getContent());
-
-        $this->assertCount(1, $response->_embedded->contacts);
-        $this->assertEquals('Max Mustermann', $response->_embedded->contacts[0]->fullName);
     }
 
     public function testPut(): void
