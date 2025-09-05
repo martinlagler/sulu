@@ -61,7 +61,7 @@ class PagesSitemapProvider extends AbstractSitemapProvider
     /**
      * @return SitemapUrl[]
      */
-    public function build(int $page, string $scheme, string $host): array
+    public function build($page, $scheme, $host): array
     {
         $portalInformations = $this->webspaceManager->findPortalInformationsByHostIncludingSubdomains(
             $host,
