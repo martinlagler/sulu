@@ -23,6 +23,10 @@ use Sulu\Content\Domain\Model\DimensionContentInterface;
 use Sulu\Page\Domain\Model\PageInterface;
 
 /**
+ * @internal your code should not create direct dependencies on this implementation
+ *           projects can create there own sitemap providers or use symfony
+ *           dependency injection container to override this sitemap provider service
+ *
  * @phpstan-type Page array{
  *     lastModified: \DateTimeImmutable|null,
  *     changed: \DateTimeImmutable,
