@@ -48,7 +48,7 @@ class SitemapUrl
     /**
      * Datetime of last modification.
      *
-     * @var \DateTime
+     * @var \DateTimeInterface|null
      */
     private $lastmod;
 
@@ -95,7 +95,7 @@ class SitemapUrl
         $loc,
         $locale,
         $defaultLocale,
-        ?\DateTime $lastmod = null,
+        ?\DateTimeInterface $lastmod = null,
         $changefreq = null,
         $priority = null,
         $attributes = []
@@ -134,7 +134,7 @@ class SitemapUrl
     /**
      * Returns lastmod.
      *
-     * @return \DateTime
+     * @return \DateTimeInterface|null
      */
     public function getLastmod()
     {

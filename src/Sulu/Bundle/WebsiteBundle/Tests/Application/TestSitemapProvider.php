@@ -17,7 +17,7 @@ use Sulu\Bundle\WebsiteBundle\Sitemap\SitemapUrl;
 
 class TestSitemapProvider implements SitemapProviderInterface
 {
-    public function build($page, $scheme, $host)
+    public function build(int $page, string $scheme, string $host)
     {
         if ('sulu.index' !== $host) {
             return [];

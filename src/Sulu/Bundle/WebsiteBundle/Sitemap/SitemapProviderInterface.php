@@ -24,13 +24,9 @@ interface SitemapProviderInterface
     /**
      * Returns sitemap-entries.
      *
-     * @param int $page
-     * @param string $scheme
-     * @param string $host
-     *
      * @return SitemapUrl[]
      */
-    public function build($page, $scheme, $host);
+    public function build(int $page, string $scheme, string $host);
 
     /**
      * Get the sitemap of a provider.

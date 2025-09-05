@@ -53,6 +53,7 @@ use Sulu\Page\Infrastructure\Sulu\Content\ResourceLoader\PageResourceLoader;
 use Sulu\Page\Infrastructure\Sulu\Content\Visitor\SegmentSmartContentFiltersVisitor;
 use Sulu\Page\Infrastructure\Sulu\Reference\PageReferenceRefresher;
 use Sulu\Page\Infrastructure\Sulu\Route\WebspaceSiteRouteGenerator;
+use Sulu\Page\Infrastructure\Sulu\Sitemap\PagesSitemapProvider;
 use Sulu\Page\Infrastructure\Symfony\Twig\Extension\ContentPathTwigExtension;
 use Sulu\Page\Infrastructure\Symfony\Twig\Extension\NavigationTwigExtension;
 use Sulu\Page\UserInterface\Command\InitializeHomepageCommand;
@@ -424,6 +425,17 @@ final class SuluPageBundle extends AbstractBundle
                 new Parameter('kernel.environment'),
             ])
             ->tag('jms_serializer.event_subscriber');
+
+        // Sitemap
+        $services->set('sulu_next_page.pages_sitemap_provider')
+            ->class(PagesSitemapProvider::class)
+            ->args([
+                new Reference('doctrine.orm.entity_manager'),
+                new Reference('sulu_core.webspace.webspace_manager'),
+                '%kernel.environment%',
+                new Reference('sulu_security.access_control_manager'),
+            ])
+            ->tag('sulu.sitemap.provider');
     }
 
     /**

@@ -38,6 +38,8 @@
                 "page": "default"
             },
             "portalInformation": [
+                [],
+                [],
                 []
             ],
             "urls": [
@@ -47,7 +49,7 @@
                     "segment": "",
                     "redirect": "",
                     "main": true,
-                    "url": "{host}\/{localization}",
+                    "url": "blog.io\/{localization}",
                     "environment": "test"
                 }
             ],
@@ -119,6 +121,7 @@
             },
             "portalInformation": [
                 [],
+                [],
                 []
             ],
             "urls": [
@@ -128,7 +131,7 @@
                     "segment": "",
                     "redirect": "",
                     "main": true,
-                    "url": "{host}\/{localization}",
+                    "url": "sulu.io\/{localization}",
                     "environment": "test"
                 }
             ],

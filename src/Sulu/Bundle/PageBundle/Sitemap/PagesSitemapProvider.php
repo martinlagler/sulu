@@ -37,7 +37,7 @@ class PagesSitemapProvider extends AbstractSitemapProvider
     ) {
     }
 
-    public function build($page, $scheme, $host)
+    public function build(int $page, string $scheme, string $host)
     {
         $portalInformations = $this->webspaceManager->findPortalInformationsByHostIncludingSubdomains(
             $host, $this->environment
@@ -109,7 +109,7 @@ class PagesSitemapProvider extends AbstractSitemapProvider
         }
 
         if (\is_string($changed)) {
-            $changed = new \DateTime($changed);
+            $changed = new \DateTimeImmutable($changed);
         }
 
         $url = $this->webspaceManager->findUrlByResourceLocator(
@@ -130,6 +130,7 @@ class PagesSitemapProvider extends AbstractSitemapProvider
             ->getDefaultLocalization()
             ->getLocale(Localization::DASH);
 
+        /** @var \DateTimeImmutable|null $changed */
         $sitemapUrl = new SitemapUrl(
             $url,
             $contentPage->getLocale(),
