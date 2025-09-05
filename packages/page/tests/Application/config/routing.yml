@@ -26,3 +26,6 @@ sulu_preview:
 sulu_preview_public:
     resource: "@SuluPreviewBundle/Resources/config/routing_public.yaml"
     prefix: /admin/p
+
+sulu_website_frontend:
+    resource: "@SuluWebsiteBundle/Resources/config/routing_website.yaml"

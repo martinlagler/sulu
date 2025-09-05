@@ -166,7 +166,7 @@ class PageControllerTest extends SuluTestCase
         self::ensureKernelShutdown();
 
         $websiteClient = $this->createWebsiteClient();
-        $websiteClient->request('GET', '/en/my-page');
+        $websiteClient->request('GET', 'http://sulu.io/en/my-page');
 
         $response = $websiteClient->getResponse();
         $this->assertHttpStatusCode(200, $response);
@@ -262,7 +262,7 @@ class PageControllerTest extends SuluTestCase
         self::ensureKernelShutdown();
 
         $websiteClient = $this->createWebsiteClient();
-        $websiteClient->request('GET', '/en/my-page');
+        $websiteClient->request('GET', 'http://sulu.io/en/my-page');
 
         $response = $websiteClient->getResponse();
         $this->assertHttpStatusCode(404, $response);
@@ -389,7 +389,7 @@ class PageControllerTest extends SuluTestCase
         self::ensureKernelShutdown();
 
         $websiteClient = $this->createWebsiteClient();
-        $websiteClient->request('GET', '/en/my-page');
+        $websiteClient->request('GET', 'http://sulu.io/en/my-page');
 
         $response = $websiteClient->getResponse();
         $this->assertHttpStatusCode(404, $response);
@@ -405,7 +405,7 @@ class PageControllerTest extends SuluTestCase
         self::ensureKernelShutdown();
 
         $websiteClient = $this->createWebsiteClient();
-        $websiteClient->request('GET', '/de/my-page');
+        $websiteClient->request('GET', 'http://sulu.io/de/my-page');
 
         $response = $websiteClient->getResponse();
         $this->assertHttpStatusCode(404, $response);
