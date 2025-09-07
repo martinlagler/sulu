@@ -25,10 +25,10 @@ use Sulu\Bundle\MediaBundle\Media\FormatCache\FormatCacheInterface;
 use Sulu\Bundle\MediaBundle\Media\FormatManager\FormatManagerInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Bundle\MediaBundle\Media\Storage\StorageInterface;
-use Sulu\Component\PHPCR\PathCleanupInterface;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Security\Authorization\SecurityCondition;
+use Sulu\Route\Application\ResourceLocator\PathCleanup\PathCleanupInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ class MediaStreamController
     public function __construct(
         protected DispositionTypeResolver $dispositionTypeResolver,
         protected MediaRepositoryInterface $mediaRepository,
-        protected PathCleanupInterface $pathCleaner,
+        protected PathCleanupInterface $pathCleanup,
         protected FormatManagerInterface $formatManager,
         protected FormatCacheInterface $formatCache,
         protected MediaManagerInterface $mediaManager,
@@ -255,7 +255,7 @@ class MediaStreamController
     private function cleanUpFileName($fileName, $locale, $extension)
     {
         $pathInfo = \pathinfo($fileName);
-        $cleanedFileName = $this->pathCleaner->cleanup($pathInfo['filename'], $locale);
+        $cleanedFileName = $this->pathCleanup->cleanup($pathInfo['filename'], $locale);
         if ($extension) {
             $cleanedFileName .= '.' . $extension;
         }
