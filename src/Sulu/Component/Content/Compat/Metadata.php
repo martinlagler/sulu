@@ -14,7 +14,7 @@ namespace Sulu\Component\Content\Compat;
 use JMS\Serializer\Annotation\Type;
 
 /**
- * holds localized metadata.
+ * @internal this class can be removed at any time and you should not build on top of it
  */
 class Metadata
 {

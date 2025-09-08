@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 
 /**
- * Represents a parameter of a property.
+ * @internal this class can be removed at any time and you should not build on top of it
  */
 class PropertyParameter implements \JsonSerializable
 {
