@@ -14761,30 +14761,6 @@ parameters:
 			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
 
 		-
-			message: '#^Call to an undefined method Sulu\\Bundle\\PageBundle\\Content\\Types\\Email\:\:getAccounts\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
-
-		-
-			message: '#^Call to an undefined method Sulu\\Bundle\\PageBundle\\Content\\Types\\Email\:\:getContacts\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
-
-		-
-			message: '#^Call to an undefined method Sulu\\Bundle\\PageBundle\\Content\\Types\\Phone\:\:getAccounts\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
-
-		-
-			message: '#^Call to an undefined method Sulu\\Bundle\\PageBundle\\Content\\Types\\Phone\:\:getContacts\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
-
-		-
 			message: '#^Call to function array_key_exists\(\) with ''id'' and \*NEVER\* will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -14812,12 +14788,6 @@ parameters:
 			message: '#^Cannot access offset ''id'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
-
-		-
-			message: '#^Cannot call method count\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 4
 			path: src/Sulu/Bundle/ContactBundle/Contact/ContactManager.php
 
 		-
