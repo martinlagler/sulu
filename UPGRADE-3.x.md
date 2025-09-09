@@ -916,6 +916,17 @@ As part of the update of flysystem the support for the guzzle client package `gu
 
 The `GoogleGeolocator` and the `NominatimGeolocator` no longer support the Guzzle client and require a `Symfony\HttpClient` client instead.
 
+### Adjusted the ReferenceContext for Reference Entities
+
+The `referenceContext` of the `Reference` entity has been adjusted to be consistent with the DimensionContentInterface::STAGE_DRAFT
+and DimensionContentInterface::STAGE_LIVE constants. Therefore `referenceContext` now uses `draft` and `live` instead of
+`admin` and `website`.
+
+To update the references call the following command:
+
+```bash
+bin/console sulu:reference:refresh
+
 ### Upgrading Data from Sulu 2.6 to Sulu 3.0
 
 To migrate the data from PHPCR to the new content storage a migration bundle was developed.

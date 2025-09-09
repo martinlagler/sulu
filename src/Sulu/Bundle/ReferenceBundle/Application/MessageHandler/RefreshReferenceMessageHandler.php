@@ -14,7 +14,6 @@ namespace Sulu\Bundle\ReferenceBundle\Application\MessageHandler;
 use Sulu\Bundle\ReferenceBundle\Application\Message\RefreshReferenceMessage;
 use Sulu\Bundle\ReferenceBundle\Application\Refresh\ReferenceRefresherInterface;
 use Sulu\Bundle\ReferenceBundle\Domain\Repository\ReferenceRepositoryInterface;
-use Sulu\Content\Domain\Model\DimensionContentInterface;
 
 class RefreshReferenceMessageHandler
 {
@@ -24,7 +23,6 @@ class RefreshReferenceMessageHandler
     public function __construct(
         private ReferenceRepositoryInterface $referenceRepository,
         private iterable $referenceRefreshers,
-        private string $suluContext, // @phpstan-ignore-line - parameter for future use
     ) {
     }
 
@@ -41,19 +39,15 @@ class RefreshReferenceMessageHandler
         }
 
         $counter = 0;
-        $resourceIds = [];
         foreach ($referenceRefresher->refresh($message->getFilter()) as $object) {
             if (0 === (++$counter % 100)) {
                 $this->referenceRepository->flush();
             }
-            if ($object instanceof DimensionContentInterface) {
-                $resourceIds[] = $object->getResource()->getId();
-            }
         }
 
-        $this->referenceRepository->flush();
-        $this->referenceRepository->removeBy([
-            'resourceIds' => \array_map('strval', $resourceIds),
-        ]);
+        // Only flush if there are remaining unflushed changes
+        if (0 !== ($counter % 100)) {
+            $this->referenceRepository->flush();
+        }
     }
 }
