@@ -217,4 +217,50 @@ class ContentView
 
         return $this;
     }
+
+    /**
+     * @internal This method can be removed at any time no backwards compatibility promise is given for this.
+     *
+     * Recursively collect all references from this ContentView and nested ContentViews.
+     * Each reference will have its path set to indicate where it was found.
+     *
+     * @return iterable<Reference>
+     */
+    public function getAllReferencesRecursively(string $basePath = ''): iterable
+    {
+        foreach ($this->references as $reference) {
+            yield new Reference(
+                $reference->getResourceId(),
+                $reference->getResourceKey(),
+                $basePath
+            );
+        }
+
+        $content = $this->getContent();
+        if (\is_iterable($content)) {
+            foreach ($content as $key => $value) {
+                $keyStr = \is_string($key) || \is_numeric($key) ? (string) $key : '';
+                $newPath = \ltrim($basePath . '.' . $keyStr, '.');
+
+                if ($value instanceof ContentView) {
+                    $nestedReferences = $value->getAllReferencesRecursively($newPath);
+                    foreach ($nestedReferences as $reference) {
+                        yield $reference;
+                    }
+                } elseif (\is_iterable($value)) {
+                    // Handle arrays that might contain ContentViews
+                    foreach ($value as $subKey => $subValue) {
+                        if ($subValue instanceof ContentView) {
+                            $subKeyStr = \is_string($subKey) || \is_numeric($subKey) ? (string) $subKey : '';
+                            $subPath = \ltrim($newPath . '.' . $subKeyStr, '.');
+                            $nestedReferences = $subValue->getAllReferencesRecursively($subPath);
+                            foreach ($nestedReferences as $reference) {
+                                yield $reference;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
