@@ -151,8 +151,10 @@ class PropertyParameter implements \JsonSerializable
         }
     }
 
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    /**
+     * @return array{value: mixed, type: string}
+     */
+    public function jsonSerialize(): array
     {
         return [
             'value' => $this->getValue(),

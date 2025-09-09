@@ -340,8 +340,10 @@ class Localization implements \JsonSerializable, ArrayableInterface
         return $this->getLocale();
     }
 
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    /**
+     * @return array{'localization': string, 'name': string}
+     */
+    public function jsonSerialize(): array
     {
         return [
             'localization' => $this->getLocale(),
