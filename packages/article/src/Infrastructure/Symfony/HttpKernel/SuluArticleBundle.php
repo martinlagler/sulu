@@ -35,6 +35,7 @@ use Sulu\Article\Infrastructure\Sulu\Content\PropertyResolver\ArticleSelectionPr
 use Sulu\Article\Infrastructure\Sulu\Content\PropertyResolver\SingleArticleSelectionPropertyResolver;
 use Sulu\Article\Infrastructure\Sulu\Content\ResourceLoader\ArticleResourceLoader;
 use Sulu\Article\Infrastructure\Sulu\Reference\ArticleReferenceRefresher;
+use Sulu\Article\Infrastructure\Sulu\Sitemap\ArticlesSitemapProvider;
 use Sulu\Article\UserInterface\Controller\Admin\ArticleController;
 use Sulu\Bundle\PersistenceBundle\DependencyInjection\PersistenceExtensionTrait;
 use Sulu\Bundle\PersistenceBundle\PersistenceBundleTrait;
@@ -273,6 +274,17 @@ final class SuluArticleBundle extends AbstractBundle
                 new Reference('sulu_content.content_merger'),
             ])
             ->tag('sulu_reference.refresher');
+
+        // Sitemap
+        $services->set('sulu_next_article.articles_sitemap_provider')
+            ->class(ArticlesSitemapProvider::class)
+            ->args([
+                new Reference('doctrine.orm.entity_manager'),
+                new Reference('sulu_core.webspace.webspace_manager'),
+                '%kernel.environment%',
+                new Reference('sulu_security.access_control_manager'),
+            ])
+            ->tag('sulu.sitemap.provider');
     }
 
     /**
