@@ -11,8 +11,10 @@
 
 namespace Sulu\Page\Application\MessageHandler;
 
+use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Page\Application\Mapper\PageMapperInterface;
 use Sulu\Page\Application\Message\CreatePageMessage;
+use Sulu\Page\Domain\Event\PageCreatedEvent;
 use Sulu\Page\Domain\Model\PageInterface;
 use Sulu\Page\Domain\Repository\PageRepositoryInterface;
 
@@ -31,13 +33,16 @@ final class CreatePageMessageHandler
      */
     public function __construct(
         private PageRepositoryInterface $pageRepository,
-        private iterable $pageMappers
+        private iterable $pageMappers,
+        private DomainEventCollectorInterface $domainEventCollector,
     ) {
     }
 
     public function __invoke(CreatePageMessage $message): PageInterface
     {
         $data = $message->getData();
+        /** @var string $locale */
+        $locale = $data['locale'];
         $page = $this->pageRepository->createNew($message->getUuid());
         $page->setWebspaceKey($message->getWebspaceKey());
         $page = $this->setParent($message->getParentId(), $page);
@@ -47,6 +52,8 @@ final class CreatePageMessageHandler
         }
 
         $this->pageRepository->add($page);
+
+        $this->domainEventCollector->collect(new PageCreatedEvent($page, $locale, $data));
 
         return $page;
     }

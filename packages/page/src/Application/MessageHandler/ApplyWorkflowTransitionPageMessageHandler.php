@@ -11,8 +11,10 @@
 
 namespace Sulu\Page\Application\MessageHandler;
 
+use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Content\Application\ContentWorkflow\ContentWorkflowInterface;
 use Sulu\Page\Application\Message\ApplyWorkflowTransitionPageMessage;
+use Sulu\Page\Domain\Event\PageWorkflowTransitionAppliedEvent;
 use Sulu\Page\Domain\Repository\PageRepositoryInterface;
 
 /**
@@ -23,22 +25,11 @@ use Sulu\Page\Domain\Repository\PageRepositoryInterface;
  */
 final class ApplyWorkflowTransitionPageMessageHandler
 {
-    /**
-     * @var PageRepositoryInterface
-     */
-    private $pageRepository;
-
-    /**
-     * @var ContentWorkflowInterface
-     */
-    private $contentWorkflow;
-
     public function __construct(
-        PageRepositoryInterface $pageRepository,
-        ContentWorkflowInterface $contentWorkflow
+        private PageRepositoryInterface $pageRepository,
+        private ContentWorkflowInterface $contentWorkflow,
+        private DomainEventCollectorInterface $domainEventCollector,
     ) {
-        $this->pageRepository = $pageRepository;
-        $this->contentWorkflow = $contentWorkflow;
     }
 
     public function __invoke(ApplyWorkflowTransitionPageMessage $message): void
@@ -50,5 +41,7 @@ final class ApplyWorkflowTransitionPageMessageHandler
             ['locale' => $message->getLocale()],
             $message->getTransitionName()
         );
+
+        $this->domainEventCollector->collect(new PageWorkflowTransitionAppliedEvent($page, $message->getTransitionName(), $message->getLocale()));
     }
 }
