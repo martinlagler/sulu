@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sulu\Page\Infrastructure\Sulu\Content;
 
-use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfiguration;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkItem;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkProviderInterface;
@@ -24,7 +23,11 @@ use Sulu\Page\Domain\Model\PageInterface;
 use Sulu\Page\Domain\Repository\PageRepositoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PageLinkProvider implements LinkProviderInterface
+/**
+ * @interal This class is an integration to the SuluMarkupBundle and can be changed any time.
+ *          Use Symfony dependency injection service decoration and change the behaviour if you need.
+ */
+final class PageLinkProvider implements LinkProviderInterface
 {
     public function __construct(
         private readonly ContentManagerInterface $contentManager,
@@ -34,7 +37,7 @@ class PageLinkProvider implements LinkProviderInterface
     ) {
     }
 
-    public function getConfiguration(): LinkConfiguration
+    public function getConfigurationBuilder(): LinkConfigurationBuilder
     {
         return LinkConfigurationBuilder::create()
             ->setTitle($this->translator->trans('sulu_page.pages', [], 'admin'))
@@ -43,11 +46,10 @@ class PageLinkProvider implements LinkProviderInterface
             ->setDisplayProperties(['id'])
             ->setOverlayTitle($this->translator->trans('sulu_page.selection_overlay_title', [], 'admin'))
             ->setEmptyText($this->translator->trans('sulu_page.no_page_selected', [], 'admin'))
-            ->setIcon('su-document')
-            ->getLinkConfiguration();
+            ->setIcon('su-document');
     }
 
-    public function preload(array $hrefs, $locale, $published = true)
+    public function preload(array $hrefs, string $locale, bool $published = true): iterable
     {
         $dimensionAttributes = [
             'locale' => $locale,

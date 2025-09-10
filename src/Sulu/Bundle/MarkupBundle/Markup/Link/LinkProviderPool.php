@@ -11,25 +11,16 @@
 
 namespace Sulu\Bundle\MarkupBundle\Markup\Link;
 
-/**
- * Contains all providers.
- */
-class LinkProviderPool implements LinkProviderPoolInterface
+final class LinkProviderPool implements LinkProviderPoolInterface
 {
     /**
-     * @var LinkProviderInterface[]
+     * @param array<string, LinkProviderInterface> $providers
      */
-    private $providers;
-
-    /**
-     * @param LinkProviderInterface[] $providers
-     */
-    public function __construct(array $providers)
+    public function __construct(private readonly array $providers)
     {
-        $this->providers = $providers;
     }
 
-    public function getProvider($name)
+    public function getProvider(string $name): LinkProviderInterface
     {
         if (!$this->hasProvider($name)) {
             throw new ProviderNotFoundException($name, \array_keys($this->providers));
@@ -38,29 +29,18 @@ class LinkProviderPool implements LinkProviderPoolInterface
         return $this->providers[$name];
     }
 
-    public function hasProvider($name)
+    public function hasProvider(string $name): bool
     {
         return \array_key_exists($name, $this->providers);
     }
 
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $configuration = [];
         foreach ($this->providers as $name => $provider) {
-            /** @var LinkConfiguration|LinkConfigurationBuilder|null $providerConfiguration */
-            $providerConfiguration = $provider->getConfiguration();
-
-            if ($providerConfiguration instanceof LinkConfiguration) {
-                @trigger_deprecation(
-                    'sulu/sulu',
-                    '2.6',
-                    'The LinkProvider should return a LinkConfigurationBuilder and not a LinkConfiguration. The LinkConfiguration will not be supported in 3.0.'
-                );
-            }
-
-            $configuration[$name] = $providerConfiguration instanceof LinkConfigurationBuilder ? $providerConfiguration->getLinkConfiguration() : $providerConfiguration;
+            $configuration[$name] = $provider->getConfigurationBuilder()->getLinkConfiguration();
         }
 
-        return \array_filter($configuration);
+        return $configuration;
     }
 }

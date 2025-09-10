@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sulu\Content\Tests\Application\ExampleTestBundle\Link;
 
-use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfiguration;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkItem;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkProviderInterface;
@@ -23,7 +22,7 @@ use Sulu\Content\Domain\Model\DimensionContentInterface;
 use Sulu\Content\Tests\Application\ExampleTestBundle\Entity\Example;
 use Sulu\Content\Tests\Application\ExampleTestBundle\Repository\ExampleRepository;
 
-class ExampleLinkProvider implements LinkProviderInterface
+final class ExampleLinkProvider implements LinkProviderInterface
 {
     public function __construct(
         private readonly ContentManagerInterface $contentManager,
@@ -32,7 +31,7 @@ class ExampleLinkProvider implements LinkProviderInterface
     ) {
     }
 
-    public function getConfiguration(): LinkConfiguration
+    public function getConfigurationBuilder(): LinkConfigurationBuilder
     {
         return LinkConfigurationBuilder::create()
             ->setTitle('Example')
@@ -41,11 +40,10 @@ class ExampleLinkProvider implements LinkProviderInterface
             ->setDisplayProperties(['id'])
             ->setOverlayTitle('Select Example')
             ->setEmptyText('No example selected')
-            ->setIcon('su-document')
-            ->getLinkConfiguration();
+            ->setIcon('su-document');
     }
 
-    public function preload(array $hrefs, $locale, $published = true)
+    public function preload(array $hrefs, string $locale, bool $published = true): iterable
     {
         $dimensionAttributes = [
             'locale' => $locale,
