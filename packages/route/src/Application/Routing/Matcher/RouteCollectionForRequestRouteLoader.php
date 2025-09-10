@@ -82,11 +82,11 @@ final readonly class RouteCollectionForRequestRouteLoader implements RouteCollec
             return new RouteCollection();
         }
 
-        $route = $this->routeRepository->findOneBy([
-            'site' => $site,
+        $route = $this->routeRepository->findFirstBy([
+            'siteOrNull' => $site,
             'locale' => $locale,
             'slug' => $slug,
-        ]);
+        ], ['site' => 'desc']);
 
         if (null === $route) {
             return new RouteCollection();

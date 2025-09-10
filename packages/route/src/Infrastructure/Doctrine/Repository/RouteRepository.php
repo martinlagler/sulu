@@ -11,6 +11,8 @@
 
 namespace Sulu\Route\Infrastructure\Doctrine\Repository;
 
+use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -20,6 +22,7 @@ use Sulu\Route\Domain\Repository\RouteRepositoryInterface;
 
 /**
  * @phpstan-import-type RouteFilter from RouteRepositoryInterface
+ * @phpstan-import-type RouteSortBy from RouteRepositoryInterface
  */
 class RouteRepository implements RouteRepositoryInterface
 {
@@ -49,6 +52,18 @@ class RouteRepository implements RouteRepositoryInterface
         return $queryBuilder->getQuery()->getOneOrNullResult(Query::HYDRATE_OBJECT);
     }
 
+    public function findFirstBy(array $filters, array $sortBys = []): ?Route
+    {
+        $queryBuilder = $this->createQueryBuilder($filters, $sortBys);
+        $queryBuilder->select('route');
+        $queryBuilder->setMaxResults(1);
+
+        // Hydrate Object is default, but we need to specify it here to make PHPStan happy:
+        //     see: https://github.com/phpstan/phpstan-doctrine?tab=readme-ov-file#supported-methods
+        /** @var Route */
+        return $queryBuilder->getQuery()->getOneOrNullResult(Query::HYDRATE_OBJECT);
+    }
+
     public function existBy(array $filters): bool
     {
         $queryBuilder = $this->createQueryBuilder($filters);
@@ -58,7 +73,7 @@ class RouteRepository implements RouteRepositoryInterface
         return $queryBuilder->getQuery()->getOneOrNullResult() ? true : false;
     }
 
-    public function findBy(array $filters): iterable
+    public function findBy(array $filters, array $sortBys = []): iterable
     {
         $queryBuilder = $this->createQueryBuilder($filters);
         $queryBuilder->select('route');
@@ -71,13 +86,25 @@ class RouteRepository implements RouteRepositoryInterface
 
     /**
      * @param RouteFilter $filters
+     * @param RouteSortBy $sortBys
      */
-    protected function createQueryBuilder(array $filters): QueryBuilder
+    protected function createQueryBuilder(array $filters, array $sortBys = []): QueryBuilder
     {
         $queryBuilder = $this->repository->createQueryBuilder('route');
 
         if (\array_key_exists('site', $filters)) {
             $site = $filters['site'] ?? null;
+            $queryBuilder->andWhere(
+                null === $site ? 'route.site IS NULL' : 'route.site = :site'
+            );
+
+            if (null !== $site) {
+                $queryBuilder->setParameter('site', $site);
+            }
+        }
+
+        if (\array_key_exists('siteOrNull', $filters)) {
+            $site = $filters['siteOrNull'] ?? null;
             $queryBuilder->andWhere(
                 null === $site ? 'route.site IS NULL' : '(route.site = :site OR route.site IS NULL)'
             );
@@ -128,6 +155,28 @@ class RouteRepository implements RouteRepositoryInterface
                 )))
                 ->setParameter('excludeResourceKey', $excludeResource['resourceKey'])
                 ->setParameter('excludeResourceId', $excludeResource['resourceId']);
+        }
+
+        if ([] !== $sortBys) {
+            foreach ($sortBys as $field => $order) {
+                $order = match (true) {
+                    // if we filter by siteOrNull and order by site we need invert the order for specific platforms
+                    // TODO if possible in future use something like ASC NULLS FIRST / DESC NULLS LAST directly
+                    ('site' === $field // @phpstan-ignore-line identical.alwaysTrue
+                        && (
+                            $this->entityManager->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform
+                            || $this->entityManager->getConnection()->getDatabasePlatform() instanceof OraclePlatform
+                        )
+                        && \array_key_exists('siteOrNull', $filters)
+                    ) => match ($order) {
+                        'asc' => 'desc',
+                        'desc' => 'asc',
+                    },
+                    default => $order,
+                };
+
+                $queryBuilder->addOrderBy(\sprintf('route.%s', $field), $order);
+            }
         }
 
         return $queryBuilder;

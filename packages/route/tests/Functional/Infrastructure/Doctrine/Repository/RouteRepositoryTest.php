@@ -40,6 +40,12 @@ class RouteRepositoryTest extends KernelTestCase
         $unexpectedLocalesRouteEs = new Route('example', '1', 'es', '/ejemplo', 'the_site');
         $entityManager->persist($unexpectedLocalesRouteEs);
 
+        $multiSiteRouteEn = new Route('multisite', '1', 'en', '/example', null);
+        $entityManager->persist($multiSiteRouteEn);
+
+        $multiSiteRouteDe = new Route('multisite', '1', 'de', '/beispiel', null);
+        $entityManager->persist($multiSiteRouteDe);
+
         $entityManager->flush();
         $entityManager->clear();
 
@@ -85,6 +91,53 @@ class RouteRepositoryTest extends KernelTestCase
         $this->assertSame('en', $route->getLocale());
         $this->assertSame(Route::HISTORY_RESOURCE_KEY, $route->getResourceKey());
         $this->assertSame('example::1', $route->getResourceId());
+    }
+
+    public function testFindFirstBySiteOrNullSlugLocale(): void
+    {
+        $routes = $this->routeRepository->findBy([
+            'siteOrNull' => 'the_site',
+            'slug' => '/example',
+            'locale' => 'en',
+        ], ['site' => 'desc']);
+
+        $this->assertGreaterThanOrEqual(2, \count([...$routes]), 'This test requires at least two routes on the same slug and locale.');
+
+        $route = $this->routeRepository->findFirstBy([
+            'siteOrNull' => 'the_site',
+            'slug' => '/example',
+            'locale' => 'en',
+        ], ['site' => 'desc']);
+
+        $this->assertNotNull($route);
+        $this->assertSame('/example', $route->getSlug());
+        $this->assertSame('en', $route->getLocale());
+        $this->assertSame('the_site', $route->getSite());
+    }
+
+    public function testFindFirstBySiteSlugLocale(): void
+    {
+        $route = $this->routeRepository->findFirstBy([
+            'siteOrNull' => null,
+            'slug' => '/example',
+            'locale' => 'en',
+        ], ['site' => 'desc']);
+
+        $this->assertNotNull($route);
+        $this->assertSame('/example', $route->getSlug());
+        $this->assertSame('en', $route->getLocale());
+        $this->assertNull($route->getSite());
+    }
+
+    public function testFindFirstByNotExist(): void
+    {
+        $route = $this->routeRepository->findFirstBy([
+            'siteOrNull' => 'the_site',
+            'slug' => '/not-exist',
+            'locale' => 'en',
+        ], ['site' => 'desc']);
+
+        $this->assertNull($route);
     }
 
     public function testFindOneByResourceAndLocales(): void
