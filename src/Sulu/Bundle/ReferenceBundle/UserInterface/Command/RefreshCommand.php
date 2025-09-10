@@ -29,7 +29,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class RefreshCommand extends Command
 {
     /**
-     * @param iterable<ReferenceRefresherInterface> $referenceRefreshers
+     * @param iterable<string, ReferenceRefresherInterface> $referenceRefreshers
      */
     public function __construct(
         private iterable $referenceRefreshers,
@@ -52,6 +52,7 @@ class RefreshCommand extends Command
 
         $ui = new SymfonyStyle($input, $output);
 
+        /** @var array<string, array<ReferenceRefresherInterface>> $referenceRefresherPerResourceKey */
         $referenceRefresherPerResourceKey = [];
 
         foreach ($this->referenceRefreshers as $resourceKey => $referenceRefresher) {

@@ -53,7 +53,7 @@ trait FindContentRichEntitiesTrait
                 $aId = $classMetadata->getIdentifierValues($a)[$entityIdField];
                 $bId = $classMetadata->getIdentifierValues($b)[$entityIdField];
 
-                return $idPositions[$aId] - $idPositions[$bId];
+                return ($idPositions[$aId] ?? 0) - ($idPositions[$bId] ?? 0);
             }
         );
 
