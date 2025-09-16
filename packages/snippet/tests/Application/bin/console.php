@@ -40,10 +40,6 @@ require \dirname(__DIR__) . '/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {
     \umask(0000);
-
-    if (\class_exists(Debug::class)) {
-        Debug::enable();
-    }
 }
 
 \assert(\is_string($_SERVER['APP_ENV']));

@@ -11,7 +11,6 @@
 
 namespace Sulu\Page\Tests\Application;
 
-use Sulu\Bundle\PageBundle\SuluPageBundle as DeprecatedSuluPageBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Component\HttpKernel\SuluKernel;
 use Sulu\Content\Tests\Application\ExampleTestBundle\ExampleTestBundle;
@@ -39,13 +38,6 @@ class Kernel extends SuluTestKernel
     public function registerBundles(): iterable
     {
         $bundles = [...parent::registerBundles()];
-
-        foreach ($bundles as $key => $bundle) {
-            // remove old route bundle to avoid conflicts
-            if (DeprecatedSuluPageBundle::class === $bundle::class) {
-                //                unset($bundles[$key]);
-            }
-        }
 
         $bundles[] = new ExampleTestBundle(); // TODO currently required for test content bundle, everybody should setup database by its own
 
