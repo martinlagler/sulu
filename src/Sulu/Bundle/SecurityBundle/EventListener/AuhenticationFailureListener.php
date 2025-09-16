@@ -16,6 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Uid\Uuid;
 
 /**
@@ -34,13 +36,20 @@ class AuhenticationFailureListener implements EventSubscriberInterface
     {
         return [
             AuthenticationFailureEvent::class => 'onLoginFailure',
+            LoginFailureEvent::class => 'onLoginFailure',
         ];
     }
 
-    public function onLoginFailure(AuthenticationFailureEvent $event)
+    public function onLoginFailure(AuthenticationFailureEvent|LoginFailureEvent $event)
     {
-        $previousException = $event->getAuthenticationException()->getPrevious();
-        if ($previousException instanceof UsernameNotFoundException) {
+        if ($event instanceof AuthenticationFailureEvent) {
+            $previousException = $event->getAuthenticationException()->getPrevious();
+        } else {
+            $previousException = $event->getException()->getPrevious();
+        }
+
+        if ($previousException instanceof UsernameNotFoundException
+            || $previousException instanceof UserNotFoundException) {
             $user = $this->userRepository->createNew();
 
             $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
