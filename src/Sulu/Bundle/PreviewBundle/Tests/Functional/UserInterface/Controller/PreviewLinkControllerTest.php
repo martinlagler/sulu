@@ -16,8 +16,6 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Uid\Uuid;
 
-use function Symfony\Component\String\u;
-
 class PreviewLinkControllerTest extends SuluTestCase
 {
     /**
@@ -161,5 +159,4 @@ class PreviewLinkControllerTest extends SuluTestCase
 
         return $previewLink;
     }
-
 }
