@@ -17,17 +17,15 @@ require __DIR__ . '/vendor/symfony/dependency-injection/Loader/Configurator/Cont
 $config = new Configuration();
 
 return $config
+    // UnknownClasses
+    ->ignoreUnknownClasses([
+        // for bc layers
+    ])
     // SHADOW_DEPENDENCY
     ->ignoreErrorsOnExtension('ext-imagick', [ErrorType::SHADOW_DEPENDENCY]) // optional fallback to gd or vips
     ->ignoreErrorsOnExtension('ext-openssl', [ErrorType::SHADOW_DEPENDENCY]) // fallbacks to random_bytes
     ->ignoreErrorsOnExtension('ext-zip', [ErrorType::SHADOW_DEPENDENCY]) // not required to run Sulu
     ->ignoreErrorsOnExtension('ext-intl', [ErrorType::SHADOW_DEPENDENCY]) // optional fallback to strcmp
-    // UnknownClasses
-    ->ignoreUnknownClasses([
-        // bc layer for lowest
-        'Symfony\Component\Security\Core\Event\AuthenticationFailureEvent',
-        'Symfony\Component\Security\Core\Exception\UsernameNotFoundException',
-    ])
     // DEV_DEPENDENCY_IN_PROD: optional dependency
     ->ignoreErrorsOnPackage('php-ffmpeg/php-ffmpeg', [ErrorType::DEV_DEPENDENCY_IN_PROD])
     ->ignoreErrorsOnPackage('rokka/imagine-vips', [ErrorType::DEV_DEPENDENCY_IN_PROD])
