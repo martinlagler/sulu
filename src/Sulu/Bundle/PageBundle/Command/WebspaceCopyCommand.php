@@ -24,6 +24,7 @@ use Sulu\Component\Content\Document\LocalizationState;
 use Sulu\Component\Content\Document\RedirectType;
 use Sulu\Component\Content\Document\WorkflowStage;
 use Sulu\Component\Content\Metadata\BlockMetadata;
+use Sulu\Component\Content\Metadata\Factory\StructureMetadataFactoryInterface;
 use Sulu\Component\Content\Metadata\ItemMetadata;
 use Sulu\Component\Content\Metadata\PropertyMetadata;
 use Sulu\Component\DocumentManager\DocumentManagerInterface;
@@ -63,7 +64,8 @@ class WebspaceCopyCommand extends Command
         private DocumentManagerInterface $documentManager,
         private SessionManagerInterface $sessionManager,
         private DocumentInspector $documentInspector,
-        private HtmlTagExtractor $htmlTagExtractor
+        private HtmlTagExtractor $htmlTagExtractor,
+        private StructureMetadataFactoryInterface $structureMetadataFactory,
     ) {
         parent::__construct();
     }
@@ -474,8 +476,9 @@ class WebspaceCopyCommand extends Command
         foreach ($structureArray[$property->getName()] as &$structure) {
             /** @var ItemMetadata $component */
             $component = $property->getComponentByName($structure['type']);
+            $children = $this->getBlockConfigChildren($component);
             /** @var PropertyMetadata $child */
-            foreach ($component->getChildren() as $child) {
+            foreach ($children as $child) {
                 if ($structure[$child->getName()]) {
                     $this->processContentType(
                         $child,
@@ -762,5 +765,30 @@ class WebspaceCopyCommand extends Command
 
         $this->documentManager->persist($document, $locale, $persistOptions);
         $this->documentManager->flush();
+    }
+
+    /**
+     * @return ItemMetadata[]
+     */
+    protected function getBlockConfigChildren(ItemMetadata $component): array
+    {
+        $children = $component->getChildren();
+        if (!$component->hasTag('sulu.global_block')) {
+            return $children;
+        }
+        $tag = $component->getTag('sulu.global_block');
+        if (!\is_array($tag['attributes'] ?? null)) {
+            return $children;
+        }
+        $refType = $tag['attributes']['global_block'] ?? null;
+        if (!\is_string($refType)) {
+            return $children;
+        }
+        $result = $this->structureMetadataFactory->getStructureMetadata('block', $refType);
+        if (!$result) {
+            return $children;
+        }
+
+        return $result->getProperties();
     }
 }
