@@ -43,7 +43,6 @@ return $config
     // UNUSED_DEPENDENCY
     ->ignoreErrorsOnPackage('guzzlehttp/promises', [ErrorType::UNUSED_DEPENDENCY]) // required for faster fos http cache clearing
     ->ignoreErrorsOnPackage('nyholm/psr7', [ErrorType::UNUSED_DEPENDENCY]) // required for faster fos http cache clearing
-    ->ignoreErrorsOnPackage('symfony/asset', [ErrorType::UNUSED_DEPENDENCY]) // false positive we use assets
     ->ignoreErrorsOnPackage('symfony/css-selector', [ErrorType::UNUSED_DEPENDENCY]) // we use caches mostly via psr interfaces
     // PROD_DEPENDENCY_ONLY_IN_DEV
     ->ignoreErrorsOnPackage('symfony/yaml', [ErrorType::PROD_DEPENDENCY_ONLY_IN_DEV]) // we use yaml configurations
