@@ -442,7 +442,7 @@
 
         <service id="sulu_admin.teaser_provider_pool"
                  class="Sulu\Bundle\AdminBundle\Teaser\Provider\TeaserProviderPool">
-            <argument type="collection"/>
+            <argument type="tagged_iterator" tag="sulu.teaser.provider" index-by="alias" />
         </service>
 
         <service id="sulu_admin.teaser_manager" class="Sulu\Bundle\AdminBundle\Teaser\TeaserManager">

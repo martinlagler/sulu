@@ -14,10 +14,16 @@ namespace Sulu\Bundle\MarkupBundle\Markup\Link;
 final class LinkProviderPool implements LinkProviderPoolInterface
 {
     /**
-     * @param array<string, LinkProviderInterface> $providers
+     * @var array<string, LinkProviderInterface>
      */
-    public function __construct(private readonly array $providers)
+    private array $providers;
+
+    /**
+     * @param iterable<string, LinkProviderInterface> $providers
+     */
+    public function __construct(iterable $providers)
     {
+        $this->providers = [...$providers];
     }
 
     public function getProvider(string $name): LinkProviderInterface
