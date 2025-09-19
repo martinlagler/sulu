@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Add all admin-services with the tag "sulu.admin" to the AdminPool-Service.
+ *
+ * @deprecated since 2.6 use Symfony tagged_iterator instead.
  */
 class AddAdminPass implements CompilerPassInterface
 {
