@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sulu\Content\Application\ContentResolver\ResolvableResourceReplacer;
 
+use Sulu\Bundle\HttpCacheBundle\ReferenceStore\ReferenceStoreInterface;
 use Sulu\Content\Application\ContentResolver\Value\ResolvableInterface;
 use Sulu\Content\Application\ContentResolver\Value\ResolvableResource;
 
@@ -22,6 +23,11 @@ use Sulu\Content\Application\ContentResolver\Value\ResolvableResource;
  */
 class ResolvableResourceReplacer implements ResolvableResourceReplacerInterface
 {
+    public function __construct(
+        private ReferenceStoreInterface $referenceStore
+    ) {
+    }
+
     public function replaceResolvableResourcesWithResolvedValues(
         array $content,
         array $resolvedResources,
@@ -50,6 +56,12 @@ class ResolvableResourceReplacer implements ResolvableResourceReplacerInterface
                 $value instanceof ResolvableInterface
             ) {
                 $resource = $resolvedResources[$value->getResourceLoaderKey()][$value->getId()][$value->getMetadataIdentifier()] ?? null;
+
+                // Populate ReferenceStore if resource was successfully loaded and has resourceKey
+                if (null !== $resource && $value instanceof ResolvableResource && $value->getResourceKey()) {
+                    $this->populateReferenceStore($value->getId(), $value->getResourceKey());
+                }
+
                 $value = $value->executeResourceCallback(
                     $resource,
                 );
@@ -72,5 +84,10 @@ class ResolvableResourceReplacer implements ResolvableResourceReplacerInterface
         }
 
         return $content;
+    }
+
+    private function populateReferenceStore(string|int $resourceId, string $resourceKey): void
+    {
+        $this->referenceStore->add((string) $resourceId, $resourceKey);
     }
 }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sulu\Page\Infrastructure\Sulu\Content;
 
+use Sulu\Bundle\HttpCacheBundle\ReferenceStore\ReferenceStoreInterface;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkConfigurationBuilder;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkItem;
 use Sulu\Bundle\MarkupBundle\Markup\Link\LinkProviderInterface;
-use Sulu\Bundle\WebsiteBundle\ReferenceStore\ReferenceStoreInterface;
 use Sulu\Content\Application\ContentManager\ContentManagerInterface;
 use Sulu\Content\Domain\Model\DimensionContentInterface;
 use Sulu\Page\Domain\Model\PageInterface;
@@ -32,7 +32,7 @@ final class PageLinkProvider implements LinkProviderInterface
     public function __construct(
         private readonly ContentManagerInterface $contentManager,
         private readonly PageRepositoryInterface $pageRepository,
-        private readonly ReferenceStoreInterface $pageReferenceStore,
+        private readonly ReferenceStoreInterface $referenceStore,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -64,7 +64,7 @@ final class PageLinkProvider implements LinkProviderInterface
         $result = [];
         foreach ($pages as $page) {
             $dimensionContent = $this->contentManager->resolve($page, $dimensionAttributes);
-            $this->pageReferenceStore->add($page->getId());
+            $this->referenceStore->add($page->getId(), PageInterface::RESOURCE_KEY);
 
             /** @var string|null $url */
             $url = $dimensionContent->getTemplateData()['url'] ?? null;

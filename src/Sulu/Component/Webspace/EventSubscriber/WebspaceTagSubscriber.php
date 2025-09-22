@@ -9,10 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Bundle\HttpCacheBundle\EventSubscriber;
+namespace Sulu\Component\Webspace\EventSubscriber;
 
-use FOS\HttpCacheBundle\Http\SymfonyResponseTagger;
 use Sulu\Bundle\HttpCacheBundle\ReferenceStore\ReferenceStoreInterface;
+use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
+use Sulu\Component\Webspace\Webspace;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -21,29 +22,30 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *           You can create your own response listener to change the behaviour or use Symfony
  *           dependency injection container to replace this service.
  */
-class TagsSubscriber implements EventSubscriberInterface
+class WebspaceTagSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private ReferenceStoreInterface $referenceStore,
-        private SymfonyResponseTagger $symfonyResponseTagger
+        private RequestAnalyzerInterface $requestAnalyzer
     ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => ['addTags', 1024],
+            KernelEvents::RESPONSE => ['addWebspaceTag', 2048], // Priority needs to be higher than the TagsSubscriber (1024)
         ];
     }
 
-    public function addTags(): void
+    public function addWebspaceTag(): void
     {
-        $tags = $this->referenceStore->getAll();
-
-        if (\count($tags) <= 0) {
+        /** @var Webspace|null $webspace */
+        $webspace = $this->requestAnalyzer->getWebspace();
+        if (!$webspace) {
             return;
         }
 
-        $this->symfonyResponseTagger->addTags($tags);
+        $webspaceKey = $webspace->getKey();
+        $this->referenceStore->add($webspaceKey, 'webspace');
     }
 }

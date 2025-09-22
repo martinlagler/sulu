@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -9,11 +11,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Sulu\Bundle\HttpCacheBundle\EventSubscriber;
+namespace Sulu\Content\Infrastructure\Sulu\HttpCache\EventSubscriber;
 
-use FOS\HttpCacheBundle\Http\SymfonyResponseTagger;
 use Sulu\Bundle\HttpCacheBundle\ReferenceStore\ReferenceStoreInterface;
+use Sulu\Content\Domain\Model\DimensionContentInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -21,29 +24,36 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *           You can create your own response listener to change the behaviour or use Symfony
  *           dependency injection container to replace this service.
  */
-class TagsSubscriber implements EventSubscriberInterface
+final class DimensionContentTagSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private ReferenceStoreInterface $referenceStore,
-        private SymfonyResponseTagger $symfonyResponseTagger
+        private RequestStack $requestStack
     ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => ['addTags', 1024],
+            KernelEvents::RESPONSE => ['addTag', 2048], // Priority needs to be higher than the TagsSubscriber (1024)
         ];
     }
 
-    public function addTags(): void
+    public function addTag(): void
     {
-        $tags = $this->referenceStore->getAll();
-
-        if (\count($tags) <= 0) {
+        $request = $this->requestStack->getCurrentRequest();
+        if (!$request) {
             return;
         }
 
-        $this->symfonyResponseTagger->addTags($tags);
+        $object = $request->attributes->get('object');
+        if (!$object instanceof DimensionContentInterface) {
+            return;
+        }
+
+        $objectId = (string) $object->getResource()->getId();
+        $resourceKey = $object::getResourceKey();
+
+        $this->referenceStore->add($objectId, $resourceKey);
     }
 }
