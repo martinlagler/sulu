@@ -755,6 +755,7 @@ Removed classes / services / interfaces / traits:
 - `Sulu\Bundle\SecurityBundle\EventListener\AuhenticationFailureListener` (moved and internal)
 - `Sulu\Bundle\MediaBundle\DependencyInjection\FormatCacheClearerCompilerPass` (use tagged_iterator)
 - `Sulu\Component\Security\Authorization\AccessControl\SecuredEntityRepositoryTrait`
+- `Sulu/Bundle/AdminBundle/DependencyInjection/Compiler/AddAdminPass` (replaced by a `tagged_iterator`)
 - `Sulu\Bundle\AudienceTargetingBundle\DependencyInjection\Compiler\AddRulesPass` -> (`sulu.audience_target_rule`)
 - `Sulu\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterLocalizationProvidersPass` (`sulu.localization_provider`)
 
@@ -809,6 +810,7 @@ Removed deprecated functions and properties:
 - `Sulu\Component\Rest\ListBuilder\AbstractListBuilder::hasField` (use `hasSelectField()` instead)
 - `Sulu\Component\Rest\ListBuilder\AbstractListBuilder::whereNot` (use `where()` instead)
 - `Sulu\Bundle\Security\Entity\Role::getRole` (use `getIdentifier` instead)
+- `Sulu\Bundle\AdminBundle\Admin\AdminPool::addAdmin` (use dependency injection via tagged service instead)
 
 Removed unused arguments:
 
