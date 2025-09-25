@@ -17,7 +17,11 @@ use CmsIg\Seal\Reindex\ReindexConfig;
 use Sulu\Bundle\ContactBundle\Domain\Event\AccountCreatedEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\AccountModifiedEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\AccountRemovedEvent;
+use Sulu\Bundle\ContactBundle\Domain\Event\ContactCreatedEvent;
+use Sulu\Bundle\ContactBundle\Domain\Event\ContactModifiedEvent;
+use Sulu\Bundle\ContactBundle\Domain\Event\ContactRemovedEvent;
 use Sulu\Bundle\ContactBundle\Entity\AccountInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -37,6 +41,17 @@ class ContactIndexListener
                 ->withIndex('admin')
                 ->withIdentifiers([
                     AccountInterface::RESOURCE_KEY . '::' . $event->getResourceId(),
+                ]),
+        );
+    }
+
+    public function onContactChanged(ContactCreatedEvent|ContactModifiedEvent|ContactRemovedEvent $event): void
+    {
+        $this->messageBus->dispatch(
+            ReindexConfig::create()
+                ->withIndex('admin')
+                ->withIdentifiers([
+                    ContactInterface::RESOURCE_KEY . '::' . $event->getResourceId(),
                 ]),
         );
     }
