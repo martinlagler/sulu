@@ -33,7 +33,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "composer-runtime-api": "^2.0",
-        "cmsig/seal": "^0.12.2",
+        "cmsig/seal": "^0.12.3",
         "cmsig/seal-symfony-bundle": "^0.12.2",
         "contao/imagine-svg": "^1.0",
         "doctrine/cache": "^1.12.1 || ^2.0",
