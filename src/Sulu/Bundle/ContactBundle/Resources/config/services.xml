@@ -210,5 +210,23 @@
         >
             <argument type="service" id="translator"/>
         </service>
+
+        <service
+                id="sulu_contact.contact_index_listener"
+                class="Sulu\Bundle\ContactBundle\Infrastructure\Sulu\Search\ContactIndexListener"
+        >
+            <argument type="service" id="sulu_message_bus"/>
+            <tag name="kernel.event_listener" event="Sulu\Bundle\ContactBundle\Domain\Event\AccountCreatedEvent" method="onAccountChanged"/>
+            <tag name="kernel.event_listener" event="Sulu\Bundle\ContactBundle\Domain\Event\AccountModifiedEvent" method="onAccountChanged"/>
+            <tag name="kernel.event_listener" event="Sulu\Bundle\ContactBundle\Domain\Event\AccountRemovedEvent" method="onAccountChanged"/>
+        </service>
+
+        <service
+                id="sulu_contact.account_reindex_provider"
+                class="Sulu\Bundle\ContactBundle\Infrastructure\Sulu\Search\AccountReindexProvider"
+        >
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="cmsig_seal.reindex_provider"/>
+        </service>
     </services>
 </container>
