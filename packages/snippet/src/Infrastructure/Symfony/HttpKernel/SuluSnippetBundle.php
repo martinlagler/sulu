@@ -21,28 +21,41 @@ use Sulu\Snippet\Application\Mapper\SnippetMapperInterface;
 use Sulu\Snippet\Application\MessageHandler\ApplyWorkflowTransitionSnippetMessageHandler;
 use Sulu\Snippet\Application\MessageHandler\CopyLocaleSnippetMessageHandler;
 use Sulu\Snippet\Application\MessageHandler\CreateSnippetMessageHandler;
+use Sulu\Snippet\Application\MessageHandler\ModifySnippetAreaMessageHandler;
 use Sulu\Snippet\Application\MessageHandler\ModifySnippetMessageHandler;
+use Sulu\Snippet\Application\MessageHandler\RemoveSnippetAreaMessageHandler;
 use Sulu\Snippet\Application\MessageHandler\RemoveSnippetMessageHandler;
 use Sulu\Snippet\Application\MessageHandler\RestoreSnippetVersionMessageHandler;
 use Sulu\Snippet\Domain\Model\Snippet;
+use Sulu\Snippet\Domain\Model\SnippetArea;
+use Sulu\Snippet\Domain\Model\SnippetAreaInterface;
 use Sulu\Snippet\Domain\Model\SnippetDimensionContent;
 use Sulu\Snippet\Domain\Model\SnippetDimensionContentInterface;
 use Sulu\Snippet\Domain\Model\SnippetInterface;
+use Sulu\Snippet\Domain\Repository\SnippetAreaRepositoryInterface;
 use Sulu\Snippet\Domain\Repository\SnippetRepositoryInterface;
+use Sulu\Snippet\Infrastructure\Doctrine\Repository\SnippetAreaRepository;
 use Sulu\Snippet\Infrastructure\Doctrine\Repository\SnippetRepository;
 use Sulu\Snippet\Infrastructure\Sulu\Admin\SnippetAdmin;
+use Sulu\Snippet\Infrastructure\Sulu\Admin\SnippetAreaAdmin;
 use Sulu\Snippet\Infrastructure\Sulu\Content\PropertyResolver\SingleSnippetSelectionPropertyResolver;
 use Sulu\Snippet\Infrastructure\Sulu\Content\PropertyResolver\SnippetSelectionPropertyResolver;
 use Sulu\Snippet\Infrastructure\Sulu\Content\ResourceLoader\SnippetResourceLoader;
 use Sulu\Snippet\Infrastructure\Sulu\Content\SnippetSmartContentProvider;
 use Sulu\Snippet\Infrastructure\Sulu\Reference\SnippetReferenceRefresher;
+use Sulu\Snippet\Infrastructure\Symfony\CompilerPass\SnippetAreaCompilerPass;
+use Sulu\Snippet\Infrastructure\Symfony\Normalizer\SnippetAreaNormalizer;
+use Sulu\Snippet\Infrastructure\Symfony\Twig\SnippetAreaTwigExtension;
 use Sulu\Snippet\Trash\SnippetTrashItemHandler;
+use Sulu\Snippet\UserInterface\Controller\Admin\SnippetAreaController;
 use Sulu\Snippet\UserInterface\Controller\Admin\SnippetController;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 use Symfony\Component\DependencyInjection\Reference;
@@ -78,6 +91,12 @@ final class SuluSnippetBundle extends AbstractBundle
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('model')->defaultValue(SnippetDimensionContent::class)->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('snippet_area')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('model')->defaultValue(SnippetArea::class)->end()
                             ->end()
                         ->end()
                     ->end()
@@ -155,6 +174,22 @@ final class SuluSnippetBundle extends AbstractBundle
             ])
             ->tag('messenger.message_handler');
 
+        // Snippet area
+        $services->set('sulu_snippet.modify_snippet_area_handler')
+            ->class(ModifySnippetAreaMessageHandler::class)
+            ->args([
+                new Reference(SnippetAreaRepositoryInterface::class),
+                new Reference(SnippetRepositoryInterface::class),
+            ])
+            ->tag('messenger.message_handler');
+
+        $services->set('sulu_snippet.remove_snippet_area_handler')
+            ->class(RemoveSnippetAreaMessageHandler::class)
+            ->args([
+                new Reference('sulu_snippet.snippet_area_repository'),
+            ])
+            ->tag('messenger.message_handler');
+
         // Mapper service
         $services->set('sulu_snippet.snippet_content_mapper')
             ->class(SnippetContentMapper::class)
@@ -176,6 +211,35 @@ final class SuluSnippetBundle extends AbstractBundle
             ->tag('sulu.context', ['context' => 'admin'])
             ->tag('sulu.admin');
 
+        $services->set('sulu_snippet.snippet_area_admin')
+            ->class(SnippetAreaAdmin::class)
+            ->args([
+                new Reference('sulu_admin.view_builder_factory'),
+                new Reference('sulu_security.security_checker'),
+            ])
+            ->tag('sulu.context', ['context' => 'admin'])
+            ->tag('sulu.admin');
+
+        $services->set('sulu_snippet.snippet_area_normalizer', SnippetAreaNormalizer::class)
+            ->args([
+                new Reference('serializer.normalizer.object'),
+                new Reference('sulu_content.content_aggregator'),
+                param(SnippetAreaCompilerPass::SNIPPET_AREA_PARAM),
+            ])
+            ->tag('serializer.normalizer')
+        ;
+
+        // Twig services
+        $services->set('sulu_snippet.snippet_area_twig_extension')
+            ->class(SnippetAreaTwigExtension::class)
+            ->args([
+                new Reference('sulu_snippet.snippet_area_repository'),
+                new Reference('sulu_content.content_aggregator'),
+                new Reference('sulu_core.webspace.request_analyzer'),
+                new Reference('sulu_snippet.snippet_reference_store'),
+            ])
+            ->tag('twig.extension');
+
         // Repositories services
         $services->set('sulu_snippet.snippet_repository')
             ->class(SnippetRepository::class)
@@ -185,6 +249,14 @@ final class SuluSnippetBundle extends AbstractBundle
             ]);
 
         $services->alias(SnippetRepositoryInterface::class, 'sulu_snippet.snippet_repository');
+
+        $services->set('sulu_snippet.snippet_area_repository')
+            ->class(SnippetAreaRepository::class)
+            ->args([
+                new Reference('doctrine.orm.entity_manager'),
+            ]);
+
+        $services->alias(SnippetAreaRepositoryInterface::class, 'sulu_snippet.snippet_area_repository');
 
         // Controllers services
         $services->set('sulu_snippet.admin_snippet_controller')
@@ -199,12 +271,26 @@ final class SuluSnippetBundle extends AbstractBundle
                 new Reference('sulu_core.list_builder.field_descriptor_factory'),
                 new Reference('sulu_core.doctrine_list_builder_factory'),
                 new Reference('sulu_core.doctrine_rest_helper'),
+                param(SnippetAreaCompilerPass::SNIPPET_AREA_PARAM),
             ])
             ->tag('sulu.context', ['context' => 'admin']);
 
         $services->set('sulu_snippet.snippet_reference_store')
             ->class(ReferenceStore::class)
             ->tag('sulu_website.reference_store', ['alias' => SnippetInterface::RESOURCE_KEY]);
+
+        $services->set('sulu_snippet.admin_snippet_area_controller')
+            ->class(SnippetAreaController::class)
+            ->public()
+            ->args([
+                new Reference('sulu_message_bus'),
+                new Reference('serializer'),
+                new Reference('sulu_core.list_builder.field_descriptor_factory'),
+                new Reference('sulu_core.doctrine_list_builder_factory'),
+                new Reference('sulu_core.doctrine_rest_helper'),
+                param(SnippetAreaCompilerPass::SNIPPET_AREA_PARAM),
+            ])
+            ->tag('sulu.context', ['context' => 'admin']);
 
         // PropertyResolver services
         $services->set('sulu_snippet.single_snippet_selection_property_resolver')
@@ -308,6 +394,12 @@ final class SuluSnippetBundle extends AbstractBundle
                                 'detail' => 'sulu_snippet.get_snippet',
                             ],
                         ],
+                        'snippet_areas' => [
+                            'routes' => [
+                                'detail' => 'sulu_snippet_area.put_snippet_area',
+                                'list' => 'sulu_snippet_area.get_snippet_areas',
+                            ],
+                        ],
                     ],
                     'field_type_options' => [
                         'selection' => [
@@ -401,6 +493,9 @@ final class SuluSnippetBundle extends AbstractBundle
         $this->buildPersistence([
             SnippetInterface::class => 'sulu.model.snippet.class',
             SnippetDimensionContentInterface::class => 'sulu.model.snippet_content.class',
+            SnippetAreaInterface::class => 'sulu.model.snippet_area.class',
         ], $container);
+
+        $container->addCompilerPass(new SnippetAreaCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1024);
     }
 }

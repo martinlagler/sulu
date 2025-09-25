@@ -85,6 +85,12 @@ class SnippetAreas extends React.Component<ViewProps> {
             return <Loader />;
         }
 
+        const {
+            attributes: {
+                locale,
+            },
+        } = this.props.router;
+
         return (
             <Fragment>
                 <Table skin="light">
@@ -94,7 +100,7 @@ class SnippetAreas extends React.Component<ViewProps> {
                     </Table.Header>
                     <Table.Body>
                         {Object.keys(this.snippetAreaStore.snippetAreas).map((areaKey) => {
-                            const {defaultTitle, defaultUuid, key, title} = this.snippetAreaStore.snippetAreas[areaKey];
+                            const {snippetTitle, snippetUuid, key, title} = this.snippetAreaStore.snippetAreas[areaKey];
 
                             return (
                                 <Table.Row key={key}>
@@ -102,15 +108,15 @@ class SnippetAreas extends React.Component<ViewProps> {
                                         {title}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {defaultUuid
+                                        {snippetUuid
                                             ? <Fragment>
                                                 <Button
                                                     className={snippetAreasStyles.titleButton}
                                                     onClick={this.handleSnippetClick}
                                                     skin="text"
-                                                    value={defaultUuid}
+                                                    value={snippetUuid}
                                                 >
-                                                    {defaultTitle}
+                                                    {snippetTitle}
                                                 </Button>
                                                 <Button
                                                     className={snippetAreasStyles.deleteButton}
@@ -139,6 +145,7 @@ class SnippetAreas extends React.Component<ViewProps> {
                     confirmLoading={this.snippetAreaStore.saving}
                     key={this.openedAreaKey}
                     listKey="snippets"
+                    locale={observable.box(locale)}
                     onClose={this.handleListOverlayClose}
                     onConfirm={this.handleListOverlayConfirm}
                     open={!!this.openedAreaKey}

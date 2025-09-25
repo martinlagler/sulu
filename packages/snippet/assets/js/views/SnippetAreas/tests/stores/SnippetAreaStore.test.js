@@ -13,17 +13,17 @@ jest.mock('sulu-admin-bundle/services', () => ({
 test('Load snippet areas when constructing the store', () => {
     const listPromise = Promise.resolve({
         _embedded: {
-            areas: [
+            snippet_areas: [
                 {
-                    defaultTitle: 'Default 1',
-                    defaultUuid: 'some-uuid-1',
+                    snippetTitle: 'Default 1',
+                    snippetUuid: 'some-uuid-1',
                     key: 'default',
                     template: 'default',
                     title: 'Default',
                 },
                 {
-                    defaultTitle: 'Footer 1',
-                    defaultUuid: 'some-uuid-2',
+                    snippetTitle: 'Footer 1',
+                    snippetUuid: 'some-uuid-2',
                     key: 'footer',
                     template: 'footer',
                     title: 'Footer',
@@ -35,7 +35,7 @@ test('Load snippet areas when constructing the store', () => {
 
     const snippetAreaStore = new SnippetAreaStore('sulu');
 
-    expect(ResourceRequester.getList).toBeCalledWith('snippet_areas', {webspace: 'sulu'});
+    expect(ResourceRequester.getList).toBeCalledWith('snippet_areas', {webspaceKey: 'sulu'});
 
     expect(snippetAreaStore.loading).toEqual(true);
     expect(snippetAreaStore.snippetAreas).toEqual({});
@@ -44,15 +44,15 @@ test('Load snippet areas when constructing the store', () => {
         expect(snippetAreaStore.loading).toEqual(false);
         expect(snippetAreaStore.snippetAreas).toEqual({
             default: {
-                defaultTitle: 'Default 1',
-                defaultUuid: 'some-uuid-1',
+                snippetTitle: 'Default 1',
+                snippetUuid: 'some-uuid-1',
                 key: 'default',
                 template: 'default',
                 title: 'Default',
             },
             footer: {
-                defaultTitle: 'Footer 1',
-                defaultUuid: 'some-uuid-2',
+                snippetTitle: 'Footer 1',
+                snippetUuid: 'some-uuid-2',
                 key: 'footer',
                 template: 'footer',
                 title: 'Footer',
@@ -64,17 +64,17 @@ test('Load snippet areas when constructing the store', () => {
 test('Save snippet area when save is calld', () => {
     const listPromise = Promise.resolve({
         _embedded: {
-            areas: [
+            snippet_areas: [
                 {
-                    defaultTitle: 'Default 1',
-                    defaultUuid: 'some-uuid-1',
+                    snippetTitle: 'Default 1',
+                    snippetUuid: 'some-uuid-1',
                     key: 'default',
                     template: 'default',
                     title: 'Default',
                 },
                 {
-                    defaultTitle: 'Footer 1',
-                    defaultUuid: 'some-uuid-2',
+                    snippetTitle: 'Footer 1',
+                    snippetUuid: 'some-uuid-2',
                     key: 'footer',
                     template: 'footer',
                     title: 'Footer',
@@ -85,8 +85,8 @@ test('Save snippet area when save is calld', () => {
     ResourceRequester.getList.mockReturnValue(listPromise);
 
     const putPromise = Promise.resolve({
-        defaultTitle: 'Footer 2',
-        defaultUuid: 'some-uuid-3',
+        snippetTitle: 'Footer 2',
+        snippetUuid: 'some-uuid-3',
         key: 'footer',
         template: 'footer',
         title: 'Footer',
@@ -97,7 +97,7 @@ test('Save snippet area when save is calld', () => {
     snippetAreaStore.save('footer', 'some-uuid-3');
 
     expect(ResourceRequester.put)
-        .toBeCalledWith('snippet_areas', {defaultUuid: 'some-uuid-3'}, {key: 'footer', webspace: 'sulu'});
+        .toBeCalledWith('snippet_areas', {snippetUuid: 'some-uuid-3'}, {key: 'footer', webspaceKey: 'sulu'});
 
     expect(snippetAreaStore.saving).toEqual(true);
 
@@ -105,15 +105,15 @@ test('Save snippet area when save is calld', () => {
         expect(snippetAreaStore.saving).toEqual(false);
         expect(snippetAreaStore.snippetAreas).toEqual({
             default: {
-                defaultTitle: 'Default 1',
-                defaultUuid: 'some-uuid-1',
+                snippetTitle: 'Default 1',
+                snippetUuid: 'some-uuid-1',
                 key: 'default',
                 template: 'default',
                 title: 'Default',
             },
             footer: {
-                defaultTitle: 'Footer 2',
-                defaultUuid: 'some-uuid-3',
+                snippetTitle: 'Footer 2',
+                snippetUuid: 'some-uuid-3',
                 key: 'footer',
                 template: 'footer',
                 title: 'Footer',
@@ -125,17 +125,17 @@ test('Save snippet area when save is calld', () => {
 test('Delete snippet area when delete is calld', () => {
     const listPromise = Promise.resolve({
         _embedded: {
-            areas: [
+            snippet_areas: [
                 {
-                    defaultTitle: 'Default 1',
-                    defaultUuid: 'some-uuid-1',
+                    snippetTitle: 'Default 1',
+                    snippetUuid: 'some-uuid-1',
                     key: 'default',
                     template: 'default',
                     title: 'Default',
                 },
                 {
-                    defaultTitle: 'Footer 1',
-                    defaultUuid: 'some-uuid-2',
+                    snippetTitle: 'Footer 1',
+                    snippetUuid: 'some-uuid-2',
                     key: 'footer',
                     template: 'footer',
                     title: 'Footer',
@@ -146,8 +146,8 @@ test('Delete snippet area when delete is calld', () => {
     ResourceRequester.getList.mockReturnValue(listPromise);
 
     const deletePromise = Promise.resolve({
-        defaultTitle: null,
-        defaultUuid: null,
+        snippetTitle: null,
+        snippetUuid: null,
         key: 'footer',
         template: 'footer',
         title: 'Footer',
@@ -158,7 +158,7 @@ test('Delete snippet area when delete is calld', () => {
     snippetAreaStore.delete('footer');
 
     expect(ResourceRequester.delete)
-        .toBeCalledWith('snippet_areas', {key: 'footer', webspace: 'sulu'});
+        .toBeCalledWith('snippet_areas', {key: 'footer', webspaceKey: 'sulu'});
 
     expect(snippetAreaStore.deleting).toEqual(true);
 
@@ -166,15 +166,15 @@ test('Delete snippet area when delete is calld', () => {
         expect(snippetAreaStore.deleting).toEqual(false);
         expect(snippetAreaStore.snippetAreas).toEqual({
             default: {
-                defaultTitle: 'Default 1',
-                defaultUuid: 'some-uuid-1',
+                snippetTitle: 'Default 1',
+                snippetUuid: 'some-uuid-1',
                 key: 'default',
                 template: 'default',
                 title: 'Default',
             },
             footer: {
-                defaultTitle: null,
-                defaultUuid: null,
+                snippetTitle: null,
+                snippetUuid: null,
                 key: 'footer',
                 template: 'footer',
                 title: 'Footer',

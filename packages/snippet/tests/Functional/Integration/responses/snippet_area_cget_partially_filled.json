@@ -1,0 +1,29 @@
+{
+    "_embedded": {
+        "snippet_areas": [
+            {
+                "areaKey": "hotel",
+                "id": "@string@",
+                "key": "hotel",
+                "snippetTitle": "Test Snippet",
+                "snippetUuid": "@string@",
+                "templateKey": "snippet",
+                "title": "Hotel Snippet"
+            },
+            {
+                "key": "test",
+                "snippetTitle": null,
+                "snippetUuid": null,
+                "templateKey": "snippet",
+                "title": "Menu Social Media Links"
+            },
+            {
+                "key": "with-cache",
+                "snippetTitle": null,
+                "snippetUuid": null,
+                "templateKey": "snippet",
+                "title": "With cache"
+            }
+        ]
+    }
+}
