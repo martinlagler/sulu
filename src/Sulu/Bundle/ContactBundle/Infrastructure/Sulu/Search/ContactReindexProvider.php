@@ -27,8 +27,11 @@ use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
  *     firstName: string,
  *     lastName: string,
  * }
+ *
+ * @internal this class is internal no backwards compatibility promise is given for this class
+ *            use Symfony Dependency Injection to override or create your own ReindexProvider instead
  */
-class ContactReindexProvider implements ReindexProviderInterface
+final class ContactReindexProvider implements ReindexProviderInterface
 {
     /**
      * @var EntityRepository<ContactInterface>
@@ -43,9 +46,9 @@ class ContactReindexProvider implements ReindexProviderInterface
         $this->contactRepository = $repository;
     }
 
-    public function total(): ?int
+    public function total(): int
     {
-        return null;
+        return $this->contactRepository->count([]);
     }
 
     public function provide(ReindexConfig $reindexConfig): \Generator

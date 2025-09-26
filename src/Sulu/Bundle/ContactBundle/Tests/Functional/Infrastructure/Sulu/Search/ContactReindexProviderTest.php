@@ -42,7 +42,12 @@ class ContactReindexProviderTest extends SuluTestCase
 
     public function testTotal(): void
     {
-        $this->assertNull($this->provider->total());
+        $this->createContact();
+        $this->createContact();
+
+        $this->entityManager->flush();
+
+        $this->assertSame(2, $this->provider->total());
     }
 
     public function testProvideAll(): void

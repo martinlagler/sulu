@@ -39,7 +39,12 @@ class AccountReindexProviderTest extends SuluTestCase
 
     public function testTotal(): void
     {
-        $this->assertNull($this->provider->total());
+        $this->createAccount('Count 1');
+        $this->createAccount('Count 2');
+
+        $this->entityManager->flush();
+
+        $this->assertSame(2, $this->provider->total());
     }
 
     public function testProvideAll(): void

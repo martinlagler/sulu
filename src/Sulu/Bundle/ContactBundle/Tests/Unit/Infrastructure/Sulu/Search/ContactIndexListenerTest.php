@@ -21,9 +21,11 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\ContactBundle\Domain\Event\AccountCreatedEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\AccountModifiedEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\AccountRemovedEvent;
+use Sulu\Bundle\ContactBundle\Domain\Event\AccountRestoredEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\ContactCreatedEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\ContactModifiedEvent;
 use Sulu\Bundle\ContactBundle\Domain\Event\ContactRemovedEvent;
+use Sulu\Bundle\ContactBundle\Domain\Event\ContactRestoredEvent;
 use Sulu\Bundle\ContactBundle\Entity\Account;
 use Sulu\Bundle\ContactBundle\Entity\AccountInterface;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
@@ -103,6 +105,24 @@ class ContactIndexListenerTest extends TestCase
         $this->listener->onAccountChanged($event);
     }
 
+    public function testOnAccountChangedWithAccountRestoredEvent(): void
+    {
+        $account = new Account();
+        $account->setId(789);
+        $account->setName('Sulu GmbH');
+        $event = new AccountRestoredEvent($account, []);
+
+        $expectedConfig = ReindexConfig::create()
+            ->withIndex('admin')
+            ->withIdentifiers([AccountInterface::RESOURCE_KEY . '::789']);
+
+        $this->messageBus->dispatch($expectedConfig)
+            ->willReturn(new Envelope($expectedConfig))
+            ->shouldBeCalledOnce();
+
+        $this->listener->onAccountChanged($event);
+    }
+
     public function testOnContactChangedWithContactCreatedEvent(): void
     {
         $contact = $this->createContact(123);
@@ -141,6 +161,24 @@ class ContactIndexListenerTest extends TestCase
         $contact->setFirstName('Tom');
         $contact->setLastName('Turbo');
         $event = new ContactRemovedEvent($contact->getId(), $contact->getFullName());
+
+        $expectedConfig = ReindexConfig::create()
+            ->withIndex('admin')
+            ->withIdentifiers([ContactInterface::RESOURCE_KEY . '::789']);
+
+        $this->messageBus->dispatch($expectedConfig)
+            ->willReturn(new Envelope($expectedConfig))
+            ->shouldBeCalledOnce();
+
+        $this->listener->onContactChanged($event);
+    }
+
+    public function testOnContactChangedWithContactRestoredEvent(): void
+    {
+        $contact = $this->createContact(789);
+        $contact->setFirstName('Tom');
+        $contact->setLastName('Turbo');
+        $event = new ContactRestoredEvent($contact, []);
 
         $expectedConfig = ReindexConfig::create()
             ->withIndex('admin')
