@@ -50,6 +50,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  *       websiteTagOperator: 'AND'|'OR',
  *       types: string[],
  *       typesOperator: 'OR',
+ *       templateKeys?: string[],
  *       locale: string,
  *       dataSource: string|null,
  *       limit: int|null,
@@ -72,6 +73,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  *       websiteTagOperator: 'AND'|'OR',
  *       types: string[],
  *       typesOperator: 'OR',
+ *       templateKeys?: string[],
  *       locale: string,
  *       dataSource: string|null,
  *       limit: int|null,
@@ -166,6 +168,7 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
     {
         /** @var PageSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        $filters = $this->applyParams($filters, $params);
 
         $alias = 'page';
         $queryBuilder = $this->entityRepository->createQueryBuilder($alias);
@@ -202,6 +205,7 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
     {
         /** @var PageSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        $filters = $this->applyParams($filters, $params);
 
         $alias = 'page';
         $queryBuilder = $this->entityRepository->createQueryBuilder($alias);
@@ -261,7 +265,7 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
     protected function mapFilters(array $filters): array
     {
         if ($filters['types']) {
-            $filters['templateKeys'] = $filters['types'];
+            $filters['templateKeys'] = \array_values(\array_unique(\array_merge($filters['templateKeys'] ?? [], $filters['types'])));
             unset($filters['types']);
         }
 
@@ -382,6 +386,25 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
 
             $queryBuilder->addOrderBy($alias . '.lft', $sortMethod);
         }
+    }
+
+    /**
+     * @param array<string, mixed> $filters
+     * @param array<string, mixed> $params
+     *
+     * @return array<string, mixed>
+     */
+    protected function applyParams(array $filters, array $params): array
+    {
+        if (empty($filters['types'])) {
+            $templateParam = $params['template'] ?? $params['templateKey'] ?? null;
+
+            if (\is_string($templateParam)) {
+                $filters['types'] = \array_filter(\array_map('trim', \explode(',', $templateParam)));
+            }
+        }
+
+        return $filters;
     }
 
     /**
