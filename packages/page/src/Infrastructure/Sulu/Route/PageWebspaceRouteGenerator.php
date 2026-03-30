@@ -12,6 +12,7 @@
 namespace Sulu\Page\Infrastructure\Sulu\Route;
 
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
+use Sulu\Page\Infrastructure\Sulu\Route\Exception\PageWebspaceUrlNotFoundException;
 use Sulu\Route\Application\Routing\Generator\WebspaceRouteGeneratorInterface;
 use Sulu\Route\Domain\Exception\MissingRequestContextParameterException;
 use Sulu\Route\Domain\Value\RequestAttributeEnum;
@@ -52,7 +53,7 @@ class PageWebspaceRouteGenerator implements WebspaceRouteGeneratorInterface
         $url = $this->webspaceManager->findUrlByResourceLocator($slug, null, $locale, $site, $requestContext->getHost(), $requestContext->getScheme());
 
         if (null === $url) {
-            throw new \RuntimeException(\sprintf('No url found for "%s" in locale "%s" and site "%s".', $slug, $locale, $site));
+            throw new PageWebspaceUrlNotFoundException($slug, $locale, $site);
         }
 
         return $url;
