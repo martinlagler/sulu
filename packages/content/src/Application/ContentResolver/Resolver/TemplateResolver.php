@@ -61,7 +61,7 @@ readonly class TemplateResolver implements ResolverInterface
                 if (\array_key_exists($value, $formMetadataItems)) {
                     $filteredFormMetadataItems[$key] = $formMetadataItems[$value];
                 } else {
-                    $nullProperties[$key] = ContentView::create(null, []);
+                    $nullProperties[$key] = null;
                 }
                 if (\array_key_exists($value, $data)) {
                     $filteredTemplateData[$key] = $data[$value];
