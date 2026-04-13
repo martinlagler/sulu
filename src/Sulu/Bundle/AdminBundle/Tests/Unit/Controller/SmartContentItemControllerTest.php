@@ -48,6 +48,7 @@ class SmartContentItemControllerTest extends TestCase
         $this->viewHandler = $this->prophesize(ViewHandlerInterface::class);
         $this->viewHandler->handle(Argument::cetera())->willReturn(new JsonResponse());
 
+        /** @var ServiceLocator<SmartContentProviderInterface> $locator */
         $locator = new ServiceLocator([
             'articles' => fn () => $this->provider->reveal(),
         ]);
@@ -116,7 +117,7 @@ class SmartContentItemControllerTest extends TestCase
         $this->provider->findFlatBy(
             Argument::any(),
             Argument::any(),
-            Argument::that(function (array $normalizedParams) {
+            Argument::that(function(array $normalizedParams) {
                 return 'blog,rblog' === $normalizedParams['groups']
                     && 'blog_article' === $normalizedParams['template'];
             }),

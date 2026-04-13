@@ -666,8 +666,6 @@ class SmartContentContentResolverTest extends SuluTestCase
         self::assertSame('Default Template Item', $items[0]['title']);
     }
 
-
-
     public function testRecursionMaxDepthReplacesDeepWithNull(): void
     {
         // Create two pages with smart content that selects itself first via title ASC

@@ -166,8 +166,8 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
      */
     public function countBy(array $filters, array $params = []): int
     {
-        /** @var PageSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var PageSmartContentCountFilters $filters */
         $filters = $this->applyParams($filters, $params);
 
         $alias = 'page';
@@ -203,8 +203,8 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
      */
     public function findFlatBy(array $filters, array $sortBys, array $params = []): array
     {
-        /** @var PageSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var PageSmartContentFilters $filters */
         $filters = $this->applyParams($filters, $params);
 
         $alias = 'page';
@@ -238,7 +238,7 @@ readonly class PageSmartContentProvider implements SmartContentProviderInterface
     }
 
     /**
-     * @param PageSmartContentFilters $filters
+     * @param PageSmartContentFilters|PageSmartContentCountFilters $filters
      *
      * @return array{
      *        categoryIds?: int[],

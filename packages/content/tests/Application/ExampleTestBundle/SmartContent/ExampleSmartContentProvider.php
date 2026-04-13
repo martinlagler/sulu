@@ -116,8 +116,8 @@ readonly class ExampleSmartContentProvider implements SmartContentProviderInterf
      */
     public function countBy(array $filters, array $params = []): int
     {
-        /** @var ExampleSmartContentCountFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var ExampleSmartContentCountFilters $filters */
         $filters = $this->applyParams($filters, $params);
 
         $alias = 'example';
@@ -152,8 +152,8 @@ readonly class ExampleSmartContentProvider implements SmartContentProviderInterf
      */
     public function findFlatBy(array $filters, array $sortBys, array $params = []): array
     {
-        /** @var ExampleSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var ExampleSmartContentFilters $filters */
         $filters = $this->applyParams($filters, $params);
 
         $alias = 'example';
