@@ -145,6 +145,7 @@ class SmartContentItemController extends AbstractRestController
             $normalizedParams[$name] = $param->getValue();
         }
 
+        /** @var array<string, mixed> $normalizedParams */
         $items = $provider->findFlatBy($filters, $sortBys, $normalizedParams);
 
         return $this->handleView(

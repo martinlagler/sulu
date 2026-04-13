@@ -30,11 +30,18 @@ class SmartContentPropertyResolverTest extends TestCase
         $this->resolver = new SmartContentPropertyResolver($requestStack, []);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $params
+     *
+     * @return array<string, mixed>
+     */
     private function resolveFilters(array $data, array $params): array
     {
-        $result = $this->resolver->resolve($data, 'en', $params);
+        $result = $this->resolver->resolve($data, 'en', $params); // @phpstan-ignore argument.type
         /** @var SmartResolvable $resolvable */
         $resolvable = $result->getContent();
+        /** @var array{filters: array<string, mixed>} $resolvableData */
         $resolvableData = $resolvable->getData();
 
         return $resolvableData['filters'];

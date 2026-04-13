@@ -126,8 +126,8 @@ readonly class SnippetSmartContentProvider implements SmartContentProviderInterf
      */
     public function countBy(array $filters, array $params = []): int
     {
-        /** @var SnippetSmartContentCountFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var SnippetSmartContentCountFilters $filters */
         $filters = $this->applyParams($filters, $params);
 
         $alias = 'snippet';
@@ -165,8 +165,8 @@ readonly class SnippetSmartContentProvider implements SmartContentProviderInterf
         $alias = 'snippet';
         $queryBuilder = $this->entityRepository->createQueryBuilder($alias);
 
-        /** @var SnippetSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var SnippetSmartContentFilters $filters */
         $filters = $this->applyParams($filters, $params);
         $filters = $this->mapFilters($filters);
         $this->dimensionContentQueryEnhancer->addFilters(
