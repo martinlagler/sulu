@@ -35,6 +35,8 @@ readonly class DimensionContentResolver implements ResolverInterface
         foreach ($properties as $key => $path) {
             if ($this->propertyAccessor->isReadable($dimensionContent, $path)) {
                 $data[$key] = $this->propertyAccessor->getValue($dimensionContent, $path);
+            } else {
+                $data[$key] = null;
             }
         }
 

@@ -38,6 +38,7 @@ use Sulu\Content\Infrastructure\Doctrine\DimensionContentQueryEnhancer;
  *       websiteTagOperator: 'AND'|'OR',
  *       types: string[],
  *       typesOperator: 'OR',
+ *       templateKeys?: string[],
  *       locale: string,
  *       dataSource: string|null,
  *       limit: int|null,
@@ -61,6 +62,7 @@ use Sulu\Content\Infrastructure\Doctrine\DimensionContentQueryEnhancer;
  *        websiteTagOperator: 'AND'|'OR',
  *        types: string[],
  *        typesOperator: 'OR',
+ *        templateKeys?: string[],
  *        locale: string,
  *        dataSource: string|null,
  *        limit: int|null,
@@ -150,8 +152,9 @@ readonly class ArticleSmartContentProvider implements SmartContentProviderInterf
      */
     public function countBy(array $filters, array $params = []): int
     {
-        /** @var ArticleSmartContentCountFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var ArticleSmartContentCountFilters $filters */
+        $filters = $this->applyParams($filters, $params);
 
         $alias = 'article';
         $queryBuilder = $this->entityRepository->createQueryBuilder($alias);
@@ -185,8 +188,9 @@ readonly class ArticleSmartContentProvider implements SmartContentProviderInterf
      */
     public function findFlatBy(array $filters, array $sortBys, array $params = []): array
     {
-        /** @var ArticleSmartContentFilters $filters */
         $filters = $this->enhanceWithDimensionAttributes($filters);
+        /** @var ArticleSmartContentFilters $filters */
+        $filters = $this->applyParams($filters, $params);
 
         $alias = 'article';
         $queryBuilder = $this->entityRepository->createQueryBuilder($alias);
@@ -212,6 +216,33 @@ readonly class ArticleSmartContentProvider implements SmartContentProviderInterf
         $result = $queryBuilder->getQuery()->getArrayResult();
 
         return $result;
+    }
+
+    /**
+     * @param array<string, mixed> $filters
+     * @param array<string, mixed> $params
+     *
+     * @return array<string, mixed>
+     */
+    protected function applyParams(array $filters, array $params): array
+    {
+        // Groups — article group identifiers
+        if (empty($filters['types'])) {
+            $groupsParam = $params['groups'] ?? null;
+
+            if (\is_string($groupsParam)) {
+                $filters['types'] = \array_filter(\array_map('trim', \explode(',', $groupsParam)));
+            }
+        }
+
+        // Template — direct template keys
+        $templateParam = $params['template'] ?? $params['templateKey'] ?? null;
+
+        if (\is_string($templateParam)) {
+            $filters['templateKeys'] = \array_filter(\array_map('trim', \explode(',', $templateParam)));
+        }
+
+        return $filters;
     }
 
     /**
@@ -263,7 +294,7 @@ readonly class ArticleSmartContentProvider implements SmartContentProviderInterf
                 }
             }
 
-            $filters['templateKeys'] = $templates;
+            $filters['templateKeys'] = \array_values(\array_unique(\array_merge($filters['templateKeys'] ?? [], $templates)));
             unset($filters['types']);
         }
 
