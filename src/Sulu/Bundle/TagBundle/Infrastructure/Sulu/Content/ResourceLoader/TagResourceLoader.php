@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sulu\Bundle\TagBundle\Infrastructure\Sulu\Content\ResourceLoader;
 
+use Sulu\Bundle\TagBundle\Tag\TagManagerInterface;
 use Sulu\Bundle\TagBundle\Tag\TagRepositoryInterface;
 use Sulu\Content\Application\ResourceLoader\Loader\ResourceLoaderInterface;
 
@@ -26,17 +27,35 @@ class TagResourceLoader implements ResourceLoaderInterface
     public const RESOURCE_LOADER_KEY = 'tag';
 
     public function __construct(
-        private TagRepositoryInterface $tagRepository
+        private TagRepositoryInterface $tagRepository,
+        private TagManagerInterface $tagManager,
     ) {
     }
 
     public function load(array $ids, ?string $locale, array $params = []): array
     {
-        $result = $this->tagRepository->findBy(['id' => $ids]);
+        $numericIds = \array_values(\array_filter($ids, fn($id) => \is_numeric($id)));
+        $nameIds = \array_values(\array_filter($ids, fn($id) => !\is_numeric($id)));
 
         $mappedResult = [];
-        foreach ($result as $tag) {
-            $mappedResult[$tag->getId()] = $tag->getName();
+
+        if (!empty($numericIds)) {
+            foreach ($this->tagRepository->findBy(['id' => $numericIds]) as $tag) {
+                $mappedResult[$tag->getId()] = $tag->getName();
+            }
+        }
+
+        if (!empty($nameIds)) {
+            $foundNames = [];
+            foreach ($this->tagRepository->findBy(['name' => $nameIds]) as $tag) {
+                $mappedResult[$tag->getName()] = $tag->getName();
+                $foundNames[] = $tag->getName();
+            }
+
+            foreach (\array_diff($nameIds, $foundNames) as $missingName) {
+                $tag = $this->tagManager->findOrCreateByName($missingName);
+                $mappedResult[$tag->getName()] = $tag->getName();
+            }
         }
 
         return $mappedResult;

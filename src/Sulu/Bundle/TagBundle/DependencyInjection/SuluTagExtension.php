@@ -60,8 +60,8 @@ class SuluTagExtension extends Extension implements PrependExtensionInterface
                                     'auto_complete' => [
                                         'allow_add' => true,
                                         'display_property' => 'name',
-                                        'id_property' => 'id',
-                                        'filter_parameter' => 'ids',
+                                        'id_property' => 'name',
+                                        'filter_parameter' => 'names',
                                         'search_properties' => ['name'],
                                     ],
                                 ],

@@ -11,6 +11,7 @@
         <!-- Content Resource Loaders -->
         <service id="sulu_tag.tag_resource_loader" class="Sulu\Bundle\TagBundle\Infrastructure\Sulu\Content\ResourceLoader\TagResourceLoader">
             <argument type="service" id="sulu.repository.tag"/>
+            <argument type="service" id="sulu_tag.tag_manager"/>
 
             <tag name="sulu_content.resource_loader" key="tag"/>
         </service>

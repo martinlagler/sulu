@@ -34,7 +34,7 @@ class TagSelectionPropertyResolver implements PropertyResolverInterface
             return ContentView::create([], ['ids' => [], ...$params]);
         }
 
-        /** @var int[] $ids */
+        /** @var array<int|string> $ids */
         $ids = $data;
 
         /** @var string $resourceLoaderKey */
