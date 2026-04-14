@@ -33,7 +33,7 @@ use Sulu\Content\Tests\Application\ExampleTestBundle\ResourceLoader\ExampleResou
  *       categoryOperator: 'AND'|'OR',
  *       websiteCategories: string[],
  *       websiteCategoryOperator: 'AND'|'OR',
- *       tags: string[],
+ *       tags: int[],
  *       tagOperator: 'AND'|'OR',
  *       websiteTags: string[],
  *       websiteTagOperator: 'AND'|'OR',
@@ -51,7 +51,7 @@ use Sulu\Content\Tests\Application\ExampleTestBundle\ResourceLoader\ExampleResou
  *       categoryOperator: 'AND'|'OR',
  *       websiteCategories: string[],
  *       websiteCategoryOperator: 'AND'|'OR',
- *       tags: string[],
+ *       tags: int[],
  *       tagOperator: 'AND'|'OR',
  *       websiteTags: string[],
  *       websiteTagOperator: 'AND'|'OR',
@@ -206,7 +206,7 @@ readonly class ExampleSmartContentProvider implements SmartContentProviderInterf
      *         categoryOperator: 'AND'|'OR',
      *         websiteCategories: string[],
      *         websiteCategoryOperator: 'AND'|'OR',
-     *         tagNames?: string[],
+     *         tagIds?: int[],
      *         tagOperator: 'AND'|'OR',
      *         websiteTags: string[],
      *         websiteTagOperator: 'AND'|'OR',
@@ -233,7 +233,7 @@ readonly class ExampleSmartContentProvider implements SmartContentProviderInterf
         }
 
         if ($filters['tags']) {
-            $filters['tagNames'] = $filters['tags'];
+            $filters['tagIds'] = $filters['tags'];
             unset($filters['tags']);
         }
 
