@@ -250,6 +250,7 @@
     "sulu_admin.expand_all_blocks": "Alle Blöcke erweitern",
     "sulu_admin.collapse_all": "Alle ausblenden",
     "sulu_admin.expand_all": "Alle erweitern",
+    "sulu_admin.grouped_selection_item_count": "{count} {count, plural, =1 {Eintrag} other {Einträge}}",
     "sulu_admin.%count%_blocks_copied": "{count} {count, plural, =1 {Block} other {Blöcke}} zur Zwischenablage kopiert.",
     "sulu_admin.%count%_blocks_duplicated": "{count} {count, plural, =1 {Block} other {Blöcke}} dupliziert.",
     "sulu_admin.%count%_blocks_removed": "{count} {count, plural, =1 {Block} other {Blöcke}} gelöscht.",

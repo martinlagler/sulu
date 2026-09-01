@@ -1,0 +1,87 @@
+@import '../../../containers/Application/colors.scss';
+
+$rowHeight: 44px;
+$labelColumnWidth: 50%;
+
+.groupedSelectionTable {
+    /* the "th" type selector outranks the flat skin's white and bold header-cell */
+    th.groupedSelectionHeaderCell {
+        background-color: $wildSand;
+        font-weight: normal;
+    }
+
+    /* the flat skin's invisible cell border becomes the row separator, last row excluded */
+    tbody tr:not(:last-child) td {
+        border-bottom-color: $mercury;
+    }
+}
+
+/* row hover blanks every cell border in the flat skin, the tripled class outranks it */
+.groupedSelectionTable.groupedSelectionTable.groupedSelectionTable {
+    tbody tr:not(:last-child):hover td {
+        border-bottom-color: $mercury;
+    }
+}
+
+/* every group renders its own table, a fixed layout aligns the columns across all of them
+ * the class is doubled to outrank core's two-class flat rules */
+.groupedSelectionTable.groupedSelectionTable {
+    table {
+        table-layout: fixed;
+        width: 100%;
+        border-spacing: 0; /* the flat skin's gap between rows would only add height */
+    }
+
+    /* a row is as tall as its strongest constraint, so the tr comes down with the cells */
+    tr,
+    th,
+    td {
+        height: $rowHeight;
+    }
+
+    /* core's 250px cap would keep the label column from reaching its share */
+    th.groupedSelectionLabelCell,
+    td.groupedSelectionLabelCell {
+        width: $labelColumnWidth;
+        max-width: none;
+    }
+
+    /* no width: the value columns split what the label column leaves */
+    th.groupedSelectionCell,
+    td.groupedSelectionCell {
+        max-width: none;
+        padding: 4px 8px; /* core's 20px clips the column titles */
+        text-align: center;
+    }
+
+    /* the cell content is a flex container, text-align does not reach the checkbox */
+    td.groupedSelectionCell > div {
+        justify-content: center;
+    }
+}
+
+.groupedSelectionLabel {
+    color: $mineShaft;
+}
+
+/* own styling instead of core's button-cell, whose hover-only opacity is list behaviour */
+.groupedSelectionRemoveCell {
+    width: 56px;
+    padding: 0;
+    text-align: center;
+
+    button {
+        color: $gray;
+        cursor: pointer;
+        border: none;
+        background: none;
+
+        &:disabled {
+            cursor: default;
+        }
+
+        &:hover:not(:disabled) {
+            color: $mineShaft;
+        }
+    }
+}
