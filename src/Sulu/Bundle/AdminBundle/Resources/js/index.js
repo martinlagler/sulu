@@ -81,6 +81,7 @@ import {
     DatePicker,
     Email,
     fieldRegistry,
+    GroupedSelection,
     Heading,
     Input,
     localeConditionDataProvider,
@@ -278,6 +279,7 @@ function registerFieldTypes(fieldTypeOptions) {
     fieldRegistry.add(FIELD_TYPE_LINK, Link);
     fieldRegistry.add(FIELD_TYPE_SINGLE_ICON_SELECTION, SingleIconSelection);
 
+    registerFieldTypesWithOptions(fieldTypeOptions['grouped_selection'], GroupedSelection);
     registerFieldTypesWithOptions(fieldTypeOptions['selection'], Selection);
     registerFieldTypesWithOptions(fieldTypeOptions['single_selection'], SingleSelection);
 }

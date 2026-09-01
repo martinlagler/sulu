@@ -20,6 +20,7 @@ import Checkbox from './fields/Checkbox';
 import ColorPicker from './fields/ColorPicker';
 import DatePicker from './fields/DatePicker';
 import Email from './fields/Email';
+import GroupedSelection from './fields/GroupedSelection';
 import Heading from './fields/Heading';
 import Input from './fields/Input';
 import Number from './fields/Number';
@@ -51,6 +52,7 @@ export {
     ChangelogLine,
     DatePicker,
     Email,
+    GroupedSelection,
     Heading,
     Input,
     FormInspector,
